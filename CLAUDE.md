@@ -6,9 +6,9 @@
 **Core Focus:** 1v1 close-quarters combat with deep mechanics from simple abilities
 
 ## 📍 Current Status
-**Phase:** 4 of 8 - Advanced Combat ✅ COMPLETED
-**Next:** Phase 5 - Enemy AI (Week 6-7)
-**Timeline:** 8 phases over 11 weeks
+**Phase:** 4 of 10 - Advanced Combat ✅ COMPLETED
+**Next:** Phase 5 - Arena System (Week 6)
+**Timeline:** 10 phases over 11 weeks
 
 ### Phase 1 Completed Components
 - ✅ `UCombatComponent` - Basic attack (5 damage) - Functional
@@ -113,25 +113,35 @@ Basic attack, health system, training dummy - All tested and working
 - 50 damage with 1000 range
 - Visual feedback for availability
 
-### Phase 5: Enemy AI
-- Attack patterns
-- Feints and combos
-- Phase behaviors
-
-### Phase 6: Arena System
+### Phase 5: Arena System
 - 5 arenas progression
 - Fragment rewards
-- Memory unlocks
+- Game mode structure
+
+### Phase 6: Memory System
+- Save/load functionality
+- Fragment currency
+- Permanent upgrades
 
 ### Phase 7: UI & Polish
 - Slate UI implementation
-- Visual effects
-- Audio integration
+- Menu systems
+- HUD elements
 
-### Phase 8: Finalization
-- Balance tuning
-- Bug fixes
-- Performance optimization
+### Phase 8: Animation System
+- Combat animations
+- Animation notifies
+- Smooth transitions
+
+### Phase 9: SFX & VFX
+- Sound effects
+- Visual effects
+- Game feel enhancements
+
+### Phase 10: Enemy AI
+- Attack patterns
+- Feints and combos
+- Phase-based behaviors
 
 ## 🎯 Core Mechanics
 

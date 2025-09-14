@@ -158,7 +158,7 @@
 
 =============================================================================
 
-### PHASE 5: ARENA SYSTEM (Week 6-7)
+### PHASE 5: ARENA SYSTEM (Week 6)
 **Priority:** HIGH - Game Structure
 **Status:** PENDING
 
@@ -196,7 +196,7 @@
 
 =============================================================================
 
-### PHASE 6: MEMORY SYSTEM (Week 8)
+### PHASE 6: MEMORY SYSTEM (Week 7)
 **Priority:** MEDIUM - Meta Progression
 **Status:** PENDING
 
@@ -228,15 +228,14 @@
 
 =============================================================================
 
-### PHASE 7: UI & POLISH (Week 9-10)
+### PHASE 7: UI & POLISH (Week 8)
 **Priority:** MEDIUM - User Experience
 **Status:** PENDING
 
 **Goals:**
 - Combat UI implemented
-- Visual feedback systems
-- Audio integration
-- Enhanced player experience
+- Basic Slate UI systems
+- UI feedback for all mechanics
 
 **Tasks:**
 1. [ ] Core Combat UI (Pure C++ Slate)
@@ -246,63 +245,142 @@
    - Fragment counter display - Slate widget
    - Damage numbers below health bar (Elden Ring style) - Slate
    - Counter-attack arrows (left-center, cyan/red states) - Slate
+   - Hack meter proper UI (replace debug display)
 
-2. [ ] Visual Effects Integration
-   - Counter-attack window visual indicators
-   - Block direction visual feedback
-   - Combat impact and hit effects
-   - Hack attack availability indicators
+2. [ ] UI State Management
+   - Menu system (main menu, pause menu)
+   - Arena transition screens
+   - Victory/defeat screens
+   - Memory purchase interface
 
-3. [ ] Audio Integration
-   - Combat sound effects
-   - Counter-attack audio cues
-   - UI feedback sounds
-   - Phase transition audio
-
-**Deliverable:** Polished UI and feedback systems
-**Testing:** All combat interactions have clear visual/audio feedback
+**Deliverable:** Complete UI system with all necessary screens
+**Testing:** All UI elements display correctly and update in real-time
 
 =============================================================================
 
-### PHASE 8: FULL GAME LOOP (Week 11)
-**Priority:** HIGH - Final Integration
+### PHASE 8: ANIMATION SYSTEM (Week 9)
+**Priority:** HIGH - Visual Polish
 **Status:** PENDING
 
 **Goals:**
-- Complete 5-arena experience
-- Balanced difficulty progression
-- Final testing and polish
-- Ready for playtesting
+- Complete animation integration
+- Smooth combat feel
+- Visual feedback for all actions
 
 **Tasks:**
-1. [ ] Complete Arena Implementation
-   - All 5 arenas functional with progression
-   - Difficulty scaling per arena (1-5 phases)
-   - End-game victory conditions
+1. [ ] Player Animations
+   - Attack animations (normal, counter, hack)
+   - Block animations (directional)
+   - Dodge animations (4 directions)
+   - Dash and leap attack animations
+   - Hit reactions and death animations
+   - Phase transition animations
 
-2. [ ] Final Testing & Balancing
-   - Combat feel optimization and tuning
-   - Difficulty curve adjustment
-   - Performance optimization for 60 FPS target
-   - Bug fixes and edge case handling
+2. [ ] Enemy Animations
+   - Attack animations (combos, heavy attacks)
+   - Hit reactions
+   - Phase transition animations
+   - Death and finisher receive animations
 
-3. [ ] Playtesting Preparation
-   - Complete game loop validation
-   - Save/load system stress testing
-   - Input responsiveness final tuning
+3. [ ] Animation Notifies
+   - Damage frame timing
+   - Counter window triggers
+   - VFX spawn points
+   - SFX triggers
 
-**Deliverable:** Complete Second Wind game ready for external playtesting
-**Testing:** Full playthrough from start to Arena 5 completion
+**Deliverable:** Fully animated combat system
+**Testing:** All animations play correctly with proper timing
+
+=============================================================================
+
+### PHASE 9: SFX & VFX (Week 10)
+**Priority:** MEDIUM - Audio/Visual Polish
+**Status:** PENDING
+
+**Goals:**
+- Complete audio implementation
+- Visual effects for all actions
+- Game feel enhancement
+
+**Tasks:**
+1. [ ] Sound Effects
+   - Combat sounds (sword hits, blocks, dodges)
+   - Counter-attack audio cues
+   - Hack attack charging and execution
+   - UI feedback sounds
+   - Phase transition audio
+   - Ambient arena sounds
+
+2. [ ] Visual Effects
+   - Hit impacts and sparks
+   - Blood/damage effects
+   - Counter-attack window visual indicators
+   - Block direction visual feedback
+   - Hack attack visual buildup and execution
+   - Dodge trails and dash effects
+   - Phase transition effects
+
+3. [ ] Game Feel
+   - Screen shake on heavy hits
+   - Hit pause for impactful attacks
+   - Slow motion for counter-attacks
+   - Camera effects for special moments
+
+**Deliverable:** Complete audio-visual experience
+**Testing:** All effects trigger correctly without performance issues
+
+=============================================================================
+
+### PHASE 10: ENEMY AI (Week 11)
+**Priority:** HIGH - Core Gameplay
+**Status:** PENDING
+
+**Goals:**
+- Intelligent enemy behavior
+- Challenging combat encounters
+- Phase-based AI changes
+
+**Tasks:**
+1. [ ] AI Behavior System
+   - State machine for combat decisions
+   - Attack pattern selection
+   - Player action reading and response
+   - Distance management
+   - Defensive behavior (blocking, dodging)
+
+2. [ ] Attack Patterns
+   - 3-hit combo variations
+   - Heavy attack mixups
+   - Feint system (start attack, then cancel)
+   - Delayed attacks to catch dodges
+   - Punish patterns for player mistakes
+
+3. [ ] Phase-Based Behaviors
+   - Phase 1: Basic attacks, slow reactions
+   - Phase 2: Faster attacks, occasional feints
+   - Phase 3: Combo chains, defensive options
+   - Phase 4: Aggressive mixups, punish attempts
+   - Phase 5: Full moveset, unpredictable patterns
+
+4. [ ] Difficulty Scaling
+   - Per-arena AI improvements
+   - Reaction time adjustments
+   - Attack frequency changes
+   - Defense usage probability
+
+**Deliverable:** Challenging and fair enemy AI system
+**Testing:** AI provides appropriate challenge without feeling unfair
 
 =============================================================================
 
 ### SESSION TRACKING:
 **Current Phase:** 5
-**Next Tasks:** Create basic enemy AI patterns, implement attack combos
-**Completion Status:** 4/8 phases complete
+**Next Tasks:** Create arena system and game mode structure
+**Completion Status:** 4/10 phases complete
 
 ### NOTES FOR NEXT SESSION:
 - Phase 1-4 complete: Combat, Blocking, Dodge/Movement, Special Abilities
 - Hack system fully functional with counter-attack requirements
 - Counter-attacks only work during counter windows (1s after block/dodge)
-- Next: Implement enemy AI with attack patterns and phase behaviors
+- Phase order updated: Arena → Memory → UI → Animation → SFX/VFX → Enemy AI
+- Training dummy remains simple until all systems are in place
