@@ -1,4 +1,7 @@
 #include "FragmentComponent.h"
+#include "SecondWind/Systems/FragmentSystem.h"
+#include "Engine/World.h"
+#include "Engine/GameInstance.h"
 
 UFragmentComponent::UFragmentComponent()
 {
@@ -23,39 +26,56 @@ void UFragmentComponent::AddFragments(int32 Amount)
         return;
     }
 
-    int32 OldFragments = CurrentFragments;
-    CurrentFragments = FMath::Clamp(CurrentFragments + Amount, 0, MaxFragments);
-
-    if (CurrentFragments != OldFragments)
+    if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
     {
-        OnFragmentsChanged.Broadcast(CurrentFragments);
-        SaveFragments();
-        UE_LOG(LogTemp, Warning, TEXT("Fragments added: %d (Total: %d)"), Amount, CurrentFragments);
+        if (UFragmentSystem* FragmentSystem = GameInstance->GetSubsystem<UFragmentSystem>())
+        {
+            FragmentSystem->AddFragments(Amount);
+            CurrentFragments = FragmentSystem->GetFragmentCount();
+            OnFragmentsChanged.Broadcast(CurrentFragments);
+            UE_LOG(LogTemp, Warning, TEXT("Fragments added via system: %d (Total: %d)"), Amount, CurrentFragments);
+        }
     }
 }
 
 bool UFragmentComponent::SpendFragments(int32 Amount)
 {
-    if (Amount <= 0 || CurrentFragments < Amount)
+    if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
     {
-        return false;
+        if (UFragmentSystem* FragmentSystem = GameInstance->GetSubsystem<UFragmentSystem>())
+        {
+            bool bSuccess = FragmentSystem->SpendFragments(Amount);
+            if (bSuccess)
+            {
+                CurrentFragments = FragmentSystem->GetFragmentCount();
+                OnFragmentsChanged.Broadcast(CurrentFragments);
+            }
+            return bSuccess;
+        }
     }
-
-    CurrentFragments -= Amount;
-    OnFragmentsChanged.Broadcast(CurrentFragments);
-    SaveFragments();
-
-    UE_LOG(LogTemp, Warning, TEXT("Fragments spent: %d (Remaining: %d)"), Amount, CurrentFragments);
-    return true;
+    return false;
 }
 
 void UFragmentComponent::SaveFragments()
 {
-    UE_LOG(LogTemp, Warning, TEXT("Fragments saved: %d"), CurrentFragments);
+    if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+    {
+        if (UFragmentSystem* FragmentSystem = GameInstance->GetSubsystem<UFragmentSystem>())
+        {
+            FragmentSystem->SaveFragments();
+        }
+    }
 }
 
 void UFragmentComponent::LoadFragments()
 {
-    UE_LOG(LogTemp, Warning, TEXT("Fragments loaded: %d"), CurrentFragments);
-    OnFragmentsChanged.Broadcast(CurrentFragments);
+    if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+    {
+        if (UFragmentSystem* FragmentSystem = GameInstance->GetSubsystem<UFragmentSystem>())
+        {
+            FragmentSystem->LoadFragments();
+            CurrentFragments = FragmentSystem->GetFragmentCount();
+            OnFragmentsChanged.Broadcast(CurrentFragments);
+        }
+    }
 }

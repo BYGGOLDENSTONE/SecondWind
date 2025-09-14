@@ -6,6 +6,7 @@
 
 class UBoxComponent;
 class ASecondWindCharacter;
+class UMemoryShopComponent;
 
 UCLASS()
 class SECONDWIND_API ASafeZoneCorridor : public AActor
@@ -41,6 +42,9 @@ protected:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     UBoxComponent* CorridorTrigger;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    UMemoryShopComponent* MemoryShopComponent;
 
     UPROPERTY(EditDefaultsOnly, Category = "Corridor Settings")
     FVector CorridorExtent = FVector(400.0f, 200.0f, 200.0f);

@@ -7,6 +7,7 @@
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
 #include "SecondWind/SecondWindCharacter.h"
+#include "SecondWind/Components/FragmentComponent.h"
 
 AArenaZone::AArenaZone()
 {
@@ -91,6 +92,20 @@ void AArenaZone::OnEnemyDefeated(AArenaEnemy* Enemy)
 {
     if (Enemy && ActiveEnemies.Contains(Enemy))
     {
+        // Award fragments to player
+        int32 FragmentReward = Enemy->CalculateFragmentReward();
+
+        if (ASecondWindCharacter* PlayerCharacter = Cast<ASecondWindCharacter>(
+            UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))
+        {
+            if (UFragmentComponent* FragmentComp = PlayerCharacter->FindComponentByClass<UFragmentComponent>())
+            {
+                FragmentComp->AddFragments(FragmentReward);
+                UE_LOG(LogTemp, Warning, TEXT("Player earned %d fragments from enemy in Zone %d"),
+                    FragmentReward, ZoneNumber);
+            }
+        }
+
         ActiveEnemies.Remove(Enemy);
         CheckZoneClearStatus();
     }

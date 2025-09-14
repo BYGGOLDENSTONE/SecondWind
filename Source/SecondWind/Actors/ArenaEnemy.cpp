@@ -3,6 +3,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "ArenaZone.h"
+#include "SimplifiedArenaSystem.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/DamageEvents.h"
 
@@ -99,9 +100,21 @@ void AArenaEnemy::OnEnemyDeath()
         // Stop attacking when dead
         GetWorldTimerManager().ClearTimer(AttackTimerHandle);
 
+        // Notify the zone if using LevelLayoutManager system
         if (OwnerZone)
         {
             OwnerZone->OnEnemyDefeated(this);
+        }
+
+        // Also notify SimplifiedArenaSystem if it exists
+        TArray<AActor*> FoundSystems;
+        UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASimplifiedArenaSystem::StaticClass(), FoundSystems);
+        if (FoundSystems.Num() > 0)
+        {
+            if (ASimplifiedArenaSystem* ArenaSystem = Cast<ASimplifiedArenaSystem>(FoundSystems[0]))
+            {
+                ArenaSystem->OnEnemyDefeated(this);
+            }
         }
     }
 }

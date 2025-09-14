@@ -19,6 +19,8 @@
 #include "Components/CameraLockOnComponent.h"
 #include "Components/FragmentComponent.h"
 #include "GameModes/SecondWindArenaGameMode.h"
+#include "Systems/MemorySystem.h"
+#include "Systems/RunManager.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -106,6 +108,22 @@ ASecondWindCharacter::ASecondWindCharacter()
 void ASecondWindCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// Apply memory effects to player
+	if (UGameInstance* GameInstance = GetGameInstance())
+	{
+		if (UMemorySystem* MemorySystem = GameInstance->GetSubsystem<UMemorySystem>())
+		{
+			MemorySystem->ApplyMemoryEffects(this);
+			UE_LOG(LogTemplateCharacter, Warning, TEXT("Applied memory effects to player"));
+		}
+	}
+
+	// Bind to health component death event
+	if (HealthComponent)
+	{
+		HealthComponent->OnDeath.AddDynamic(this, &ASecondWindCharacter::OnPlayerDeath);
+	}
 }
 
 void ASecondWindCharacter::Tick(float DeltaTime)
@@ -125,6 +143,20 @@ void ASecondWindCharacter::Tick(float DeltaTime)
 		{
 			// Enable normal rotation when not locked on
 			GetCharacterMovement()->bOrientRotationToMovement = true;
+		}
+	}
+}
+
+void ASecondWindCharacter::OnPlayerDeath()
+{
+	UE_LOG(LogTemplateCharacter, Warning, TEXT("Player has died!"));
+
+	// Notify the RunManager to handle run reset
+	if (UGameInstance* GameInstance = GetGameInstance())
+	{
+		if (URunManager* RunManager = GameInstance->GetSubsystem<URunManager>())
+		{
+			RunManager->OnPlayerDeath();
 		}
 	}
 }

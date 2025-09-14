@@ -6,10 +6,16 @@
 **Core Focus:** 1v1 close-quarters combat with deep mechanics from simple abilities
 
 ## 📍 Current Status
-**Phase:** 6 of 10 - Memory System (Ready to start)
-**Previous:** Phase 5C - Pre-Placed Level Design System ✅ COMPLETED
-**Next:** Phase 7 - UI & Polish (Week 8)
+**Phase:** 7 of 10 - UI & Polish (Ready to start)
+**Previous:** Phase 6 - Memory System ✅ COMPLETED
+**Next:** Phase 8 - Animation System (Week 9)
 **Timeline:** 10 phases over 11 weeks
+
+### Recent Improvements
+- ✅ Roguelike run system (session-based, no persistent saves)
+- ✅ Fragment rewards fixed for all arena systems
+- ✅ Training dummy auto-spawn removed (manual placement only)
+- ✅ Smooth camera lock-on transitions (0.5s ease-in)
 
 ### Phase 1 Completed Components
 - ✅ `UCombatComponent` - Basic attack (5 damage) - Functional
@@ -80,16 +86,24 @@ Source/SecondWind/
 │   ├── CameraLockOnComponent.cpp/h    [Auto lock-on]
 │   ├── HackComponent.cpp/h            [Hack ability]
 │   ├── HackUIComponent.cpp/h          [Hack UI]
-│   └── FragmentComponent.cpp/h        [Fragments]
+│   ├── FragmentComponent.cpp/h        [Fragments]
+│   └── MemoryShopComponent.cpp/h      [Memory shop UI - Phase 6]
 ├── Actors/
 │   ├── TrainingDummy.cpp/h            [Test enemy]
 │   ├── ArenaEnemy.cpp/h               [Enemy with phases]
 │   ├── ArenaDoor.cpp/h                [Doors - Phase 5B/5C]
-│   ├── SafeZoneCorridor.cpp/h         [Corridors - Phase 5B/5C]
+│   ├── SafeZoneCorridor.cpp/h         [Corridors with shop - Phase 5B/6]
 │   ├── SimplifiedArenaSystem.cpp/h    [Legacy room system - Phase 5B]
 │   ├── ArenaZone.cpp/h                [Combat zones - Phase 5C]
 │   ├── EnemySpawnPoint.cpp/h          [Enemy spawns - Phase 5C]
 │   └── LevelLayoutManager.cpp/h       [Level discovery - Phase 5C]
+├── Systems/
+│   ├── FragmentSystem.cpp/h           [Fragment subsystem - Phase 6]
+│   └── MemorySystem.cpp/h             [Memory subsystem - Phase 6]
+├── SaveGame/
+│   └── SecondWindSaveGame.cpp/h       [Save data - Phase 6]
+├── UI/
+│   ├── MemoryShopWidget.cpp/h         [Slate shop UI - Phase 6]
 ├── GameModes/
 │   └── SecondWindArenaGameMode.cpp/h  [Arena game flow]
 ├── SecondWindCharacter.cpp/h          [Player character]
@@ -160,10 +174,18 @@ Basic attack, health system, training dummy - All tested and working
 - ✅ Fixed dead enemy targeting
 - ✅ Removed deprecated files: Arena.cpp/h, ArenaManager.cpp/h
 
-### Phase 6: Memory System
-- Save/load functionality
-- Fragment currency
-- Permanent upgrades
+### Phase 6: Memory System ✅ COMPLETED
+- ✅ `URunManager` - Roguelike run system (session-based)
+- ✅ `UFragmentSystem` - Fragment currency (session persistence only)
+- ✅ `UMemorySystem` - Memory unlock tracking (session persistence only)
+- ✅ NO disk saves - all progress lost on game close (by design)
+- ✅ `SMemoryShopWidget` - Slate UI for memory purchases
+- ✅ `UMemoryShopComponent` - Shop interaction component
+- ✅ First memory: Hack Attack Reduction (6→4 counters, 15 fragments)
+- ✅ Safe zone auto-opens memory shop
+- ✅ Memory effects reapply on run reset
+- ✅ Player death → 3s delay → new run at hub
+- ✅ Fragments/memories persist between runs (same session only)
 
 ### Phase 7: UI & Polish
 - Slate UI implementation

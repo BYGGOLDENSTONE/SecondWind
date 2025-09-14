@@ -49,6 +49,9 @@ public:
     UFUNCTION()
     int32 GetUnblockedHits() const { return UnblockedHits; }
 
+    UFUNCTION()
+    void SetRequiredCounters(int32 NewRequirement) { RequiredCounters = NewRequirement; }
+
     // Events
     UPROPERTY()
     FOnCounterProgressChanged OnCounterProgressChanged;

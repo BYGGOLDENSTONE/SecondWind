@@ -14,6 +14,7 @@ UCameraLockOnComponent::UCameraLockOnComponent()
 {
     PrimaryComponentTick.bCanEverTick = true;
     CurrentTarget = nullptr;
+    LockOnTransitionTime = 0.0f;
 }
 
 void UCameraLockOnComponent::BeginPlay()
@@ -112,6 +113,7 @@ void UCameraLockOnComponent::SetLockOnTarget(AActor* NewTarget)
     if (CurrentTarget != NewTarget)
     {
         CurrentTarget = NewTarget;
+        LockOnTransitionTime = 0.0f;  // Reset transition timer when target changes
 
         if (CurrentTarget)
         {
@@ -255,6 +257,12 @@ void UCameraLockOnComponent::UpdateCameraRotation(float DeltaTime)
     if (!PlayerController || !CurrentTarget)
         return;
 
+    // Update transition timer
+    if (LockOnTransitionTime < LockOnTransitionDuration)
+    {
+        LockOnTransitionTime += DeltaTime;
+    }
+
     // Get current camera rotation
     FRotator CurrentRotation = PlayerController->GetControlRotation();
 
@@ -280,8 +288,12 @@ void UCameraLockOnComponent::UpdateCameraRotation(float DeltaTime)
     // Always maintain roll at 0
     DesiredRotation.Roll = 0.0f;
 
-    // Smoothly interpolate to desired rotation (mainly for yaw changes)
-    FRotator NewRotation = FMath::RInterpTo(CurrentRotation, DesiredRotation, DeltaTime, CameraLagSpeed);
+    // Use slower speed during initial lock-on transition, then normal speed
+    float TransitionAlpha = FMath::Clamp(LockOnTransitionTime / LockOnTransitionDuration, 0.0f, 1.0f);
+    float CurrentSpeed = FMath::Lerp(InitialLockOnSpeed, CameraLagSpeed, TransitionAlpha);
+
+    // Smoothly interpolate to desired rotation with adaptive speed
+    FRotator NewRotation = FMath::RInterpTo(CurrentRotation, DesiredRotation, DeltaTime, CurrentSpeed);
 
     PlayerController->SetControlRotation(NewRotation);
 }

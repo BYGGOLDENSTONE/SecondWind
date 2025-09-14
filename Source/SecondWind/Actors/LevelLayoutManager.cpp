@@ -169,7 +169,8 @@ void ALevelLayoutManager::ValidateLevelSetup()
 
 void ALevelLayoutManager::InitializeStartingArea()
 {
-    SpawnTrainingDummy();
+    // No longer auto-spawning training dummy - placed manually in editor
+    // SpawnTrainingDummy();
 
     UpdateDoorStates();
 
@@ -184,30 +185,34 @@ void ALevelLayoutManager::InitializeStartingArea()
 
 void ALevelLayoutManager::SpawnTrainingDummy()
 {
-    if (TrainingDummySpawnPoint)
-    {
-        CurrentTrainingDummy = TrainingDummySpawnPoint->SpawnTrainingDummy();
-    }
-    else if (DefaultTrainingDummyClass)
-    {
-        FVector SpawnLocation = FVector(0.0f, 0.0f, 100.0f);
-        FRotator SpawnRotation = FRotator::ZeroRotator;
+    // No longer auto-spawning training dummy - placed manually in editor
+    UE_LOG(LogTemp, Warning, TEXT("Training dummies should be placed manually in editor"));
 
-        FActorSpawnParameters SpawnParams;
-        SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-
-        CurrentTrainingDummy = GetWorld()->SpawnActor<ATrainingDummy>(
-            DefaultTrainingDummyClass,
-            SpawnLocation,
-            SpawnRotation,
-            SpawnParams
-        );
-
-        if (CurrentTrainingDummy)
-        {
-            UE_LOG(LogTemp, Warning, TEXT("Spawned default training dummy at origin"));
-        }
-    }
+    // Commented out auto-spawn logic
+    // if (TrainingDummySpawnPoint)
+    // {
+    //     CurrentTrainingDummy = TrainingDummySpawnPoint->SpawnTrainingDummy();
+    // }
+    // else if (DefaultTrainingDummyClass)
+    // {
+    //     FVector SpawnLocation = FVector(0.0f, 0.0f, 100.0f);
+    //     FRotator SpawnRotation = FRotator::ZeroRotator;
+    //
+    //     FActorSpawnParameters SpawnParams;
+    //     SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+    //
+    //     CurrentTrainingDummy = GetWorld()->SpawnActor<ATrainingDummy>(
+    //         DefaultTrainingDummyClass,
+    //         SpawnLocation,
+    //         SpawnRotation,
+    //         SpawnParams
+    //     );
+    //
+    //     if (CurrentTrainingDummy)
+    //     {
+    //         UE_LOG(LogTemp, Warning, TEXT("Spawned default training dummy at origin"));
+    //     }
+    // }
 }
 
 void ALevelLayoutManager::OnPlayerEnterZone(int32 ZoneNumber)

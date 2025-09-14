@@ -3,6 +3,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "../SecondWindCharacter.h"
 #include "../Components/HealthComponent.h"
+#include "../Components/MemoryShopComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 
@@ -21,6 +22,8 @@ ASafeZoneCorridor::ASafeZoneCorridor()
     CorridorTrigger->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
     CorridorTrigger->SetCollisionResponseToAllChannels(ECR_Ignore);
     CorridorTrigger->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+
+    MemoryShopComponent = CreateDefaultSubobject<UMemoryShopComponent>(TEXT("MemoryShopComponent"));
 }
 
 void ASafeZoneCorridor::BeginPlay()
@@ -74,10 +77,20 @@ void ASafeZoneCorridor::OnPlayerEnterCorridor()
     if (bIsMarketplace)
     {
         UE_LOG(LogTemp, Warning, TEXT("Welcome to the Marketplace! Upgrade your abilities here."));
+
+        if (MemoryShopComponent)
+        {
+            MemoryShopComponent->OpenMemoryShop();
+        }
     }
 }
 
 void ASafeZoneCorridor::OnPlayerExitCorridor()
 {
     UE_LOG(LogTemp, Warning, TEXT("Player left Safe Zone Corridor %d"), CorridorNumber);
+
+    if (MemoryShopComponent && MemoryShopComponent->IsShopOpen())
+    {
+        MemoryShopComponent->CloseMemoryShop();
+    }
 }

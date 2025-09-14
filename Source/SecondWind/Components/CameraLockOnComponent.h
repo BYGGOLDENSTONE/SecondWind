@@ -41,10 +41,13 @@ private:
     float ArenaEnemyLockRange = 1500.0f;
 
     UPROPERTY(EditAnywhere, Category = "Lock-On Settings")
-    float CameraLagSpeed = 10.0f;
+    float CameraLagSpeed = 3.0f;  // Reduced for smoother camera movement
 
     UPROPERTY(EditAnywhere, Category = "Lock-On Settings")
-    float RotationSpeed = 10.0f;
+    float RotationSpeed = 5.0f;  // Reduced for smoother character rotation
+
+    UPROPERTY(EditAnywhere, Category = "Lock-On Settings")
+    float InitialLockOnSpeed = 2.0f;  // Even slower speed for initial lock-on
 
     UPROPERTY(EditAnywhere, Category = "Lock-On Settings")
     bool bAutoLockOn = true;
@@ -58,6 +61,10 @@ private:
     // Current target
     UPROPERTY()
     AActor* CurrentTarget;
+
+    // Lock-on transition timing
+    float LockOnTransitionTime;
+    static constexpr float LockOnTransitionDuration = 0.5f;
 
     // References
     class ACharacter* OwnerCharacter;

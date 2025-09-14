@@ -146,26 +146,8 @@ void ASimplifiedArenaSystem::InitializeArenaSystem()
 
 void ASimplifiedArenaSystem::SetupStartingHub()
 {
-    if (!TrainingDummyClass)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("No TrainingDummy class set"));
-        return;
-    }
-
-    FActorSpawnParameters SpawnParams;
-    SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-
-    TrainingDummy = GetWorld()->SpawnActor<ATrainingDummy>(
-        TrainingDummyClass,
-        StartingHubLocation + FVector(300, 0, 0),
-        FRotator(0, -90, 0),
-        SpawnParams
-    );
-
-    if (TrainingDummy)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Training dummy spawned in starting hub"));
-    }
+    // No longer auto-spawning training dummy - placed manually in editor
+    UE_LOG(LogTemp, Warning, TEXT("Starting Hub ready - training dummies should be placed manually in editor"));
 
     if (PlayerCharacter)
     {
@@ -218,11 +200,12 @@ void ASimplifiedArenaSystem::OnPlayerEnterArena(int32 ArenaNumber)
         }
     }
 
-    if (TrainingDummy)
-    {
-        TrainingDummy->Destroy();
-        TrainingDummy = nullptr;
-    }
+    // No longer managing training dummies - they're placed manually
+    // if (TrainingDummy)
+    // {
+    //     TrainingDummy->Destroy();
+    //     TrainingDummy = nullptr;
+    // }
 
     UE_LOG(LogTemp, Warning, TEXT("Player entered Arena %d - Combat started!"), ArenaNumber);
 }

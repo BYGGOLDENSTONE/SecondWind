@@ -96,11 +96,13 @@ class ASecondWindCharacter : public ACharacter
 
 public:
 	ASecondWindCharacter();
-	
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION()
+	void OnPlayerDeath();
 
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
