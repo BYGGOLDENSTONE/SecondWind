@@ -13,6 +13,8 @@
 #include "Components/CombatComponent.h"
 #include "Components/HealthComponent.h"
 #include "Components/BlockingComponent.h"
+#include "Components/HackComponent.h"
+#include "Components/HackUIComponent.h"
 #include "Components/DodgeComponent.h"
 #include "Components/CameraLockOnComponent.h"
 
@@ -78,6 +80,12 @@ ASecondWindCharacter::ASecondWindCharacter()
 
 	// Create camera lock-on component
 	CameraLockOnComponent = CreateDefaultSubobject<UCameraLockOnComponent>(TEXT("CameraLockOnComponent"));
+
+	// Create hack component
+	HackComponent = CreateDefaultSubobject<UHackComponent>(TEXT("HackComponent"));
+
+	// Create hack UI component
+	HackUIComponent = CreateDefaultSubobject<UHackUIComponent>(TEXT("HackUIComponent"));
 
 	// Link components
 	if (CombatComponent && BlockingComponent)
@@ -147,6 +155,12 @@ void ASecondWindCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 
 		// Dodge
 		EnhancedInputComponent->BindAction(DodgeAction, ETriggerEvent::Started, this, &ASecondWindCharacter::Dodge);
+
+		// Hack
+		if (HackAction)
+		{
+			EnhancedInputComponent->BindAction(HackAction, ETriggerEvent::Started, this, &ASecondWindCharacter::PerformHack);
+		}
 
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASecondWindCharacter::Move);
@@ -290,5 +304,21 @@ void ASecondWindCharacter::TryLeapAttack()
 	if (DodgeComponent && DodgeComponent->CanPerformLeapAttack())
 	{
 		DodgeComponent->PerformLeapAttack();
+	}
+}
+
+void ASecondWindCharacter::PerformHack()
+{
+	if (HackComponent)
+	{
+		if (HackComponent->TryExecuteHack())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Hack attack executed successfully!"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Cannot execute hack - not enough counters (%d/%d)"),
+				HackComponent->GetCurrentCounters(), HackComponent->GetRequiredCounters());
+		}
 	}
 }

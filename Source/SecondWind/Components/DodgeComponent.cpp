@@ -226,7 +226,8 @@ void UDodgeComponent::OpenCounterWindow()
     bIsInCounterWindow = true;
     CounterWindowTimer = CounterWindowDuration;
 
-    UE_LOG(LogTemp, Warning, TEXT("Dodge counter window opened for %.2f seconds"), CounterWindowDuration);
+    // Don't add counter here - only when player actually attacks during the window
+    UE_LOG(LogTemp, Warning, TEXT("*** DODGE COUNTER WINDOW OPEN for %.1f seconds! Press LMB to counter! ***"), CounterWindowDuration);
 }
 
 void UDodgeComponent::CloseCounterWindow()

@@ -5,6 +5,8 @@
 #include "CombatComponent.generated.h"
 
 class UBlockingComponent;
+class UDodgeComponent;
+class UHackComponent;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class SECONDWIND_API UCombatComponent : public UActorComponent
@@ -46,6 +48,9 @@ private:
 	void ResetAttack();
 	AActor* GetTargetInRange() const;
 	void ApplyDamageToTarget(AActor* Target);
+	bool IsInCounterWindow() const;
 
 	UBlockingComponent* BlockingComponent = nullptr;
+	UDodgeComponent* DodgeComponent = nullptr;
+	UHackComponent* HackComponent = nullptr;
 };

@@ -49,6 +49,10 @@ class ASecondWindCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* DodgeAction;
 
+	/** Hack Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* HackAction;
+
 	/** Move Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* MoveAction;
@@ -77,6 +81,14 @@ class ASecondWindCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UCameraLockOnComponent* CameraLockOnComponent;
 
+	/** Hack Component */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	class UHackComponent* HackComponent;
+
+	/** Hack UI Component */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	class UHackUIComponent* HackUIComponent;
+
 public:
 	ASecondWindCharacter();
 	
@@ -103,7 +115,10 @@ protected:
 
 	/** Called for leap attack during dash */
 	void TryLeapAttack();
-			
+
+	/** Called for hack attack */
+	void PerformHack();
+
 
 protected:
 

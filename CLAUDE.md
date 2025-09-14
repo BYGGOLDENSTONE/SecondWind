@@ -6,8 +6,8 @@
 **Core Focus:** 1v1 close-quarters combat with deep mechanics from simple abilities
 
 ## 📍 Current Status
-**Phase:** 3 of 8 - Dodge & Movement ✅ COMPLETED
-**Next:** Phase 4 - Advanced Combat (Week 5)
+**Phase:** 4 of 8 - Advanced Combat ✅ COMPLETED
+**Next:** Phase 5 - Enemy AI (Week 6-7)
 **Timeline:** 8 phases over 11 weeks
 
 ### Phase 1 Completed Components
@@ -36,6 +36,16 @@
 - ✅ Strafe movement when locked on
 - ✅ Mouse input disabled for camera when locked (blocking only)
 
+### Phase 4 Completed Components
+- ✅ `UHackComponent` - Special ability system - Functional
+- ✅ `UHackUIComponent` - Debug UI for hack progress - Functional
+- ✅ Counter-attack tracking (only during counter windows)
+- ✅ 6 counter requirement for hack activation
+- ✅ Reset on 2 unblocked hits
+- ✅ 50 damage hack attack with 1000 range
+- ✅ Counter windows allow attacking while blocking
+- ✅ Visual feedback for hack availability
+
 ## ⚙️ Technical Requirements
 
 ### CRITICAL RULES
@@ -62,11 +72,13 @@
 ```
 Source/SecondWind/
 ├── Components/
-│   ├── CombatComponent.cpp/h        [Attack system]
+│   ├── CombatComponent.cpp/h        [Attack system with counter-attack]
 │   ├── HealthComponent.cpp/h        [Health/phases]
 │   ├── BlockingComponent.cpp/h      [Directional blocking]
 │   ├── DodgeComponent.cpp/h          [Dodge & dash mechanics]
 │   ├── CameraLockOnComponent.cpp/h  [Auto lock-on system]
+│   ├── HackComponent.cpp/h           [Hack special ability]
+│   ├── HackUIComponent.cpp/h        [Hack progress UI]
 ├── Actors/
 │   ├── TrainingDummy.cpp/h          [Test enemy]
 ├── SecondWindCharacter.cpp/h        [Player character]
@@ -93,10 +105,13 @@ Basic attack, health system, training dummy - All tested and working
 - Counter windows after dodges (1 second)
 - Weak side mechanics framework
 
-### Phase 4: Special Abilities
+### Phase 4: Special Abilities ✅ COMPLETED
 - Hack attack (6 counter requirement)
-- UI meter system
-- Reset conditions
+- Counter-attack system (LMB during counter windows)
+- Reset on 2 unblocked hits
+- UI meter system (debug display)
+- 50 damage with 1000 range
+- Visual feedback for availability
 
 ### Phase 5: Enemy AI
 - Attack patterns

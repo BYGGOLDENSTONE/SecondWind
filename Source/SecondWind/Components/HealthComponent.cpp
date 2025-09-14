@@ -1,5 +1,6 @@
 #include "HealthComponent.h"
 #include "BlockingComponent.h"
+#include "HackComponent.h"
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
 
@@ -19,6 +20,7 @@ void UHealthComponent::BeginPlay()
 	if (Owner)
 	{
 		Owner->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::TakeDamage);
+		HackComponent = Owner->FindComponentByClass<UHackComponent>();
 	}
 }
 
@@ -62,7 +64,26 @@ void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const clas
 		if (DamageReduction > 0.0f)
 		{
 			BlockingComponent->TriggerCounterWindow(IncomingDirection);
-			UE_LOG(LogTemp, Log, TEXT("Blocked! Damage reduced from %f to %f"), Damage, ActualDamage);
+			UE_LOG(LogTemp, Warning, TEXT("*** BLOCKED! Damage reduced from %.1f to %.1f (%.0f%% reduction) ***"),
+				Damage, ActualDamage, DamageReduction * 100);
+		}
+		else
+		{
+			// Unblocked hit while blocking (wrong direction)
+			if (HackComponent)
+			{
+				HackComponent->RegisterUnblockedHit();
+				UE_LOG(LogTemp, Warning, TEXT("BLOCKED WRONG DIRECTION! Full damage taken (%.1f). Unblocked hit count increased!"), ActualDamage);
+			}
+		}
+	}
+	else
+	{
+		// Not blocking at all - register unblocked hit
+		if (HackComponent)
+		{
+			HackComponent->RegisterUnblockedHit();
+			UE_LOG(LogTemp, Warning, TEXT("HIT TAKEN (not blocking)! Damage: %.1f. Unblocked hit count increased!"), ActualDamage);
 		}
 	}
 

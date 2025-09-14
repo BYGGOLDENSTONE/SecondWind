@@ -161,7 +161,8 @@ void UBlockingComponent::TriggerCounterWindow(EBlockDirection IncomingAttackDire
 	CounterWindowTimer = CounterWindowDuration;
 	CounterDirection = IncomingAttackDirection;
 
-	UE_LOG(LogTemp, Log, TEXT("Counter window opened for %f seconds"), CounterWindowDuration);
+	// Don't add counter here - only when player actually attacks during the window
+	UE_LOG(LogTemp, Warning, TEXT("*** BLOCK COUNTER WINDOW OPEN for %.1f seconds! Press LMB to counter! ***"), CounterWindowDuration);
 }
 
 void UBlockingComponent::UpdateCounterWindow(float DeltaTime)

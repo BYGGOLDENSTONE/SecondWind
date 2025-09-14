@@ -5,6 +5,7 @@
 #include "HealthComponent.generated.h"
 
 class UBlockingComponent;
+class UHackComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float, NewHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthDepleted);
@@ -73,4 +74,5 @@ private:
 	void TransitionToNextPhase();
 
 	UBlockingComponent* BlockingComponent = nullptr;
+	UHackComponent* HackComponent = nullptr;
 };

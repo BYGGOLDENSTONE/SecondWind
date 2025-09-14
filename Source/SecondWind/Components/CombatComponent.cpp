@@ -1,5 +1,7 @@
 #include "CombatComponent.h"
 #include "BlockingComponent.h"
+#include "DodgeComponent.h"
+#include "HackComponent.h"
 #include "GameFramework/Character.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/World.h"
@@ -14,6 +16,14 @@ UCombatComponent::UCombatComponent()
 void UCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// Find other components on the same actor
+	if (AActor* Owner = GetOwner())
+	{
+		DodgeComponent = Owner->FindComponentByClass<UDodgeComponent>();
+		HackComponent = Owner->FindComponentByClass<UHackComponent>();
+		// BlockingComponent is already set via SetBlockingComponent
+	}
 }
 
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -34,6 +44,15 @@ void UCombatComponent::PerformAttack()
 {
 	if (!CanAttack())
 	{
+		// Log why the attack was prevented
+		if (bIsAttacking)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Cannot attack: Already attacking"));
+		}
+		else if (BlockingComponent && BlockingComponent->IsBlocking() && !BlockingComponent->IsInCounterWindow())
+		{
+			UE_LOG(LogTemp, Log, TEXT("Cannot attack: Blocking (not in counter window)"));
+		}
 		return;
 	}
 
@@ -45,8 +64,15 @@ void UCombatComponent::PerformAttack()
 
 bool UCombatComponent::CanAttack() const
 {
+	// Allow attack during counter window even while blocking
 	if (BlockingComponent && BlockingComponent->IsBlocking())
 	{
+		// If we're in a counter window, allow the attack
+		if (BlockingComponent->IsInCounterWindow())
+		{
+			return !bIsAttacking;
+		}
+		// Otherwise, blocking prevents attacking
 		return false;
 	}
 	return !bIsAttacking;
@@ -60,15 +86,61 @@ void UCombatComponent::ExecuteAttack()
 		return;
 	}
 
+	// Check if this is a counter-attack
+	bool bIsCounterAttack = IsInCounterWindow();
+
+	if (bIsCounterAttack)
+	{
+		UE_LOG(LogTemp, Warning, TEXT(">>> Executing attack during COUNTER WINDOW <<<"));
+	}
+
 	AActor* Target = GetTargetInRange();
 	if (Target)
 	{
+		float DamageDealt = BaseDamage;
 		ApplyDamageToTarget(Target);
+
+		// Log the successful hit
+		if (bIsCounterAttack)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("*** COUNTER-ATTACK HIT! %s dealt %.1f damage to %s ***"),
+				*Owner->GetName(),
+				DamageDealt,
+				*Target->GetName());
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s HIT %s for %.1f damage!"),
+				*Owner->GetName(),
+				*Target->GetName(),
+				DamageDealt);
+		}
+
+		// If this was a counter-attack, notify the HackComponent
+		if (bIsCounterAttack && HackComponent)
+		{
+			HackComponent->AddCounter();
+			UE_LOG(LogTemp, Warning, TEXT("*** COUNTER-ATTACK SUCCESSFUL! Hack counter increased ***"));
+		}
+	}
+	else
+	{
+		// Log the miss
+		if (bIsCounterAttack)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("!!! COUNTER-ATTACK MISSED! No target in range !!!"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s attacked but MISSED (no target in range)"),
+				*Owner->GetName());
+		}
 	}
 
 	#if WITH_EDITOR
 	FVector AttackLocation = Owner->GetActorLocation() + Owner->GetActorForwardVector() * AttackRange;
-	DrawDebugSphere(GetWorld(), AttackLocation, 50.0f, 12, FColor::Red, false, 0.5f);
+	FColor DebugColor = bIsCounterAttack ? FColor::Cyan : FColor::Red;
+	DrawDebugSphere(GetWorld(), AttackLocation, 50.0f, 12, DebugColor, false, 0.5f);
 	#endif
 }
 
@@ -125,4 +197,13 @@ void UCombatComponent::ApplyDamageToTarget(AActor* Target)
 		GetOwner(),
 		UDamageType::StaticClass()
 	);
+}
+
+bool UCombatComponent::IsInCounterWindow() const
+{
+	// Check if we're in a counter window from blocking or dodging
+	bool bInBlockCounter = BlockingComponent && BlockingComponent->IsInCounterWindow();
+	bool bInDodgeCounter = DodgeComponent && DodgeComponent->IsInCounterWindow();
+
+	return bInBlockCounter || bInDodgeCounter;
 }

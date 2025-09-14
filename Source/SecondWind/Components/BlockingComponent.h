@@ -56,7 +56,7 @@ private:
 	float BlockDamageReduction = 0.4f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Blocking")
-	float CounterWindowDuration = 0.5f;
+	float CounterWindowDuration = 1.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Blocking")
 	float MouseSensitivity = 1.0f;
