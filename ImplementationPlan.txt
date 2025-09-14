@@ -5,6 +5,8 @@
 - Phase-by-phase tracking for session continuity
 - Each phase builds on the previous to ensure stable progression
 - **Pure C++ Implementation:** No visual scripting/Blueprints for gameplay
+- **SINGLE-PLAYER ONLY:** No multiplayer, networking, or replication code
+- **NO GAS:** Do NOT use Gameplay Ability System - implement all abilities with simple C++ components
 - **UI System:** All UI implemented in C++ using Slate framework
 - **Blueprints:** Only for asset references and minimal configuration
 

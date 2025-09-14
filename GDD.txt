@@ -4,6 +4,8 @@
 **1. Core Concept**
 * **Game Engine:** Unreal Engine 5.5, pure C++ implementation (ThirdPerson template foundation).
 * **Development Philosophy:** No visual scripting/Blueprints for gameplay logic. All gameplay systems, UI, and core mechanics implemented in C++. Blueprints only for asset references and minimal configuration.
+* **Game Type:** SINGLE-PLAYER ONLY - No multiplayer, no networking, no replication.
+* **Implementation Rules:** NO Gameplay Ability System (GAS) - Use simple, direct C++ implementations for all combat and abilities.
 * **Genre:** Roguelike, Soulslike, Boss Rush, with a focus on close-quarters 1v1 combat.
 * **Design Philosophy:** To create deep, complex gameplay from a small set of simple abilities that are easy to learn. The focus is on player skill, observation, and tactical execution over mindless action.
 * **Combat Inspiration:** Fast, responsive combat like Sifu/Sekiro rather than weighty Dark Souls feel.
