@@ -1,0 +1,8 @@
+{
+	"SourceFiles": [
+		"D:\\Unreal Projects\\SecondWind\\Source\\SecondWind\\SecondWind.Build.cs",
+		"D:\\Unreal Projects\\SecondWind\\Source\\SecondWind.Target.cs",
+		"D:\\Unreal Projects\\SecondWind\\Source\\SecondWindEditor.Target.cs"
+	],
+	"EngineVersion": "5.5.4"
+}

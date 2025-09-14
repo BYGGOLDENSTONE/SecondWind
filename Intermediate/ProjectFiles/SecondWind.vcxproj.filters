@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\SecondWind.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\SecondWind.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\SecondWindEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEditorPerProjectUserSettings.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\SecondWind">
+      <UniqueIdentifier>{67276928-70DF-3A7F-9F9D-D66190434F69}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\SecondWind\SecondWind.Build.cs">
+      <Filter>Source\SecondWind</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\SecondWind\SecondWind.cpp">
+      <Filter>Source\SecondWind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\SecondWind.h">
+      <Filter>Source\SecondWind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\SecondWindCharacter.cpp">
+      <Filter>Source\SecondWind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\SecondWindCharacter.h">
+      <Filter>Source\SecondWind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\SecondWindGameMode.cpp">
+      <Filter>Source\SecondWind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\SecondWindGameMode.h">
+      <Filter>Source\SecondWind</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "SecondWind",
+			"Path": "..\\Source\\SecondWind.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "SecondWindEditor",
+			"Path": "..\\Source\\SecondWindEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
