@@ -2,7 +2,8 @@
 ### **Second Wind - Game Design Document**
 
 **1. Core Concept**
-* **Game Engine:** Unreal Engine 5.5, C++ based (ThirdPerson template foundation).
+* **Game Engine:** Unreal Engine 5.5, pure C++ implementation (ThirdPerson template foundation).
+* **Development Philosophy:** No visual scripting/Blueprints for gameplay logic. All gameplay systems, UI, and core mechanics implemented in C++. Blueprints only for asset references and minimal configuration.
 * **Genre:** Roguelike, Soulslike, Boss Rush, with a focus on close-quarters 1v1 combat.
 * **Design Philosophy:** To create deep, complex gameplay from a small set of simple abilities that are easy to learn. The focus is on player skill, observation, and tactical execution over mindless action.
 * **Combat Inspiration:** Fast, responsive combat like Sifu/Sekiro rather than weighty Dark Souls feel.
@@ -11,7 +12,7 @@
 * **Input System:** Unreal Engine's Enhanced Input.
 * **Movement:** WASD for character movement, with a walk speed of 300. There is no jump ability, as combat is ground-based.
 * **Camera:** Third-person, over-the-shoulder view with mouse control for looking around.
-* **Camera Lock-On:** The camera automatically locks onto an enemy within a 1500 unit distance. There is no manual toggle, enforcing a 1v1 duel focus. When locked on, movement with A and D keys causes the player to strafe and circle the enemy.
+* **Camera Lock-On:** The camera automatically locks onto the enemy within a 1500 unit distance. There is no manual toggle or lock break - this enforces the 1v1 arena combat design where players must fight to the death. When locked on, movement with A and D keys causes the player to strafe and circle the enemy. Character always faces the enemy (except during specific animations). Camera has smooth lag when following dodge movements.
 
 **3. Core Combat Abilities**
 
@@ -21,20 +22,22 @@
     * The cooldown is the duration of the attack animation itself.
 
 * **Block (Directional):**
-    * Executed by holding the Right Mouse Button (RMB). This is an active, directional blocking system.
+    * Executed by holding the Right Mouse Button (RMB). This is an active, directional blocking system (no parry mechanic).
     * By default, holding RMB initiates a **front block**.
-    * While holding RMB, the player can move the mouse left or right to switch to a **left-side block** or **right-side block**. This leverages the free mouse movement available during camera lock-on.
-    * **Implementation:** Mouse delta is tracked continuously with sensitivity threshold to prevent accidental direction changes. Transition animations must complete before new block direction becomes active.
+    * While holding RMB, small mouse movements change block direction: left = left block, right = right block, up = front block. Camera is locked, so mouse is free for block control.
+    * **Implementation:** Mouse delta requires only small movements. Brief transition timing between stances where player cannot block (risk/reward for switching). Visual feedback shows current block direction and incoming attack direction.
     * Successfully blocking an attack requires matching the direction of the enemy's swing (e.g., using a right-side block for an attack coming from the player's right).
     * Blocking the wrong direction will leave the player vulnerable.
     * A successful directional block reduces incoming damage by 40%. After blocking, a counter-attack window opens for 0.5 seconds, allowing the player to press LMB to perform a riposte.
 
 * **Dodge (Strategic):**
     * The player can dodge to the right, left, or back by briefly holding the A, S, or D key (e.g., a 0.1-second threshold) and then pressing the Space Key.
-    * This system is designed to reward tactical positioning over mindless dodging. Enemies have weak sides, often exposed during their attack animations.
-    * **Implementation:** Dodge distance is controlled by animations, not code. Input buffer system ensures smooth execution.
+    * **Input Clarification:** Holding A/S/D for movement continues normally - the Space key requirement prevents accidental dodges. Players can move and then quickly press the direction + Space to dodge.
+    * This system is designed to reward tactical positioning over mindless dodging. Enemies have glowing weak sides exposed during their attack animations.
+    * **Implementation:** Dodge distance is controlled by animations, not code. Input buffer system (~100-300ms) ensures smooth execution.
     * After successfully dodging an attack, a counter-attack window opens for 0.5 seconds for the player to press LMB.
-    * The damage of this counter-attack is significantly increased if the player dodged towards the enemy's exposed weak side, rewarding players who learn enemy patterns.
+    * The damage of this counter-attack is significantly increased if the player dodged towards the enemy's exposed weak side AND pressed LMB, rewarding players who learn enemy patterns.
+    * Dodging to weak sides builds hack meter faster (potential upgrade).
 
 * **Dash & Leap Attack:**
     * Hold the W key and press the Space Key to perform a forward dash, closing distance to the enemy.
@@ -43,16 +46,17 @@
 **4. Special Ability: Hack Attack**
 * **Description:** A long-range hack attack that deals massive damage and briefly stuns the enemy.
 * **Activation:** The ability becomes available after the player successfully performs **6 counter-attacks** (from either directional blocks or strategic dodges).
+* **UI Feedback:** Counter arrows displayed left-center of screen. Cyan arrows show progress (3 cyan = 3 counters). Arrows turn red as warning when next unblocked hit will reset.
 * **Reset Condition:** The counter-attack meter resets to zero if the player gets hit by 2 unblocked attacks. Blocked attacks do not count towards this reset condition.
 
 **5. Health and Phase System**
 * **Player Health:** The player starts with 100 health and has 2 phases. When health drops to 0, the enemy performs a finisher, and the player enters phase 2 with their health reset to 100. If health drops to 0 again, the player dies.
 * **Enemy Health:** Enemies also have a phase system, ranging from 1 to 5 phases depending on the arena number. Each enemy has 100 health per phase.
-* **Finishers:** When an enemy's health bar is depleted, they become stunned and play a looped stun animation waiting for player input. Player must press LMB to execute the finisher (no time limit). This transitions the enemy to their next phase with full health, or kills them if it was their last phase.
-* **Training Dummy:** Special case - has 2 phases and 100 health, but respawns automatically after being killed for continuous practice.
+* **Finishers:** When an enemy's health bar is depleted, they become stunned and play a looped stun animation waiting for player input. Player must press LMB to execute the finisher (no time limit). This transitions the enemy to their next phase with full health, or kills them if it was their last phase. Both player and enemy reset to 100 HP after phase transition, with forced waiting animations to prevent cheap deaths.
+* **Training Dummy:** Special case - has 2 phases and 100 health, but respawns automatically after being killed for continuous practice. Initially simple (takes damage, plays response animations), with complex training behaviors added later.
 
 **6. Progression and Rewards**
-* **Game Flow:** The player starts in a safe zone with a training dummy, proceeds to Arena 1 for combat, and upon victory, moves to an intermediate safe zone before the next arena.
+* **Game Flow:** The player starts in a safe zone with a training dummy, proceeds to Arena 1 for combat, and upon victory, moves to an intermediate safe zone before the next arena. This is a pure 1v1 boss rush - no multiple enemies ever.
 * **Memory System:** In the zones between arenas, the player can spend `Fragments` to unlock memories. Uses UE5's standard save game system for persistence.
 * **Fragments:** These are earned by performing finishers on enemies. The amount gained increases with each phase defeated (e.g., a 4-phase enemy yields 1+2+3+4 = 10 fragments).
 * **First Memory:** Reduces required counter-attacks for hack ability from 6 to 4. Additional memories will be added later.
@@ -61,9 +65,9 @@
 
 **7. Technical Implementation Details**
 * **Target Platform:** PC only, 60 FPS target.
-* **Animation System:** Hybrid approach using Animation Blueprints for state machines and C++ for core logic. Heavy use of Animation Notifies for gameplay events.
-* **Input System:** Enhanced Input with input buffering for smooth combat execution.
+* **Animation System:** Animation Blueprints for state machines only, all gameplay logic in C++. Heavy use of Animation Notifies for gameplay events (attack active frames, counter windows, dodge i-frames, phase transitions).
+* **Input System:** Enhanced Input with input buffering (~100-300ms like Souls games) for smooth combat execution.
 * **Enemy AI:** Will be implemented later - enemies currently use placeholder behavior with response animations.
-* **UI Design:** Boss-style enemy health bar at top (wide), player health at bottom-left, both with phase indicators. Visual effects handle combat feedback.
+* **UI Design:** Pure C++ Slate implementation. Boss-style enemy health bar at top (wide), player health at bottom-left, both with phase indicators. Damage numbers appear below health bar (Elden Ring style). Counter-attack arrows left-center screen (cyan building, red warning). Visual effects for weak sides (glowing areas) and combat feedback.
 * **Camera System:** Auto lock-on within 1500 units, no manual toggle, enables strafe movement during combat.
 * **Asset Creation:** Custom animations and models will be created specifically for this project.

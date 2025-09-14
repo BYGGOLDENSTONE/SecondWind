@@ -4,6 +4,9 @@
 - 8 phases over 11 weeks
 - Phase-by-phase tracking for session continuity
 - Each phase builds on the previous to ensure stable progression
+- **Pure C++ Implementation:** No visual scripting/Blueprints for gameplay
+- **UI System:** All UI implemented in C++ using Slate framework
+- **Blueprints:** Only for asset references and minimal configuration
 
 **Current Status:** Phase 1 - Combat Foundation
 **Next Session:** Begin Phase 1 implementation
@@ -25,6 +28,7 @@
    - Set MaxWalkSpeed to 300 (currently 500)
    - Remove jump functionality completely
    - Add basic attack input binding (LMB -> IA_Attack)
+   - Ensure character faces enemy after animations
 
 2. [ ] Create UCombatComponent
    - Basic attack function (5 base damage)
@@ -40,9 +44,10 @@
 
 4. [ ] Create ATrainingDummy (extends ACharacter)
    - 100 HP, 2 phases structure
-   - Basic hit reaction animations
+   - Basic hit reaction animations (simple initially)
    - Auto-respawn on death functionality
    - Placeholder combat responses
+   - Complex training behaviors added later
 
 **Deliverable:** Player can attack training dummy with functional health/damage system
 **Testing:** Player attacks reduce dummy health, dummy dies and respawns after 2 phases
@@ -62,21 +67,23 @@
 **Tasks:**
 1. [ ] Create UBlockingComponent
    - RMB hold detection and state management
-   - Mouse delta accumulation with sensitivity threshold
-   - Block direction states (Front/Left/Right)
-   - 40% damage reduction calculation
-   - Block transition animation coordination
+   - Small mouse delta tracking (left/right/up for directions)
+   - Block direction states (Front/Left/Right) with transition timing
+   - 40% damage reduction calculation (no parry system)
+   - Block transition animation coordination with vulnerability window
 
 2. [ ] Enhanced Input Integration
    - Create IA_Block input action
-   - Modify mouse look behavior during blocking
-   - Block direction change input handling
+   - Mouse free for block control (camera locked)
+   - Block direction change with small mouse movements
+   - Input buffer system (~100-300ms)
 
 3. [ ] Counter-Attack System Foundation
    - 0.5 second counter-attack windows
    - Animation Notify integration for window timing
    - Counter-attack damage multiplier system
    - Visual/audio feedback for counter windows
+   - Cyan/red arrow UI system for hack meter tracking
 
 **Deliverable:** Functional directional blocking with successful counter-attacks
 **Testing:** Player can block attacks from different directions and counter-attack
@@ -95,16 +102,19 @@
 
 **Tasks:**
 1. [ ] Strategic Dodge Implementation
-   - A/S/D + Space input combinations
+   - A/S/D hold (0.1s) + Space input combinations
    - Dodge direction logic (left/back/right)
    - Animation-driven movement (no code distance)
    - Counter-attack windows after successful dodges
+   - Weak side bonus damage for proper positioning
 
 2. [ ] Camera Lock-On Foundation
    - Create UCameraLockOnComponent
-   - Auto-targeting logic within 1500 unit range
-   - Basic lock-on camera behavior modification
+   - Auto-targeting logic within 1500 unit range (1v1 only)
+   - No manual toggle or lock break (arena combat design)
    - Strafe movement when locked onto target
+   - Character auto-facing enemy with animation exceptions
+   - Camera lag for smooth dodge following
 
 3. [ ] Movement System Integration
    - Modify WASD behavior during lock-on
@@ -135,10 +145,11 @@
 
 2. [ ] Hack Attack Implementation
    - Counter-attack tracking system (6-count)
-   - Reset logic on 2 unblocked hits
+   - Reset logic on 2 unblocked hits (blocked don't count)
    - Massive damage + enemy stun effects
    - Visual/audio feedback for hack availability
-   - Cooldown and usage mechanics
+   - UI arrows (cyan progress, red warning)
+   - Weak side dodges build meter faster (future upgrade)
 
 **Deliverable:** Full combat moveset with all special abilities
 **Testing:** Hack attack becomes available after 6 counters, resets properly
@@ -169,8 +180,9 @@
 3. [ ] Enemy Base Class
    - Create AArenaEnemy (extends ACharacter)
    - Phase system implementation (1-5 phases per arena)
-   - Health scaling and phase transitions
-   - Finisher system integration
+   - Health scaling and phase transitions (100 HP reset)
+   - Finisher system with forced waiting animations
+   - Glowing weak side visual indicators
 
 4. [ ] Fragment System Foundation
    - Finisher-based fragment earning calculation
@@ -225,11 +237,13 @@
 - Enhanced player experience
 
 **Tasks:**
-1. [ ] Core Combat UI
-   - Enemy health bar (top, wide design)
-   - Player health bar (bottom-left)
-   - Phase indicators for both player and enemy
-   - Fragment counter display
+1. [ ] Core Combat UI (Pure C++ Slate)
+   - Enemy health bar (top, wide design) - Slate widget
+   - Player health bar (bottom-left) - Slate widget
+   - Phase indicators for both player and enemy - Slate
+   - Fragment counter display - Slate widget
+   - Damage numbers below health bar (Elden Ring style) - Slate
+   - Counter-attack arrows (left-center, cyan/red states) - Slate
 
 2. [ ] Visual Effects Integration
    - Counter-attack window visual indicators
