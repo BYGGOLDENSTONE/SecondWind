@@ -50,7 +50,8 @@ Source/SecondWind/
 Basic attack, health system, training dummy - All tested and working
 
 ### Phase 2: Blocking System 🔜
-- Directional blocking (RMB + mouse delta)
+- Directional blocking (RMB + horizontal mouse movement)
+- 1D horizontal axis control (left/center/right zones)
 - 40% damage reduction
 - Counter-attack windows (0.5s)
 - No parry mechanic
@@ -89,7 +90,7 @@ Basic attack, health system, training dummy - All tested and working
 
 ### Combat Abilities
 1. **Attack:** LMB, 5 damage base
-2. **Block:** RMB + mouse for direction
+2. **Block:** RMB + horizontal mouse (left/center/right zones)
 3. **Dodge:** Direction + Space (0.1s hold)
 4. **Dash:** W + Space
 5. **Hack:** Special after 6 counters

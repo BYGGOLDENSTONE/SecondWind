@@ -69,15 +69,15 @@
 **Tasks:**
 1. [ ] Create UBlockingComponent
    - RMB hold detection and state management
-   - Small mouse delta tracking (left/right/up for directions)
-   - Block direction states (Front/Left/Right) with transition timing
+   - Horizontal mouse delta tracking (1D axis only, vertical ignored)
+   - Block direction states (Front/Left/Right) based on horizontal zones
    - 40% damage reduction calculation (no parry system)
    - Block transition animation coordination with vulnerability window
 
 2. [ ] Enhanced Input Integration
    - Create IA_Block input action
-   - Mouse free for block control (camera locked)
-   - Block direction change with small mouse movements
+   - Mouse horizontal axis for block control (camera stays centered on enemy)
+   - Block direction change with horizontal mouse movements only
    - Input buffer system (~100-300ms)
 
 3. [ ] Counter-Attack System Foundation

@@ -25,9 +25,9 @@
 
 * **Block (Directional):**
     * Executed by holding the Right Mouse Button (RMB). This is an active, directional blocking system (no parry mechanic).
-    * By default, holding RMB initiates a **front block**.
-    * While holding RMB, small mouse movements change block direction: left = left block, right = right block, up = front block. Camera is locked, so mouse is free for block control.
-    * **Implementation:** Mouse delta requires only small movements. Brief transition timing between stances where player cannot block (risk/reward for switching). Visual feedback shows current block direction and incoming attack direction.
+    * By default, holding RMB initiates a **front block** (center position).
+    * While holding RMB, horizontal mouse movement changes block direction along a 1D axis: slight left = left block, center = front block, slight right = right block. Camera remains horizontally centered on enemy, mouse controls block stance only.
+    * **Implementation:** Uses horizontal mouse delta only (vertical movement ignored). Three zones: left side, center (front), right side. Brief transition timing between stances where player cannot block (risk/reward for switching). Visual feedback shows current block direction and incoming attack direction.
     * Successfully blocking an attack requires matching the direction of the enemy's swing (e.g., using a right-side block for an attack coming from the player's right).
     * Blocking the wrong direction will leave the player vulnerable.
     * A successful directional block reduces incoming damage by 40%. After blocking, a counter-attack window opens for 0.5 seconds, allowing the player to press LMB to perform a riposte.
