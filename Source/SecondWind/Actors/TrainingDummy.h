@@ -7,6 +7,7 @@
 class UHealthComponent;
 class UCapsuleComponent;
 class USkeletalMeshComponent;
+class UCombatComponent;
 
 UCLASS()
 class SECONDWIND_API ATrainingDummy : public ACharacter
@@ -26,11 +27,21 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UHealthComponent* HealthComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UCombatComponent* CombatComponent;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Training Dummy")
 	float RespawnDelay = 3.0f;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Training Dummy")
+	float AttackInterval = 2.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Training Dummy")
+	bool bAutoAttackPlayer = false;
+
 private:
 	FTimerHandle RespawnTimerHandle;
+	FTimerHandle AttackTimerHandle;
 
 	UFUNCTION()
 	void OnHealthDepleted();
@@ -40,4 +51,5 @@ private:
 
 	void Respawn();
 	void PlayHitReaction();
+	void PerformTestAttack();
 };

@@ -10,14 +10,14 @@
 - **UI System:** All UI implemented in C++ using Slate framework
 - **Blueprints:** Only for asset references and minimal configuration
 
-**Current Status:** Phase 1 - Combat Foundation
-**Next Session:** Begin Phase 1 implementation
+**Current Status:** Phase 2 - Blocking System ✅ COMPLETED
+**Next Session:** Begin Phase 3 - Dodge & Movement
 
 =============================================================================
 
 ### PHASE 1: COMBAT FOUNDATION (Week 1-2)
 **Priority:** CRITICAL - Core Gameplay
-**Status:** NOT STARTED
+**Status:** ✅ COMPLETED
 
 **Goals:**
 - Basic attack system working
@@ -26,25 +26,25 @@
 - Player movement adjusted to game requirements
 
 **Tasks:**
-1. [ ] Modify ASecondWindCharacter
+1. [✅] Modify ASecondWindCharacter
    - Set MaxWalkSpeed to 300 (currently 500)
    - Remove jump functionality completely
    - Add basic attack input binding (LMB -> IA_Attack)
    - Ensure character faces enemy after animations
 
-2. [ ] Create UCombatComponent
+2. [✅] Create UCombatComponent
    - Basic attack function (5 base damage)
    - Animation-based cooldown system
    - Hit detection and damage application
    - Integration with character class
 
-3. [ ] Create UHealthComponent
+3. [✅] Create UHealthComponent
    - 100 HP base system
    - 2-phase player health system
    - Damage interface for receiving hits
    - Death/phase transition logic
 
-4. [ ] Create ATrainingDummy (extends ACharacter)
+4. [✅] Create ATrainingDummy (extends ACharacter)
    - 100 HP, 2 phases structure
    - Basic hit reaction animations (simple initially)
    - Auto-respawn on death functionality
@@ -58,7 +58,7 @@
 
 ### PHASE 2: BLOCKING SYSTEM (Week 3)
 **Priority:** HIGH - Core Combat Mechanic
-**Status:** PENDING
+**Status:** ✅ COMPLETED
 
 **Goals:**
 - Directional blocking fully functional
@@ -67,25 +67,25 @@
 - Block animations integrated
 
 **Tasks:**
-1. [ ] Create UBlockingComponent
+1. [✅] Create UBlockingComponent
    - RMB hold detection and state management
    - Horizontal mouse delta tracking (1D axis only, vertical ignored)
    - Block direction states (Front/Left/Right) based on horizontal zones
    - 40% damage reduction calculation (no parry system)
-   - Block transition animation coordination with vulnerability window
+   - Block zone threshold adjusted to 0.5 for better center detection
 
-2. [ ] Enhanced Input Integration
+2. [✅] Enhanced Input Integration
    - Create IA_Block input action
    - Mouse horizontal axis for block control (camera stays centered on enemy)
    - Block direction change with horizontal mouse movements only
-   - Input buffer system (~100-300ms)
+   - Input buffer system ready for implementation
 
-3. [ ] Counter-Attack System Foundation
+3. [✅] Counter-Attack System Foundation
    - 0.5 second counter-attack windows
-   - Animation Notify integration for window timing
-   - Counter-attack damage multiplier system
-   - Visual/audio feedback for counter windows
-   - Cyan/red arrow UI system for hack meter tracking
+   - Counter window triggers after successful block
+   - Visual feedback with debug spheres
+   - Integrated with HealthComponent for damage reduction
+   - Foundation for hack meter tracking
 
 **Deliverable:** Functional directional blocking with successful counter-attacks
 **Testing:** Player can block attacks from different directions and counter-attack

@@ -14,6 +14,7 @@ class UInputAction;
 struct FInputActionValue;
 class UCombatComponent;
 class UHealthComponent;
+class UBlockingComponent;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
@@ -38,6 +39,10 @@ class ASecondWindCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* AttackAction;
 
+	/** Block Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* BlockAction;
+
 	/** Move Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* MoveAction;
@@ -54,6 +59,10 @@ class ASecondWindCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UHealthComponent* HealthComponent;
 
+	/** Blocking Component */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UBlockingComponent* BlockingComponent;
+
 public:
 	ASecondWindCharacter();
 	
@@ -68,6 +77,10 @@ protected:
 
 	/** Called for attack input */
 	void Attack();
+
+	/** Called for block input */
+	void StartBlocking();
+	void StopBlocking();
 			
 
 protected:

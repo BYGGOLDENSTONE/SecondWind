@@ -12,6 +12,7 @@
 #include "InputActionValue.h"
 #include "Components/CombatComponent.h"
 #include "Components/HealthComponent.h"
+#include "Components/BlockingComponent.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -63,6 +64,19 @@ ASecondWindCharacter::ASecondWindCharacter()
 
 	// Create health component
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
+
+	// Create blocking component
+	BlockingComponent = CreateDefaultSubobject<UBlockingComponent>(TEXT("BlockingComponent"));
+
+	// Link components
+	if (CombatComponent && BlockingComponent)
+	{
+		CombatComponent->SetBlockingComponent(BlockingComponent);
+	}
+	if (HealthComponent && BlockingComponent)
+	{
+		HealthComponent->SetBlockingComponent(BlockingComponent);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -89,6 +103,10 @@ void ASecondWindCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 		
 		// Attack
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &ASecondWindCharacter::Attack);
+
+		// Block
+		EnhancedInputComponent->BindAction(BlockAction, ETriggerEvent::Started, this, &ASecondWindCharacter::StartBlocking);
+		EnhancedInputComponent->BindAction(BlockAction, ETriggerEvent::Completed, this, &ASecondWindCharacter::StopBlocking);
 
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASecondWindCharacter::Move);
@@ -135,6 +153,12 @@ void ASecondWindCharacter::Look(const FInputActionValue& Value)
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+
+		// Update block direction if blocking
+		if (BlockingComponent && BlockingComponent->IsBlocking())
+		{
+			BlockingComponent->UpdateBlockDirection(LookAxisVector.X);
+		}
 	}
 }
 
@@ -144,5 +168,28 @@ void ASecondWindCharacter::Attack()
 	{
 		CombatComponent->PerformAttack();
 		UE_LOG(LogTemplateCharacter, Log, TEXT("Performing attack"));
+	}
+}
+
+void ASecondWindCharacter::StartBlocking()
+{
+	if (BlockingComponent && !CombatComponent->CanAttack())
+	{
+		return;
+	}
+
+	if (BlockingComponent)
+	{
+		BlockingComponent->StartBlocking();
+		UE_LOG(LogTemplateCharacter, Log, TEXT("Started blocking"));
+	}
+}
+
+void ASecondWindCharacter::StopBlocking()
+{
+	if (BlockingComponent)
+	{
+		BlockingComponent->StopBlocking();
+		UE_LOG(LogTemplateCharacter, Log, TEXT("Stopped blocking"));
 	}
 }

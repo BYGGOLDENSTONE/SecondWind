@@ -1,10 +1,12 @@
 #include "TrainingDummy.h"
 #include "../Components/HealthComponent.h"
+#include "../Components/CombatComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "TimerManager.h"
 #include "Engine/World.h"
+#include "Kismet/GameplayStatics.h"
 
 ATrainingDummy::ATrainingDummy()
 {
@@ -22,6 +24,8 @@ ATrainingDummy::ATrainingDummy()
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 	HealthComponent->SetMaxPhases(2);
 
+	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
+
 	Tags.Add(FName("TrainingDummy"));
 }
 
@@ -33,6 +37,11 @@ void ATrainingDummy::BeginPlay()
 	{
 		HealthComponent->OnHealthDepleted.AddDynamic(this, &ATrainingDummy::OnHealthDepleted);
 		HealthComponent->OnPhaseChanged.AddDynamic(this, &ATrainingDummy::OnPhaseChanged);
+	}
+
+	if (bAutoAttackPlayer)
+	{
+		GetWorldTimerManager().SetTimer(AttackTimerHandle, this, &ATrainingDummy::PerformTestAttack, AttackInterval, true, AttackInterval);
 	}
 }
 
@@ -76,10 +85,44 @@ void ATrainingDummy::Respawn()
 
 	SetActorLocation(GetActorLocation() + FVector(0, 0, 100));
 	SetActorLocation(GetActorLocation() - FVector(0, 0, 100));
+
+	if (bAutoAttackPlayer)
+	{
+		GetWorldTimerManager().SetTimer(AttackTimerHandle, this, &ATrainingDummy::PerformTestAttack, AttackInterval, true, AttackInterval);
+	}
 }
 
 void ATrainingDummy::PlayHitReaction()
 {
 	// TODO: Play hit reaction animation
 	UE_LOG(LogTemp, Log, TEXT("Training Dummy hit reaction"));
+}
+
+void ATrainingDummy::PerformTestAttack()
+{
+	if (!CombatComponent || !HealthComponent->IsAlive())
+	{
+		return;
+	}
+
+	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	if (!PlayerPawn)
+	{
+		return;
+	}
+
+	float DistanceToPlayer = FVector::Dist(GetActorLocation(), PlayerPawn->GetActorLocation());
+	if (DistanceToPlayer > 200.0f)
+	{
+		return;
+	}
+
+	FVector DirectionToPlayer = (PlayerPawn->GetActorLocation() - GetActorLocation()).GetSafeNormal();
+	SetActorRotation(DirectionToPlayer.Rotation());
+
+	if (CombatComponent)
+	{
+		CombatComponent->PerformAttack();
+		UE_LOG(LogTemp, Log, TEXT("Training Dummy attacking player"));
+	}
 }

@@ -4,6 +4,8 @@
 #include "Components/ActorComponent.h"
 #include "HealthComponent.generated.h"
 
+class UBlockingComponent;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float, NewHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthDepleted);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPhaseChanged, int32, NewPhase);
@@ -54,6 +56,9 @@ public:
 	UFUNCTION()
 	void SetMaxPhases(int32 NewMaxPhases);
 
+	UFUNCTION()
+	void SetBlockingComponent(UBlockingComponent* InBlockingComponent) { BlockingComponent = InBlockingComponent; }
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	float MaxHealth = 100.0f;
@@ -66,4 +71,6 @@ private:
 
 	void HandleHealthDepleted();
 	void TransitionToNextPhase();
+
+	UBlockingComponent* BlockingComponent = nullptr;
 };

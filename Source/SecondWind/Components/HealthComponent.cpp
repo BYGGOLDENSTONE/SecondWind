@@ -1,4 +1,5 @@
 #include "HealthComponent.h"
+#include "BlockingComponent.h"
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
 
@@ -29,11 +30,47 @@ void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const clas
 		return;
 	}
 
-	CurrentHealth = FMath::Clamp(CurrentHealth - Damage, 0.0f, MaxHealth);
+	float ActualDamage = Damage;
+
+	if (BlockingComponent && BlockingComponent->IsBlocking())
+	{
+		EBlockDirection IncomingDirection = EBlockDirection::Center;
+
+		if (DamageCauser)
+		{
+			FVector ToAttacker = (DamageCauser->GetActorLocation() - GetOwner()->GetActorLocation()).GetSafeNormal();
+			FVector OwnerRight = GetOwner()->GetActorRightVector();
+			float DotProduct = FVector::DotProduct(ToAttacker, OwnerRight);
+
+			if (DotProduct < -0.5f)
+			{
+				IncomingDirection = EBlockDirection::Left;
+			}
+			else if (DotProduct > 0.5f)
+			{
+				IncomingDirection = EBlockDirection::Right;
+			}
+			else
+			{
+				IncomingDirection = EBlockDirection::Center;
+			}
+		}
+
+		float DamageReduction = BlockingComponent->CalculateDamageReduction(IncomingDirection);
+		ActualDamage = Damage * (1.0f - DamageReduction);
+
+		if (DamageReduction > 0.0f)
+		{
+			BlockingComponent->TriggerCounterWindow(IncomingDirection);
+			UE_LOG(LogTemp, Log, TEXT("Blocked! Damage reduced from %f to %f"), Damage, ActualDamage);
+		}
+	}
+
+	CurrentHealth = FMath::Clamp(CurrentHealth - ActualDamage, 0.0f, MaxHealth);
 	OnHealthChanged.Broadcast(CurrentHealth);
 
 	UE_LOG(LogTemp, Log, TEXT("%s took %f damage. Health: %f/%f (Phase %d/%d)"),
-		*GetOwner()->GetName(), Damage, CurrentHealth, MaxHealth, CurrentPhase, MaxPhases);
+		*GetOwner()->GetName(), ActualDamage, CurrentHealth, MaxHealth, CurrentPhase, MaxPhases);
 
 	if (CurrentHealth <= 0.0f)
 	{

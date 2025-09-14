@@ -4,6 +4,8 @@
 #include "Components/ActorComponent.h"
 #include "CombatComponent.generated.h"
 
+class UBlockingComponent;
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class SECONDWIND_API UCombatComponent : public UActorComponent
 {
@@ -24,6 +26,9 @@ public:
 	UFUNCTION()
 	bool CanAttack() const;
 
+	UFUNCTION()
+	void SetBlockingComponent(UBlockingComponent* InBlockingComponent) { BlockingComponent = InBlockingComponent; }
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	float BaseDamage = 5.0f;
@@ -41,4 +46,6 @@ private:
 	void ResetAttack();
 	AActor* GetTargetInRange() const;
 	void ApplyDamageToTarget(AActor* Target);
+
+	UBlockingComponent* BlockingComponent = nullptr;
 };

@@ -1,4 +1,5 @@
 #include "CombatComponent.h"
+#include "BlockingComponent.h"
 #include "GameFramework/Character.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/World.h"
@@ -44,6 +45,10 @@ void UCombatComponent::PerformAttack()
 
 bool UCombatComponent::CanAttack() const
 {
+	if (BlockingComponent && BlockingComponent->IsBlocking())
+	{
+		return false;
+	}
 	return !bIsAttacking;
 }
 

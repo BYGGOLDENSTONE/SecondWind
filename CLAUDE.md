@@ -6,8 +6,8 @@
 **Core Focus:** 1v1 close-quarters combat with deep mechanics from simple abilities
 
 ## 📍 Current Status
-**Phase:** 1 of 8 - Combat Foundation ✅ COMPLETED & TESTED
-**Next:** Phase 2 - Blocking System (Week 3)
+**Phase:** 2 of 8 - Blocking System ✅ COMPLETED
+**Next:** Phase 3 - Dodge & Movement (Week 4-5)
 **Timeline:** 8 phases over 11 weeks
 
 ### Phase 1 Completed Components
@@ -17,6 +17,13 @@
 - ✅ Character modifications - Attack input, movement adjustments - Configured
 - ✅ Enhanced Input System - IA_Attack, IA_Move, IA_Look - Configured
 - ✅ Testing Complete - All Phase 1 requirements verified working
+
+### Phase 2 Completed Components
+- ✅ `UBlockingComponent` - Directional blocking system - Functional
+- ✅ 1D horizontal mouse control (left/center/right zones)
+- ✅ 40% damage reduction when blocking correctly
+- ✅ Counter-attack window system (0.5s)
+- ✅ Block zone threshold: 0.5 (±50% from center for side blocks)
 
 ## ⚙️ Technical Requirements
 
@@ -29,8 +36,14 @@
 
 ### Combat System
 - **Movement:** 300 walk speed, no jump
-- **Camera:** Auto lock-on at 1500 units, no manual toggle
+- **Camera:** Auto lock-on, no manual toggle
+  - Training Dummy: 600 units lock range (for testing)
+  - Arena Enemies: 1500 units lock range
+  - **NOTE:** Camera lock not yet implemented - blocking system designed for locked camera
 - **Input:** Enhanced Input with 100-300ms buffer
+- **Blocking:** RMB + horizontal mouse movement
+  - Center zone: ±50% from center (easier to trigger)
+  - Side zones: Beyond ±50% threshold
 
 ## 📁 Project Structure
 ```
@@ -38,6 +51,7 @@ Source/SecondWind/
 ├── Components/
 │   ├── CombatComponent.cpp/h    [Attack system]
 │   ├── HealthComponent.cpp/h    [Health/phases]
+│   ├── BlockingComponent.cpp/h  [Directional blocking]
 ├── Actors/
 │   ├── TrainingDummy.cpp/h      [Test enemy]
 ├── SecondWindCharacter.cpp/h    [Player character]
@@ -49,7 +63,7 @@ Source/SecondWind/
 ### Phase 1: Combat Foundation ✅ COMPLETED
 Basic attack, health system, training dummy - All tested and working
 
-### Phase 2: Blocking System 🔜
+### Phase 2: Blocking System ✅ COMPLETED
 - Directional blocking (RMB + horizontal mouse movement)
 - 1D horizontal axis control (left/center/right zones)
 - 40% damage reduction
