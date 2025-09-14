@@ -4,7 +4,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "SecondWindArenaGameMode.generated.h"
 
-class AArenaManager;
+class ASimplifiedArenaSystem;
 class ATrainingDummy;
 class ASecondWindCharacter;
 
@@ -27,7 +27,7 @@ public:
     void OnPlayerVictory(int32 ArenaNumber, int32 FragmentsEarned);
     void OnPlayerDefeat();
 
-    AArenaManager* GetArenaManager() const { return ArenaManager; }
+    ASimplifiedArenaSystem* GetSimplifiedArenaSystem() const { return SimplifiedArenaSystem; }
     ATrainingDummy* GetTrainingDummy() const { return TrainingDummy; }
 
     void SpawnTrainingDummy();
@@ -38,7 +38,7 @@ protected:
     void SetupSafeZone();
 
     UPROPERTY(EditDefaultsOnly, Category = "Arena")
-    TSubclassOf<AArenaManager> ArenaManagerClass;
+    TSubclassOf<ASimplifiedArenaSystem> SimplifiedArenaSystemClass;
 
     UPROPERTY(EditDefaultsOnly, Category = "Training")
     TSubclassOf<ATrainingDummy> TrainingDummyClass;
@@ -51,7 +51,7 @@ protected:
 
 private:
     UPROPERTY()
-    AArenaManager* ArenaManager = nullptr;
+    ASimplifiedArenaSystem* SimplifiedArenaSystem = nullptr;
 
     UPROPERTY()
     ATrainingDummy* TrainingDummy = nullptr;

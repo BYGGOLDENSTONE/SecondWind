@@ -124,9 +124,7 @@ protected:
 	/** Called for hack attack */
 	void PerformHack();
 
-	/** Debug arena controls */
-	void StartArenaDebug();
-	void NextArenaDebug();
+	// Debug functions removed - using physical room system
 
 
 protected:

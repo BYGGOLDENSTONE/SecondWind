@@ -6,8 +6,8 @@
 **Core Focus:** 1v1 close-quarters combat with deep mechanics from simple abilities
 
 ## 📍 Current Status
-**Phase:** 5B of 10 - Physical Arena System (Room-based Progression)
-**Previous:** Phase 5A - Basic Arena System ✅ COMPLETED
+**Phase:** 5C of 10 - Pre-Placed Level Design System (Planning)
+**Previous:** Phase 5B - Physical Room System ✅ COMPLETED
 **Next:** Phase 6 - Memory System (Week 7)
 **Timeline:** 10 phases over 11 weeks
 
@@ -73,23 +73,29 @@
 ```
 Source/SecondWind/
 ├── Components/
-│   ├── CombatComponent.cpp/h        [Attack system with counter-attack]
-│   ├── HealthComponent.cpp/h        [Health/phases with finisher system]
-│   ├── BlockingComponent.cpp/h      [Directional blocking]
-│   ├── DodgeComponent.cpp/h          [Dodge & dash mechanics]
-│   ├── CameraLockOnComponent.cpp/h  [Auto lock-on system]
-│   ├── HackComponent.cpp/h           [Hack special ability]
-│   ├── HackUIComponent.cpp/h        [Hack progress UI]
-│   ├── FragmentComponent.cpp/h       [Fragment currency]
+│   ├── CombatComponent.cpp/h          [Attack system]
+│   ├── HealthComponent.cpp/h          [Health/phases]
+│   ├── BlockingComponent.cpp/h        [Directional blocking]
+│   ├── DodgeComponent.cpp/h           [Dodge & dash]
+│   ├── CameraLockOnComponent.cpp/h    [Auto lock-on]
+│   ├── HackComponent.cpp/h            [Hack ability]
+│   ├── HackUIComponent.cpp/h          [Hack UI]
+│   └── FragmentComponent.cpp/h        [Fragments]
 ├── Actors/
-│   ├── TrainingDummy.cpp/h          [Test enemy]
-│   ├── Arena.cpp/h                   [Arena base class]
-│   ├── ArenaEnemy.cpp/h              [Enemy with phases]
-│   ├── ArenaManager.cpp/h            [Arena progression]
+│   ├── TrainingDummy.cpp/h            [Test enemy]
+│   ├── Arena.cpp/h                    [Arena - Phase 5A]
+│   ├── ArenaEnemy.cpp/h               [Enemy with phases]
+│   ├── ArenaManager.cpp/h             [Deprecated - Phase 5A]
+│   ├── ArenaDoor.cpp/h                [Doors - Phase 5B]
+│   ├── SafeZoneCorridor.cpp/h         [Corridors - Phase 5B]
+│   ├── SimplifiedArenaSystem.cpp/h    [Room system - Phase 5B]
+│   ├── ArenaZone.cpp/h                [Zones - Phase 5C TODO]
+│   ├── EnemySpawnPoint.cpp/h          [Spawns - Phase 5C TODO]
+│   └── LevelLayoutManager.cpp/h       [Discovery - Phase 5C TODO]
 ├── GameModes/
-│   ├── SecondWindArenaGameMode.cpp/h [Arena game flow]
-├── SecondWindCharacter.cpp/h        [Player character]
-└── SecondWindGameMode.cpp/h         [Base game mode]
+│   └── SecondWindArenaGameMode.cpp/h  [Arena game flow]
+├── SecondWindCharacter.cpp/h          [Player character]
+└── SecondWindGameMode.cpp/h           [Base game mode]
 ```
 
 ## 📋 Implementation Phases
@@ -121,46 +127,41 @@ Basic attack, health system, training dummy - All tested and working
 - Visual feedback for availability
 
 ### Phase 5A: Arena System (Basic) ✅ COMPLETED
-- ✅ `AArena` - Arena management class - Functional
-- ✅ `AArenaEnemy` - Enemy base class with phase system - Functional
-- ✅ `AArenaManager` - Arena transitions and progression - Functional
-- ✅ `UFragmentComponent` - Fragment currency system - Functional
-- ✅ `ASecondWindArenaGameMode` - Game flow management - Functional
+- ✅ `AArena` - Arena management class
+- ✅ `AArenaEnemy` - Enemy base class with phase system
+- ✅ `AArenaManager` - Arena transitions and progression
+- ✅ `UFragmentComponent` - Fragment currency system
+- ✅ `ASecondWindArenaGameMode` - Game flow management
 - ✅ 5 arena progression with scaling difficulty
 - ✅ Fragment rewards based on enemy phases
 - ✅ Safe zone and training area transitions
 
-### Phase 5B: Physical Room System 🚧 IN PROGRESS
-**Goal:** Replace teleport-based transitions with physical room navigation
+### Phase 5B: Physical Room System ✅ COMPLETED
+- ✅ `AArenaDoor` - Interactive doors with proximity detection
+- ✅ `ASafeZoneCorridor` - Marketplace corridors with healing
+- ✅ `ASimplifiedArenaSystem` - Physical room progression
+- ✅ 2-second door proximity requirement
+- ✅ Combat-locked exit doors (must defeat enemies)
+- ✅ Safe zone healing system
+- ✅ Enemy spawn/despawn management
+- ✅ Removed teleportation and debug keys
 
-#### Code Cleanup Required:
-- **Remove**: ArenaManager teleportation logic
-- **Remove**: Debug keys (1, 2) for transitions
-- **Remove**: Complex state management
-- **Keep**: FragmentComponent, ArenaEnemy base class
+### Phase 5C: Pre-Placed Level Design System 📋 PLANNED
+**Goal:** Transform runtime-spawned system to editor-placed for full design control
 
-#### New Components:
-- `AArenaDoor` - Interactive doors with proximity detection
-- `ADoorProximityTrigger` - 2-second proximity requirement for activation
-- `ASafeZoneCorridor` - Marketplace corridors between arenas
-- `ASimplifiedArenaSystem` - Minimal door and enemy management
+#### New Components to Create:
+- `AArenaZone` - Defines combat areas with bounds
+- `AEnemySpawnPoint` - Marks enemy spawn locations
+- `ALevelLayoutManager` - Discovers and manages pre-placed actors
 
-#### Gameplay Flow:
-```
-[Starting Hub] → [Door 1] → [Arena 1] → [Exit] → [Safe Zone Corridor 1] → [Door 2] → [Arena 2] → ...
-      ↓            ↓           ↓          ↓              ↓                   ↓           ↓
-Training Dummy  2sec wait   Enemy 1   Defeated      Marketplace         2sec wait    Enemy 2
-                Door Opens                                              Door Opens   (Enemy 1 despawns)
-```
+#### Key Features:
+1. **Editor-Placed Geometry**: Design levels visually in Unreal Editor
+2. **Discovery System**: Manager finds pre-placed actors at runtime
+3. **Flexible Layouts**: Support non-linear progression
+4. **Spawn Points**: Designated enemy spawn locations
+5. **Zone-Based Combat**: Arena zones track combat state
 
-#### Key Mechanics:
-1. **Door Interaction**: Stand in proximity box for 2 seconds to activate
-2. **Door Opening**: Animation plays while enemy spawns behind door
-3. **Enemy Management**: Only current arena enemy exists (previous despawns on new arena entry)
-4. **Safe Zone Corridors**: Linear marketplace hallways between arenas
-5. **No Backtracking**: Doors lock after passing through
-6. **Visual Feedback**: Door proximity UI shows 2-second timer
-7. **Audio Cues**: Door opening sounds, enemy spawn alerts
+**See Phase5C_Plan.md for detailed implementation guide**
 
 ### Phase 6: Memory System
 - Save/load functionality
@@ -205,6 +206,7 @@ Training Dummy  2sec wait   Enemy 1   Defeated      Marketplace         2sec wai
 - `GDD.txt` - Full game design details
 - `ImplementationPlan.txt` - Phase-by-phase breakdown
 - `CLAUDE.md` - This quick reference
+- `Phase5C_Plan.md` - Pre-placed level design system plan
 
 ## 🔧 Development Commands
 ```bash

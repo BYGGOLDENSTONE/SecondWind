@@ -117,3 +117,18 @@ void AArenaEnemy::EnterFinisherState()
 
     UE_LOG(LogTemp, Warning, TEXT("Enemy stunned! Waiting for finisher..."));
 }
+
+bool AArenaEnemy::IsDefeated() const
+{
+    return HealthComponent && !HealthComponent->IsAlive();
+}
+
+void AArenaEnemy::SetPhaseCount(int32 PhaseCount)
+{
+    MaxPhases = FMath::Max(1, PhaseCount);
+    if (HealthComponent)
+    {
+        HealthComponent->SetMaxPhases(MaxPhases);
+    }
+    UE_LOG(LogTemp, Warning, TEXT("Enemy phases set to %d"), MaxPhases);
+}

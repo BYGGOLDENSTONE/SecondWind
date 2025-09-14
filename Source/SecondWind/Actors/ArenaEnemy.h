@@ -32,9 +32,11 @@ public:
     int32 GetCurrentPhase() const { return CurrentPhase; }
     int32 GetMaxPhases() const { return MaxPhases; }
     bool IsInFinisherState() const { return bInFinisherState; }
+    bool IsDefeated() const;
 
     void ExecuteFinisher();
     int32 CalculateFragmentReward() const;
+    void SetPhaseCount(int32 PhaseCount);
 
 protected:
     void SetupPhases();

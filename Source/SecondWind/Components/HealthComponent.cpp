@@ -145,3 +145,10 @@ void UHealthComponent::SetMaxPhases(int32 NewMaxPhases)
 		OnPhaseChanged.Broadcast(CurrentPhase);
 	}
 }
+
+void UHealthComponent::HealToFull()
+{
+	CurrentHealth = MaxHealth;
+	OnHealthChanged.Broadcast(CurrentHealth);
+	UE_LOG(LogTemp, Log, TEXT("%s healed to full health (%f)"), *GetOwner()->GetName(), MaxHealth);
+}

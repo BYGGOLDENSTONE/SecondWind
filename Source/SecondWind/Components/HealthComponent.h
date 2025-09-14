@@ -68,6 +68,9 @@ public:
 	UFUNCTION()
 	void SetBlockingComponent(UBlockingComponent* InBlockingComponent) { BlockingComponent = InBlockingComponent; }
 
+	UFUNCTION()
+	void HealToFull();
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	float MaxHealth = 100.0f;

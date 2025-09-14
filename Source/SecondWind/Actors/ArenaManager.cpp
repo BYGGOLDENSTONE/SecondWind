@@ -28,11 +28,6 @@ void AArenaManager::StartGame()
     CurrentGamePhase = EGamePhase::SafeZone;
     CurrentArenaNumber = 0;
 
-    if (PlayerCharacter)
-    {
-        PlayerCharacter->SetActorLocation(SafeZoneLocation);
-    }
-
     UE_LOG(LogTemp, Warning, TEXT("Game started in safe zone"));
 }
 
@@ -47,30 +42,15 @@ void AArenaManager::TransitionToArena(int32 ArenaNumber)
     CurrentArenaNumber = ArenaNumber;
     CurrentGamePhase = EGamePhase::Arena;
 
-    CleanupCurrentArena();
-    SpawnArena(ArenaNumber);
-
-    if (CurrentArena)
-    {
-        CurrentArena->StartCombat();
-    }
-
-    UE_LOG(LogTemp, Warning, TEXT("Transitioned to Arena %d"), ArenaNumber);
+    UE_LOG(LogTemp, Warning, TEXT("Arena %d phase started"), ArenaNumber);
 }
 
 void AArenaManager::TransitionToSafeZone()
 {
     CurrentGamePhase = EGamePhase::IntermediateSafeZone;
-
-    if (PlayerCharacter)
-    {
-        PlayerCharacter->SetActorLocation(SafeZoneLocation);
-    }
-
-    CleanupCurrentArena();
     SaveProgress();
 
-    UE_LOG(LogTemp, Warning, TEXT("Transitioned to safe zone. Total fragments: %d"), TotalFragments);
+    UE_LOG(LogTemp, Warning, TEXT("Safe zone phase. Total fragments: %d"), TotalFragments);
 }
 
 void AArenaManager::OnArenaCompleted(bool bVictory)
@@ -78,14 +58,7 @@ void AArenaManager::OnArenaCompleted(bool bVictory)
     if (!bVictory)
     {
         UE_LOG(LogTemp, Warning, TEXT("Player defeated in Arena %d"), CurrentArenaNumber);
-        StartGame();
         return;
-    }
-
-    if (CurrentArena && CurrentArena->GetCurrentEnemy())
-    {
-        int32 FragmentReward = CurrentArena->GetCurrentEnemy()->CalculateFragmentReward();
-        AddFragments(FragmentReward);
     }
 
     if (CurrentArenaNumber >= MaxArenas)
@@ -108,35 +81,12 @@ void AArenaManager::AddFragments(int32 Amount)
 
 void AArenaManager::SpawnArena(int32 ArenaNumber)
 {
-    if (!ArenaClass)
-    {
-        UE_LOG(LogTemp, Error, TEXT("No Arena class set in ArenaManager"));
-        return;
-    }
-
-    FActorSpawnParameters SpawnParams;
-    SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-    CurrentArena = GetWorld()->SpawnActor<AArena>(
-        ArenaClass,
-        ArenaSpawnLocation,
-        FRotator::ZeroRotator,
-        SpawnParams
-    );
-
-    if (CurrentArena)
-    {
-        CurrentArena->InitializeArena(ArenaNumber);
-    }
+    UE_LOG(LogTemp, Warning, TEXT("Arena spawning deprecated - using physical room system"));
 }
 
 void AArenaManager::CleanupCurrentArena()
 {
-    if (CurrentArena)
-    {
-        CurrentArena->Destroy();
-        CurrentArena = nullptr;
-    }
+    UE_LOG(LogTemp, Warning, TEXT("Arena cleanup deprecated - using physical room system"));
 }
 
 void AArenaManager::SaveProgress()

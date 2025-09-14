@@ -10,8 +10,9 @@
 - **UI System:** All UI implemented in C++ using Slate framework
 - **Blueprints:** Only for asset references and minimal configuration
 
-**Current Status:** Phase 5 - Arena System ✅ COMPLETED
-**Next Session:** Begin Phase 6 - Memory System
+**Current Status:** Phase 5C - Pre-Placed Level Design System 📋 PLANNED
+**Previous:** Phase 5B - Physical Room System ✅ COMPLETED
+**Next Session:** Implement Phase 5C - Pre-Placed Level Design
 
 =============================================================================
 
@@ -198,7 +199,7 @@
 
 ### PHASE 5B: PHYSICAL ROOM SYSTEM (Week 6-7)
 **Priority:** HIGH - Enhanced Game Structure
-**Status:** PENDING
+**Status:** ✅ COMPLETED
 
 **Goals:**
 - Physical room-based progression (no teleporting)
@@ -207,41 +208,39 @@
 - Safe zone corridors as marketplaces between arenas
 
 **Refactoring Tasks:**
-1. [ ] Remove Phase 5A Placeholder Code
-   - Remove teleportation logic from ArenaManager
-   - Remove debug keys (1 and 2) for arena transitions
-   - Simplify GameMode (no complex state management)
-   - Remove spawn/despawn location arrays
-   - Keep only: FragmentComponent, ArenaEnemy base class
+1. [✅] Remove Phase 5A Placeholder Code
+   - Removed teleportation logic from ArenaManager
+   - Removed debug keys (1 and 2) for arena transitions
+   - Simplified GameMode (no complex state management)
+   - Removed spawn/despawn location arrays
+   - Kept only: FragmentComponent, ArenaEnemy base class
 
 **New Implementation Tasks:**
-2. [ ] Arena Door System
-   - Create AArenaDoor (interactive door with proximity detection)
-   - ADoorProximityTrigger (2-second hold requirement)
-   - Door opening sequence/animation
-   - Spawn current arena enemy when door opens
-   - Despawn previous arena enemy (if any)
-   - Lock door after player enters arena
+2. [✅] Arena Door System
+   - Created AArenaDoor (interactive door with proximity detection)
+   - 2-second proximity requirement implemented
+   - Door opening sequence working
+   - Combat-locked exit doors (must defeat enemy)
+   - Door type system (ArenaEntry, ArenaExit, SafeZone)
 
-3. [ ] Safe Zone Corridors
-   - Create ASafeZoneCorridor (marketplace hallways)
+3. [✅] Safe Zone Corridors
+   - Created ASafeZoneCorridor (marketplace hallways)
+   - Healing to full health on entry
    - Linear corridor design between arenas
-   - Memory purchase interaction points
-   - Fragment display UI in physical space
    - No combat in corridors
 
-4. [ ] Physical Level Layout
-   - Build connected room sequence in level
-   - Starting Hub (training dummy) → Door 1 → Arena 1 → Safe Corridor 1 → Door 2 → Arena 2 → etc.
+4. [✅] Physical Level Layout
+   - SimplifiedArenaSystem spawns rooms dynamically
+   - Starting Hub (training dummy) → Door 1 → Arena 1 → etc.
    - Each room physically exists (no teleporting)
-   - Clear visual distinction between areas
-   - One-way progression (doors lock behind)
+   - Clear progression flow
+   - Doors lock/unlock based on combat state
 
-5. [ ] Simplified Enemy Management
+5. [✅] Simplified Enemy Management
    - Only one arena enemy exists at a time
-   - Current enemy spawns when door opens
+   - Current enemy spawns when entering arena
    - Previous enemy despawns automatically
-   - No complex respawn logic needed
+   - No complex respawn logic
    - Enemy tied to specific arena room
 
 **Key Simplifications from 5A:**
@@ -251,12 +250,89 @@
 - Linear progression (no backtracking complexity)
 - Physical space tells the story (no abstract systems)
 
-**Deliverable:** Clean, physical room-based progression
-**Testing:** Walk to door → Wait 2 seconds → Door opens → Enter arena → Defeat enemy → Walk to safe zone → Purchase upgrades → Continue
+**Deliverable:** Clean, physical room-based progression ✅ DELIVERED
+**Testing:** Walk to door → Wait 2 seconds → Door opens → Enter arena → Defeat enemy → Walk to safe zone → Get healed → Continue
 
 =============================================================================
 
-### PHASE 6: MEMORY SYSTEM (Week 7)
+### PHASE 5C: PRE-PLACED LEVEL DESIGN SYSTEM (Week 7)
+**Priority:** HIGH - Professional Level Design
+**Status:** 📋 PLANNED
+
+**Goals:**
+- Transform runtime-spawned system to editor-placed geometry
+- Full visual control over level layout in Unreal Editor
+- Discovery-based management (find pre-placed actors)
+- Support for non-linear level designs
+- Maintain all Phase 5B functionality
+
+**New Classes to Create:**
+1. [ ] AArenaZone
+   - Defines combat area boundaries
+   - Zone number and name properties
+   - References to entry/exit doors
+   - Enemy spawn point management
+   - Combat state tracking
+
+2. [ ] AEnemySpawnPoint
+   - Visual spawn location markers
+   - Enemy type selection
+   - Phase count override option
+   - Training dummy flag
+   - Rotation control
+
+3. [ ] ALevelLayoutManager (Replaces SimplifiedArenaSystem)
+   - Discovers all pre-placed actors on BeginPlay
+   - Manages enemy spawning only (no geometry spawning)
+   - Tracks arena progression
+   - Updates door states based on combat
+   - Validates level setup
+
+**Implementation Tasks:**
+1. [ ] Discovery System
+   - Find all ArenaZones in level
+   - Find all EnemySpawnPoints
+   - Find all Doors and Corridors
+   - Link components together
+   - Validate connections
+
+2. [ ] Zone Management
+   - Player overlap detection
+   - Zone activation/deactivation
+   - Combat state per zone
+   - Door state updates
+
+3. [ ] Spawn Point System
+   - Spawn enemies at designated points
+   - Clear spawn points on zone change
+   - Support multiple enemy types
+   - Respawn training dummy
+
+**Level Design Workflow:**
+1. Place ALevelLayoutManager in level
+2. Place AArenaZone actors for each combat area
+3. Scale zone bounds to desired size
+4. Place AEnemySpawnPoint inside each zone
+5. Place AArenaDoor actors between zones
+6. Place ASafeZoneCorridor actors
+7. Link references in editor
+8. Test progression
+
+**Benefits:**
+- Visual level design in editor
+- Custom arena shapes and sizes
+- Non-linear progression possible
+- Easy testing and iteration
+- Professional workflow
+
+**Deliverable:** Editor-friendly level design system
+**Testing:** Place actors in editor → Play in editor → System discovers layout → Combat and progression work
+
+**See Phase5C_Plan.md for detailed implementation guide**
+
+=============================================================================
+
+### PHASE 6: MEMORY SYSTEM (Week 8)
 **Priority:** MEDIUM - Meta Progression
 **Status:** PENDING
 

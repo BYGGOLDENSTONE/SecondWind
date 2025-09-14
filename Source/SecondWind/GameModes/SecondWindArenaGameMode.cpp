@@ -1,5 +1,5 @@
 #include "SecondWindArenaGameMode.h"
-#include "../Actors/ArenaManager.h"
+#include "../Actors/SimplifiedArenaSystem.h"
 #include "../Actors/TrainingDummy.h"
 #include "../SecondWindCharacter.h"
 #include "../Components/FragmentComponent.h"
@@ -35,42 +35,22 @@ void ASecondWindArenaGameMode::PostLogin(APlayerController* NewPlayer)
 
 void ASecondWindArenaGameMode::StartArenaSequence()
 {
-    if (bInSafeZone)
-    {
-        RemoveTrainingDummy();
-        bInSafeZone = false;
-        CurrentArenaProgress = 1;
-        TransitionToArena(CurrentArenaProgress);
-    }
+    // Deprecated - physical room system handles progression
+    UE_LOG(LogTemp, Warning, TEXT("StartArenaSequence deprecated - use physical doors"));
 }
 
 void ASecondWindArenaGameMode::TransitionToArena(int32 ArenaNumber)
 {
-    if (!ArenaManager)
-    {
-        UE_LOG(LogTemp, Error, TEXT("ArenaManager not initialized"));
-        return;
-    }
-
-    bInSafeZone = false;
+    // Deprecated - physical room system handles transitions
     CurrentArenaProgress = ArenaNumber;
-    ArenaManager->TransitionToArena(ArenaNumber);
-
-    UE_LOG(LogTemp, Warning, TEXT("GameMode: Transitioning to Arena %d"), ArenaNumber);
+    UE_LOG(LogTemp, Warning, TEXT("TransitionToArena deprecated - use physical doors"));
 }
 
 void ASecondWindArenaGameMode::TransitionToSafeZone()
 {
-    if (!ArenaManager)
-    {
-        return;
-    }
-
+    // Deprecated - physical room system handles safe zones
     bInSafeZone = true;
-    ArenaManager->TransitionToSafeZone();
-    SpawnTrainingDummy();
-
-    UE_LOG(LogTemp, Warning, TEXT("GameMode: Returned to safe zone after Arena %d"), CurrentArenaProgress);
+    UE_LOG(LogTemp, Warning, TEXT("TransitionToSafeZone deprecated - use physical corridors"));
 }
 
 void ASecondWindArenaGameMode::OnPlayerVictory(int32 ArenaNumber, int32 FragmentsEarned)
@@ -78,19 +58,8 @@ void ASecondWindArenaGameMode::OnPlayerVictory(int32 ArenaNumber, int32 Fragment
     UE_LOG(LogTemp, Warning, TEXT("GameMode: Player victorious in Arena %d! Earned %d fragments"),
         ArenaNumber, FragmentsEarned);
 
-    // Add fragments to both player and arena manager
-    if (PlayerCharacter)
-    {
-        if (UFragmentComponent* FragmentComp = PlayerCharacter->FindComponentByClass<UFragmentComponent>())
-        {
-            FragmentComp->AddFragments(FragmentsEarned);
-        }
-    }
-
-    if (ArenaManager)
-    {
-        ArenaManager->AddFragments(FragmentsEarned);
-    }
+    // Fragments handled by SimplifiedArenaSystem
+    UE_LOG(LogTemp, Warning, TEXT("Fragment tracking moved to SimplifiedArenaSystem"));
 
     if (ArenaNumber >= 5)
     {
@@ -119,70 +88,42 @@ void ASecondWindArenaGameMode::OnPlayerDefeat()
 
 void ASecondWindArenaGameMode::SpawnTrainingDummy()
 {
-    if (TrainingDummy)
-    {
-        return;
-    }
-
-    if (!TrainingDummyClass)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("No TrainingDummy class set in GameMode"));
-        return;
-    }
-
-    FActorSpawnParameters SpawnParams;
-    SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-
-    TrainingDummy = GetWorld()->SpawnActor<ATrainingDummy>(
-        TrainingDummyClass,
-        TrainingDummySpawnLocation,
-        FRotator(0, -90, 0),
-        SpawnParams
-    );
-
-    if (TrainingDummy)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Training dummy spawned in safe zone"));
-    }
+    // Training dummy spawned by SimplifiedArenaSystem
+    UE_LOG(LogTemp, Warning, TEXT("Training dummy spawning moved to SimplifiedArenaSystem"));
 }
 
 void ASecondWindArenaGameMode::RemoveTrainingDummy()
 {
-    if (TrainingDummy)
-    {
-        TrainingDummy->Destroy();
-        TrainingDummy = nullptr;
-        UE_LOG(LogTemp, Warning, TEXT("Training dummy removed"));
-    }
+    // Training dummy removal handled by SimplifiedArenaSystem
+    UE_LOG(LogTemp, Warning, TEXT("Training dummy removal moved to SimplifiedArenaSystem"));
 }
 
 void ASecondWindArenaGameMode::InitializeGameSystems()
 {
-    if (!ArenaManagerClass)
+    if (!SimplifiedArenaSystemClass)
     {
-        UE_LOG(LogTemp, Error, TEXT("No ArenaManager class set in GameMode"));
+        UE_LOG(LogTemp, Error, TEXT("No SimplifiedArenaSystem class set in GameMode"));
         return;
     }
 
     FActorSpawnParameters SpawnParams;
     SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-    ArenaManager = GetWorld()->SpawnActor<AArenaManager>(
-        ArenaManagerClass,
+    SimplifiedArenaSystem = GetWorld()->SpawnActor<ASimplifiedArenaSystem>(
+        SimplifiedArenaSystemClass,
         FVector::ZeroVector,
         FRotator::ZeroRotator,
         SpawnParams
     );
 
-    if (ArenaManager)
+    if (SimplifiedArenaSystem)
     {
-        ArenaManager->StartGame();
-        UE_LOG(LogTemp, Warning, TEXT("Arena Manager initialized"));
+        UE_LOG(LogTemp, Warning, TEXT("Simplified Arena System initialized"));
     }
 }
 
 void ASecondWindArenaGameMode::SetupSafeZone()
 {
-    SpawnTrainingDummy();
-    UE_LOG(LogTemp, Warning, TEXT("Safe zone setup complete"));
+    // Safe zone setup handled by SimplifiedArenaSystem
+    UE_LOG(LogTemp, Warning, TEXT("Safe zone setup moved to SimplifiedArenaSystem"));
 }

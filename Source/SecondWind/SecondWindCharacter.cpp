@@ -180,9 +180,7 @@ void ASecondWindCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
 	}
 
-	// Debug keys for arena testing (regular input, not Enhanced)
-	PlayerInputComponent->BindKey(EKeys::One, IE_Pressed, this, &ASecondWindCharacter::StartArenaDebug);
-	PlayerInputComponent->BindKey(EKeys::Two, IE_Pressed, this, &ASecondWindCharacter::NextArenaDebug);
+	// Debug keys removed - using physical room system
 }
 
 void ASecondWindCharacter::Move(const FInputActionValue& Value)
@@ -333,36 +331,4 @@ void ASecondWindCharacter::PerformHack()
 	}
 }
 
-void ASecondWindCharacter::StartArenaDebug()
-{
-	UE_LOG(LogTemp, Warning, TEXT("DEBUG: Starting Arena 1"));
-
-	if (AGameModeBase* GameMode = GetWorld()->GetAuthGameMode())
-	{
-		if (ASecondWindArenaGameMode* ArenaGameMode = Cast<ASecondWindArenaGameMode>(GameMode))
-		{
-			ArenaGameMode->StartArenaSequence();
-		}
-	}
-}
-
-void ASecondWindCharacter::NextArenaDebug()
-{
-	UE_LOG(LogTemp, Warning, TEXT("DEBUG: Progressing to next arena"));
-
-	if (AGameModeBase* GameMode = GetWorld()->GetAuthGameMode())
-	{
-		if (ASecondWindArenaGameMode* ArenaGameMode = Cast<ASecondWindArenaGameMode>(GameMode))
-		{
-			// Simulate victory to progress
-			if (AArenaManager* Manager = ArenaGameMode->GetArenaManager())
-			{
-				int32 CurrentArena = Manager->GetCurrentArenaNumber();
-				if (CurrentArena > 0 && CurrentArena < 5)
-				{
-					ArenaGameMode->OnPlayerVictory(CurrentArena, 10);
-				}
-			}
-		}
-	}
-}
+// Debug functions removed - using physical room system
