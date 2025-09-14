@@ -1,5 +1,7 @@
 #include "SecondWindArenaGameMode.h"
 #include "../Actors/SimplifiedArenaSystem.h"
+#include "../Actors/LevelLayoutManager.h"
+#include "../Actors/ArenaZone.h"
 #include "../Actors/TrainingDummy.h"
 #include "../SecondWindCharacter.h"
 #include "../Components/FragmentComponent.h"
@@ -27,8 +29,28 @@ void ASecondWindArenaGameMode::PostLogin(APlayerController* NewPlayer)
         PlayerCharacter = Cast<ASecondWindCharacter>(PlayerPawn);
         if (PlayerCharacter)
         {
-            PlayerCharacter->SetActorLocation(SafeZoneSpawnLocation);
-            UE_LOG(LogTemp, Warning, TEXT("Player spawned in safe zone"));
+            // If using LevelLayoutManager, spawn in Zone 0 (Starting Hub)
+            if (bUseLevelLayoutManager && LevelLayoutManager)
+            {
+                if (AArenaZone* StartingHub = LevelLayoutManager->GetZone(0))
+                {
+                    FVector HubLocation = StartingHub->GetActorLocation();
+                    PlayerCharacter->SetActorLocation(HubLocation);
+                    UE_LOG(LogTemp, Warning, TEXT("Player spawned in Starting Hub (Zone 0)"));
+                }
+                else
+                {
+                    // Fallback to default spawn location
+                    PlayerCharacter->SetActorLocation(SafeZoneSpawnLocation);
+                    UE_LOG(LogTemp, Warning, TEXT("Player spawned at default safe zone (no Starting Hub found)"));
+                }
+            }
+            else
+            {
+                // Legacy system spawn location
+                PlayerCharacter->SetActorLocation(SafeZoneSpawnLocation);
+                UE_LOG(LogTemp, Warning, TEXT("Player spawned in safe zone (legacy system)"));
+            }
         }
     }
 }
@@ -100,25 +122,60 @@ void ASecondWindArenaGameMode::RemoveTrainingDummy()
 
 void ASecondWindArenaGameMode::InitializeGameSystems()
 {
-    if (!SimplifiedArenaSystemClass)
+    if (bUseLevelLayoutManager)
     {
-        UE_LOG(LogTemp, Error, TEXT("No SimplifiedArenaSystem class set in GameMode"));
-        return;
+        TArray<AActor*> FoundManagers;
+        UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALevelLayoutManager::StaticClass(), FoundManagers);
+
+        if (FoundManagers.Num() > 0)
+        {
+            LevelLayoutManager = Cast<ALevelLayoutManager>(FoundManagers[0]);
+            UE_LOG(LogTemp, Warning, TEXT("Using pre-placed LevelLayoutManager"));
+        }
+        else if (LevelLayoutManagerClass)
+        {
+            FActorSpawnParameters SpawnParams;
+            SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+            LevelLayoutManager = GetWorld()->SpawnActor<ALevelLayoutManager>(
+                LevelLayoutManagerClass,
+                FVector::ZeroVector,
+                FRotator::ZeroRotator,
+                SpawnParams
+            );
+
+            if (LevelLayoutManager)
+            {
+                UE_LOG(LogTemp, Warning, TEXT("Spawned LevelLayoutManager"));
+            }
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("No LevelLayoutManager found or class set"));
+        }
     }
-
-    FActorSpawnParameters SpawnParams;
-    SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-    SimplifiedArenaSystem = GetWorld()->SpawnActor<ASimplifiedArenaSystem>(
-        SimplifiedArenaSystemClass,
-        FVector::ZeroVector,
-        FRotator::ZeroRotator,
-        SpawnParams
-    );
-
-    if (SimplifiedArenaSystem)
+    else
     {
-        UE_LOG(LogTemp, Warning, TEXT("Simplified Arena System initialized"));
+        if (!SimplifiedArenaSystemClass)
+        {
+            UE_LOG(LogTemp, Error, TEXT("No SimplifiedArenaSystem class set in GameMode"));
+            return;
+        }
+
+        FActorSpawnParameters SpawnParams;
+        SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+        SimplifiedArenaSystem = GetWorld()->SpawnActor<ASimplifiedArenaSystem>(
+            SimplifiedArenaSystemClass,
+            FVector::ZeroVector,
+            FRotator::ZeroRotator,
+            SpawnParams
+        );
+
+        if (SimplifiedArenaSystem)
+        {
+            UE_LOG(LogTemp, Warning, TEXT("Simplified Arena System initialized"));
+        }
     }
 }
 

@@ -2,6 +2,7 @@
 #include "BlockingComponent.h"
 #include "DodgeComponent.h"
 #include "HackComponent.h"
+#include "HealthComponent.h"
 #include "GameFramework/Character.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/World.h"
@@ -175,7 +176,16 @@ AActor* UCombatComponent::GetTargetInRange() const
 
 	if (bHit && HitResult.GetActor())
 	{
-		return HitResult.GetActor();
+		AActor* HitActor = HitResult.GetActor();
+
+		// Check if the target has health and is alive
+		UHealthComponent* TargetHealth = HitActor->FindComponentByClass<UHealthComponent>();
+		if (TargetHealth && !TargetHealth->IsAlive())
+		{
+			return nullptr; // Don't target dead actors
+		}
+
+		return HitActor;
 	}
 
 	return nullptr;

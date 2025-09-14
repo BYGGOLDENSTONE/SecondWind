@@ -17,7 +17,7 @@ enum class EDoorState : uint8
     Locked
 };
 
-ENUM(BlueprintType)
+UENUM(BlueprintType)
 enum class EDoorType : uint8
 {
     ArenaEntry,    // Requires no combat to open
@@ -57,6 +57,9 @@ public:
 
     void SetRequiresCombatClear(bool bRequires) { bRequiresCombatClear = bRequires; }
     bool CanOpen() const;
+
+    void SetDoorLocked(bool bLocked);
+    int32 GetRequiredArenaNumber() const { return ArenaNumber - 1; }
 
     UFUNCTION()
     void OnProximityBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

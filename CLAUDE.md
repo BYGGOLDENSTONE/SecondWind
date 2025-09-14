@@ -6,9 +6,9 @@
 **Core Focus:** 1v1 close-quarters combat with deep mechanics from simple abilities
 
 ## 📍 Current Status
-**Phase:** 5C of 10 - Pre-Placed Level Design System (Planning)
-**Previous:** Phase 5B - Physical Room System ✅ COMPLETED
-**Next:** Phase 6 - Memory System (Week 7)
+**Phase:** 6 of 10 - Memory System (Ready to start)
+**Previous:** Phase 5C - Pre-Placed Level Design System ✅ COMPLETED
+**Next:** Phase 7 - UI & Polish (Week 8)
 **Timeline:** 10 phases over 11 weeks
 
 ### Phase 1 Completed Components
@@ -83,15 +83,13 @@ Source/SecondWind/
 │   └── FragmentComponent.cpp/h        [Fragments]
 ├── Actors/
 │   ├── TrainingDummy.cpp/h            [Test enemy]
-│   ├── Arena.cpp/h                    [Arena - Phase 5A]
 │   ├── ArenaEnemy.cpp/h               [Enemy with phases]
-│   ├── ArenaManager.cpp/h             [Deprecated - Phase 5A]
-│   ├── ArenaDoor.cpp/h                [Doors - Phase 5B]
-│   ├── SafeZoneCorridor.cpp/h         [Corridors - Phase 5B]
-│   ├── SimplifiedArenaSystem.cpp/h    [Room system - Phase 5B]
-│   ├── ArenaZone.cpp/h                [Zones - Phase 5C TODO]
-│   ├── EnemySpawnPoint.cpp/h          [Spawns - Phase 5C TODO]
-│   └── LevelLayoutManager.cpp/h       [Discovery - Phase 5C TODO]
+│   ├── ArenaDoor.cpp/h                [Doors - Phase 5B/5C]
+│   ├── SafeZoneCorridor.cpp/h         [Corridors - Phase 5B/5C]
+│   ├── SimplifiedArenaSystem.cpp/h    [Legacy room system - Phase 5B]
+│   ├── ArenaZone.cpp/h                [Combat zones - Phase 5C]
+│   ├── EnemySpawnPoint.cpp/h          [Enemy spawns - Phase 5C]
+│   └── LevelLayoutManager.cpp/h       [Level discovery - Phase 5C]
 ├── GameModes/
 │   └── SecondWindArenaGameMode.cpp/h  [Arena game flow]
 ├── SecondWindCharacter.cpp/h          [Player character]
@@ -146,22 +144,21 @@ Basic attack, health system, training dummy - All tested and working
 - ✅ Enemy spawn/despawn management
 - ✅ Removed teleportation and debug keys
 
-### Phase 5C: Pre-Placed Level Design System 📋 PLANNED
-**Goal:** Transform runtime-spawned system to editor-placed for full design control
-
-#### New Components to Create:
-- `AArenaZone` - Defines combat areas with bounds
-- `AEnemySpawnPoint` - Marks enemy spawn locations
-- `ALevelLayoutManager` - Discovers and manages pre-placed actors
-
-#### Key Features:
-1. **Editor-Placed Geometry**: Design levels visually in Unreal Editor
-2. **Discovery System**: Manager finds pre-placed actors at runtime
-3. **Flexible Layouts**: Support non-linear progression
-4. **Spawn Points**: Designated enemy spawn locations
-5. **Zone-Based Combat**: Arena zones track combat state
-
-**See Phase5C_Plan.md for detailed implementation guide**
+### Phase 5C: Pre-Placed Level Design System ✅ COMPLETED
+- ✅ `AArenaZone` - Combat areas with bounds and zone management
+- ✅ `AEnemySpawnPoint` - Enemy spawn locations with phase control
+- ✅ `ALevelLayoutManager` - Discovery and management of pre-placed actors
+- ✅ Editor-placed geometry support
+- ✅ Discovery system for runtime initialization
+- ✅ Flexible non-linear progression support
+- ✅ Zone-based combat state tracking
+- ✅ Game mode integration with toggle between systems
+- ✅ Arena enemy AI improvements (face player, movement, attacks)
+- ✅ Camera lock-on for arena enemies
+- ✅ Player spawn in Starting Hub (Zone 0)
+- ✅ Fixed duplicate zone registration
+- ✅ Fixed dead enemy targeting
+- ✅ Removed deprecated files: Arena.cpp/h, ArenaManager.cpp/h
 
 ### Phase 6: Memory System
 - Save/load functionality

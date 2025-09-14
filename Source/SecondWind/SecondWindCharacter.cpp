@@ -19,7 +19,6 @@
 #include "Components/CameraLockOnComponent.h"
 #include "Components/FragmentComponent.h"
 #include "GameModes/SecondWindArenaGameMode.h"
-#include "Actors/ArenaManager.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 

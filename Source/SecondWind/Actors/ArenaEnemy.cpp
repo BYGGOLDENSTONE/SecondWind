@@ -2,6 +2,9 @@
 #include "../Components/HealthComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "ArenaZone.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine/DamageEvents.h"
 
 AArenaEnemy::AArenaEnemy()
 {
@@ -11,6 +14,8 @@ AArenaEnemy::AArenaEnemy()
 
     GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
     GetCharacterMovement()->MaxWalkSpeed = 400.f;
+
+    OwnerZone = nullptr;
 }
 
 void AArenaEnemy::BeginPlay()
@@ -22,11 +27,42 @@ void AArenaEnemy::BeginPlay()
         HealthComponent->OnPhaseTransition.AddDynamic(this, &AArenaEnemy::OnPhaseTransition);
         HealthComponent->OnDeath.AddDynamic(this, &AArenaEnemy::OnEnemyDeath);
     }
+
+    // Start attacking every 2-3 seconds
+    GetWorldTimerManager().SetTimer(AttackTimerHandle, this, &AArenaEnemy::PerformAttack,
+        FMath::RandRange(2.0f, 3.0f), true, 1.0f);
 }
 
 void AArenaEnemy::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+
+    // Continuously face and move toward player when in combat
+    if (!IsDefeated() && !bInFinisherState)
+    {
+        AActor* Player = FindPlayer();
+        if (Player)
+        {
+            float Distance = FVector::Dist(GetActorLocation(), Player->GetActorLocation());
+
+            // Face the player
+            FVector DirectionToPlayer = (Player->GetActorLocation() - GetActorLocation()).GetSafeNormal();
+            FRotator NewRotation = DirectionToPlayer.Rotation();
+            NewRotation.Pitch = 0.0f; // Keep enemy upright
+            NewRotation.Roll = 0.0f;
+            SetActorRotation(NewRotation);
+
+            // Move toward player if not in attack range
+            if (Distance > AttackRange && Distance <= 800.0f)
+            {
+                // Use character movement for smoother motion
+                if (GetCharacterMovement())
+                {
+                    GetCharacterMovement()->AddInputVector(DirectionToPlayer);
+                }
+            }
+        }
+    }
 }
 
 void AArenaEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -59,6 +95,14 @@ void AArenaEnemy::OnEnemyDeath()
     {
         int32 Fragments = CalculateFragmentReward();
         UE_LOG(LogTemp, Warning, TEXT("Enemy defeated! Awarding %d fragments"), Fragments);
+
+        // Stop attacking when dead
+        GetWorldTimerManager().ClearTimer(AttackTimerHandle);
+
+        if (OwnerZone)
+        {
+            OwnerZone->OnEnemyDefeated(this);
+        }
     }
 }
 
@@ -131,4 +175,43 @@ void AArenaEnemy::SetPhaseCount(int32 PhaseCount)
         HealthComponent->SetMaxPhases(MaxPhases);
     }
     UE_LOG(LogTemp, Warning, TEXT("Enemy phases set to %d"), MaxPhases);
+}
+
+void AArenaEnemy::SetOwnerZone(AArenaZone* Zone)
+{
+    OwnerZone = Zone;
+}
+
+void AArenaEnemy::PerformAttack()
+{
+    if (!IsDefeated() && !bInFinisherState)
+    {
+        AActor* Player = FindPlayer();
+        if (Player)
+        {
+            float Distance = FVector::Dist(GetActorLocation(), Player->GetActorLocation());
+
+            if (Distance <= AttackRange)
+            {
+                // Apply damage to player
+                UGameplayStatics::ApplyPointDamage(
+                    Player,
+                    BaseDamage,
+                    Player->GetActorLocation(),
+                    FHitResult(),
+                    nullptr,
+                    this,
+                    UDamageType::StaticClass()
+                );
+
+                UE_LOG(LogTemp, Warning, TEXT("ArenaEnemy attacking player for %d damage"), BaseDamage);
+            }
+        }
+    }
+}
+
+AActor* AArenaEnemy::FindPlayer() const
+{
+    ACharacter* PlayerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+    return PlayerCharacter;
 }

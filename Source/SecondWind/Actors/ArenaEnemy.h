@@ -37,6 +37,7 @@ public:
     void ExecuteFinisher();
     int32 CalculateFragmentReward() const;
     void SetPhaseCount(int32 PhaseCount);
+    void SetOwnerZone(class AArenaZone* Zone);
 
 protected:
     void SetupPhases();
@@ -66,4 +67,11 @@ private:
     bool bInFinisherState = false;
 
     FTimerHandle FinisherTimeoutHandle;
+
+    UPROPERTY()
+    class AArenaZone* OwnerZone;
+
+    FTimerHandle AttackTimerHandle;
+    void PerformAttack();
+    AActor* FindPlayer() const;
 };

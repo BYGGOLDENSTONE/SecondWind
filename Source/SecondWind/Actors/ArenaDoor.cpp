@@ -70,8 +70,14 @@ void AArenaDoor::UpdateProximityTimer(float DeltaTime)
             OnProximityRequirementMet();
         }
 
+        // Only log at key progress points to reduce spam
         float Progress = ProximityTime / ProximityRequiredTime;
-        UE_LOG(LogTemp, Warning, TEXT("Door %d proximity progress: %.1f%%"), ArenaNumber, Progress * 100.0f);
+        static float LastLoggedProgress = 0.0f;
+        if (FMath::Abs(Progress - LastLoggedProgress) >= 0.25f || Progress >= 1.0f)
+        {
+            UE_LOG(LogTemp, Warning, TEXT("Door %d proximity progress: %.1f%%"), ArenaNumber, Progress * 100.0f);
+            LastLoggedProgress = Progress;
+        }
     }
     else if (!bPlayerInProximity && ProximityTime > 0.0f)
     {
@@ -220,4 +226,16 @@ bool AArenaDoor::CanOpen() const
     }
 
     return !bRequiresCombatClear;
+}
+
+void AArenaDoor::SetDoorLocked(bool bLocked)
+{
+    if (bLocked)
+    {
+        LockDoor();
+    }
+    else
+    {
+        UnlockDoor();
+    }
 }

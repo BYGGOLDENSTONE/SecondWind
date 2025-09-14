@@ -7,6 +7,8 @@
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
 #include "SecondWind/Actors/TrainingDummy.h"
+#include "SecondWind/Actors/ArenaEnemy.h"
+#include "HealthComponent.h"
 
 UCameraLockOnComponent::UCameraLockOnComponent()
 {
@@ -139,10 +141,10 @@ AActor* UCameraLockOnComponent::FindBestTarget() const
     UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATrainingDummy::StaticClass(), TrainingDummies);
     PotentialTargets.Append(TrainingDummies);
 
-    // Future: Find arena enemies
-    // TArray<AActor*> ArenaEnemies;
-    // UGameplayStatics::GetAllActorsOfClass(GetWorld(), AArenaEnemy::StaticClass(), ArenaEnemies);
-    // PotentialTargets.Append(ArenaEnemies);
+    // Find arena enemies
+    TArray<AActor*> ArenaEnemies;
+    UGameplayStatics::GetAllActorsOfClass(GetWorld(), AArenaEnemy::StaticClass(), ArenaEnemies);
+    PotentialTargets.Append(ArenaEnemies);
 
     AActor* BestTarget = nullptr;
     float BestScore = FLT_MAX;
@@ -197,11 +199,19 @@ bool UCameraLockOnComponent::IsValidTarget(AActor* Target) const
     if (!Target)
         return false;
 
-    // Check if target is alive (has health component)
-    // Future: Check health component for IsAlive()
+    // Check if it's a valid target type
+    bool bIsValidType = Target->IsA<ATrainingDummy>() || Target->IsA<AArenaEnemy>();
 
-    // For now, just check if it's a training dummy
-    return Target->IsA<ATrainingDummy>();
+    if (!bIsValidType)
+        return false;
+
+    // Check if target is alive (has health component)
+    if (UHealthComponent* HealthComp = Target->FindComponentByClass<UHealthComponent>())
+    {
+        return HealthComp->IsAlive();
+    }
+
+    return true; // If no health component, assume valid (like training dummy)
 }
 
 bool UCameraLockOnComponent::IsInArenaRange() const

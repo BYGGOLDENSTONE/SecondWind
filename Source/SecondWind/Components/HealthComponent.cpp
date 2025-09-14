@@ -90,7 +90,7 @@ void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const clas
 	CurrentHealth = FMath::Clamp(CurrentHealth - ActualDamage, 0.0f, MaxHealth);
 	OnHealthChanged.Broadcast(CurrentHealth);
 
-	UE_LOG(LogTemp, Log, TEXT("%s took %f damage. Health: %f/%f (Phase %d/%d)"),
+	UE_LOG(LogTemp, Warning, TEXT("%s took %f damage. Health: %f/%f (Phase %d/%d)"),
 		*GetOwner()->GetName(), ActualDamage, CurrentHealth, MaxHealth, CurrentPhase, MaxPhases);
 
 	if (CurrentHealth <= 0.0f)
