@@ -1,0 +1,292 @@
+### Second Wind - Implementation Plan
+
+**Development Overview:**
+- 8 phases over 11 weeks
+- Phase-by-phase tracking for session continuity
+- Each phase builds on the previous to ensure stable progression
+
+**Current Status:** Phase 1 - Combat Foundation
+**Next Session:** Begin Phase 1 implementation
+
+=============================================================================
+
+### PHASE 1: COMBAT FOUNDATION (Week 1-2)
+**Priority:** CRITICAL - Core Gameplay
+**Status:** NOT STARTED
+
+**Goals:**
+- Basic attack system working
+- Health system functional
+- Training dummy for testing
+- Player movement adjusted to game requirements
+
+**Tasks:**
+1. [ ] Modify ASecondWindCharacter
+   - Set MaxWalkSpeed to 300 (currently 500)
+   - Remove jump functionality completely
+   - Add basic attack input binding (LMB -> IA_Attack)
+
+2. [ ] Create UCombatComponent
+   - Basic attack function (5 base damage)
+   - Animation-based cooldown system
+   - Hit detection and damage application
+   - Integration with character class
+
+3. [ ] Create UHealthComponent
+   - 100 HP base system
+   - 2-phase player health system
+   - Damage interface for receiving hits
+   - Death/phase transition logic
+
+4. [ ] Create ATrainingDummy (extends ACharacter)
+   - 100 HP, 2 phases structure
+   - Basic hit reaction animations
+   - Auto-respawn on death functionality
+   - Placeholder combat responses
+
+**Deliverable:** Player can attack training dummy with functional health/damage system
+**Testing:** Player attacks reduce dummy health, dummy dies and respawns after 2 phases
+
+=============================================================================
+
+### PHASE 2: BLOCKING SYSTEM (Week 3)
+**Priority:** HIGH - Core Combat Mechanic
+**Status:** PENDING
+
+**Goals:**
+- Directional blocking fully functional
+- Mouse delta system working
+- Counter-attack windows implemented
+- Block animations integrated
+
+**Tasks:**
+1. [ ] Create UBlockingComponent
+   - RMB hold detection and state management
+   - Mouse delta accumulation with sensitivity threshold
+   - Block direction states (Front/Left/Right)
+   - 40% damage reduction calculation
+   - Block transition animation coordination
+
+2. [ ] Enhanced Input Integration
+   - Create IA_Block input action
+   - Modify mouse look behavior during blocking
+   - Block direction change input handling
+
+3. [ ] Counter-Attack System Foundation
+   - 0.5 second counter-attack windows
+   - Animation Notify integration for window timing
+   - Counter-attack damage multiplier system
+   - Visual/audio feedback for counter windows
+
+**Deliverable:** Functional directional blocking with successful counter-attacks
+**Testing:** Player can block attacks from different directions and counter-attack
+
+=============================================================================
+
+### PHASE 3: DODGE & MOVEMENT (Week 4)
+**Priority:** HIGH - Core Combat Mechanic
+**Status:** PENDING
+
+**Goals:**
+- Strategic dodge system complete
+- Camera lock-on basic functionality
+- Strafe movement during combat
+- Complete combat triangle (Attack/Block/Dodge)
+
+**Tasks:**
+1. [ ] Strategic Dodge Implementation
+   - A/S/D + Space input combinations
+   - Dodge direction logic (left/back/right)
+   - Animation-driven movement (no code distance)
+   - Counter-attack windows after successful dodges
+
+2. [ ] Camera Lock-On Foundation
+   - Create UCameraLockOnComponent
+   - Auto-targeting logic within 1500 unit range
+   - Basic lock-on camera behavior modification
+   - Strafe movement when locked onto target
+
+3. [ ] Movement System Integration
+   - Modify WASD behavior during lock-on
+   - A/D becomes strafe/circle movement
+   - Seamless transition between free/locked movement
+
+**Deliverable:** Complete basic combat mechanics (Attack/Block/Dodge/Lock-on)
+**Testing:** All three combat options work together fluidly
+
+=============================================================================
+
+### PHASE 4: ADVANCED COMBAT (Week 5)
+**Priority:** MEDIUM - Enhanced Combat
+**Status:** PENDING
+
+**Goals:**
+- Dash attack system functional
+- Hack attack fully implemented
+- Counter-attack tracking system
+- Complete combat moveset
+
+**Tasks:**
+1. [ ] Dash Attack System
+   - W + Space dash input detection
+   - Forward dash movement animation
+   - Optional LMB leap attack during dash window
+   - Animation state machine integration
+
+2. [ ] Hack Attack Implementation
+   - Counter-attack tracking system (6-count)
+   - Reset logic on 2 unblocked hits
+   - Massive damage + enemy stun effects
+   - Visual/audio feedback for hack availability
+   - Cooldown and usage mechanics
+
+**Deliverable:** Full combat moveset with all special abilities
+**Testing:** Hack attack becomes available after 6 counters, resets properly
+
+=============================================================================
+
+### PHASE 5: ARENA SYSTEM (Week 6-7)
+**Priority:** HIGH - Game Structure
+**Status:** PENDING
+
+**Goals:**
+- Game mode and progression structure
+- Arena transition system
+- Enemy base class with phases
+- Fragment earning system
+
+**Tasks:**
+1. [ ] Game Mode Implementation
+   - Create AGameModeSecondWind (extends AGameModeBase)
+   - Arena progression logic and state management
+   - Safe zone and training area management
+
+2. [ ] Arena Management System
+   - Create AArenaManager for transitions
+   - Arena 1-5 basic setup (identical layouts)
+   - Safe zone between arenas functionality
+
+3. [ ] Enemy Base Class
+   - Create AArenaEnemy (extends ACharacter)
+   - Phase system implementation (1-5 phases per arena)
+   - Health scaling and phase transitions
+   - Finisher system integration
+
+4. [ ] Fragment System Foundation
+   - Finisher-based fragment earning calculation
+   - Cumulative phase rewards (1+2+3+4 = 10 for 4-phase enemy)
+   - Fragment counting and persistence preparation
+
+**Deliverable:** Working arena progression with basic enemy system
+**Testing:** Can progress through arenas, earn fragments from finishers
+
+=============================================================================
+
+### PHASE 6: MEMORY SYSTEM (Week 8)
+**Priority:** MEDIUM - Meta Progression
+**Status:** PENDING
+
+**Goals:**
+- Save/load system working
+- Memory unlock interface
+- First memory implemented
+- Persistence between sessions
+
+**Tasks:**
+1. [ ] Save/Load Infrastructure
+   - Create UFragmentSystem (UGameInstanceSubsystem)
+   - Create UMemorySystem (UGameInstanceSubsystem)
+   - UE5 save game system integration
+   - Persistent fragment and memory data
+
+2. [ ] Memory System Implementation
+   - Memory unlock validation system
+   - Gameplay effect application framework
+   - Safe zone memory spending interface
+
+3. [ ] First Memory: Hack Attack Reduction
+   - Reduce hack requirement from 6 to 4 counter-attacks
+   - Memory purchase and effect application
+   - Save/load memory unlock state
+
+**Deliverable:** Working memory system with hack attack upgrade
+**Testing:** Can spend fragments to unlock memory, effect persists between sessions
+
+=============================================================================
+
+### PHASE 7: UI & POLISH (Week 9-10)
+**Priority:** MEDIUM - User Experience
+**Status:** PENDING
+
+**Goals:**
+- Combat UI implemented
+- Visual feedback systems
+- Audio integration
+- Enhanced player experience
+
+**Tasks:**
+1. [ ] Core Combat UI
+   - Enemy health bar (top, wide design)
+   - Player health bar (bottom-left)
+   - Phase indicators for both player and enemy
+   - Fragment counter display
+
+2. [ ] Visual Effects Integration
+   - Counter-attack window visual indicators
+   - Block direction visual feedback
+   - Combat impact and hit effects
+   - Hack attack availability indicators
+
+3. [ ] Audio Integration
+   - Combat sound effects
+   - Counter-attack audio cues
+   - UI feedback sounds
+   - Phase transition audio
+
+**Deliverable:** Polished UI and feedback systems
+**Testing:** All combat interactions have clear visual/audio feedback
+
+=============================================================================
+
+### PHASE 8: FULL GAME LOOP (Week 11)
+**Priority:** HIGH - Final Integration
+**Status:** PENDING
+
+**Goals:**
+- Complete 5-arena experience
+- Balanced difficulty progression
+- Final testing and polish
+- Ready for playtesting
+
+**Tasks:**
+1. [ ] Complete Arena Implementation
+   - All 5 arenas functional with progression
+   - Difficulty scaling per arena (1-5 phases)
+   - End-game victory conditions
+
+2. [ ] Final Testing & Balancing
+   - Combat feel optimization and tuning
+   - Difficulty curve adjustment
+   - Performance optimization for 60 FPS target
+   - Bug fixes and edge case handling
+
+3. [ ] Playtesting Preparation
+   - Complete game loop validation
+   - Save/load system stress testing
+   - Input responsiveness final tuning
+
+**Deliverable:** Complete Second Wind game ready for external playtesting
+**Testing:** Full playthrough from start to Arena 5 completion
+
+=============================================================================
+
+### SESSION TRACKING:
+**Current Phase:** 1
+**Next Tasks:** Modify ASecondWindCharacter, Create UCombatComponent
+**Completion Status:** 0/8 phases complete
+
+### NOTES FOR NEXT SESSION:
+- Start with character movement modification (walk speed 300, remove jump)
+- Create basic attack system with LMB input
+- Focus on getting training dummy basic interaction working first
+- Each phase should be fully functional before moving to next phase

@@ -1,0 +1,69 @@
+
+### **Second Wind - Game Design Document**
+
+**1. Core Concept**
+* **Game Engine:** Unreal Engine 5.5, C++ based (ThirdPerson template foundation).
+* **Genre:** Roguelike, Soulslike, Boss Rush, with a focus on close-quarters 1v1 combat.
+* **Design Philosophy:** To create deep, complex gameplay from a small set of simple abilities that are easy to learn. The focus is on player skill, observation, and tactical execution over mindless action.
+* **Combat Inspiration:** Fast, responsive combat like Sifu/Sekiro rather than weighty Dark Souls feel.
+
+**2. Player Character & Controls**
+* **Input System:** Unreal Engine's Enhanced Input.
+* **Movement:** WASD for character movement, with a walk speed of 300. There is no jump ability, as combat is ground-based.
+* **Camera:** Third-person, over-the-shoulder view with mouse control for looking around.
+* **Camera Lock-On:** The camera automatically locks onto an enemy within a 1500 unit distance. There is no manual toggle, enforcing a 1v1 duel focus. When locked on, movement with A and D keys causes the player to strafe and circle the enemy.
+
+**3. Core Combat Abilities**
+
+* **Attack:**
+    * Executed by pressing the Left Mouse Button (LMB).
+    * Deals a base of 5 damage.
+    * The cooldown is the duration of the attack animation itself.
+
+* **Block (Directional):**
+    * Executed by holding the Right Mouse Button (RMB). This is an active, directional blocking system.
+    * By default, holding RMB initiates a **front block**.
+    * While holding RMB, the player can move the mouse left or right to switch to a **left-side block** or **right-side block**. This leverages the free mouse movement available during camera lock-on.
+    * **Implementation:** Mouse delta is tracked continuously with sensitivity threshold to prevent accidental direction changes. Transition animations must complete before new block direction becomes active.
+    * Successfully blocking an attack requires matching the direction of the enemy's swing (e.g., using a right-side block for an attack coming from the player's right).
+    * Blocking the wrong direction will leave the player vulnerable.
+    * A successful directional block reduces incoming damage by 40%. After blocking, a counter-attack window opens for 0.5 seconds, allowing the player to press LMB to perform a riposte.
+
+* **Dodge (Strategic):**
+    * The player can dodge to the right, left, or back by briefly holding the A, S, or D key (e.g., a 0.1-second threshold) and then pressing the Space Key.
+    * This system is designed to reward tactical positioning over mindless dodging. Enemies have weak sides, often exposed during their attack animations.
+    * **Implementation:** Dodge distance is controlled by animations, not code. Input buffer system ensures smooth execution.
+    * After successfully dodging an attack, a counter-attack window opens for 0.5 seconds for the player to press LMB.
+    * The damage of this counter-attack is significantly increased if the player dodged towards the enemy's exposed weak side, rewarding players who learn enemy patterns.
+
+* **Dash & Leap Attack:**
+    * Hold the W key and press the Space Key to perform a forward dash, closing distance to the enemy.
+    * During the dash, a special attack window opens. If the player presses LMB during this window, they will execute a ranged leap attack.
+
+**4. Special Ability: Hack Attack**
+* **Description:** A long-range hack attack that deals massive damage and briefly stuns the enemy.
+* **Activation:** The ability becomes available after the player successfully performs **6 counter-attacks** (from either directional blocks or strategic dodges).
+* **Reset Condition:** The counter-attack meter resets to zero if the player gets hit by 2 unblocked attacks. Blocked attacks do not count towards this reset condition.
+
+**5. Health and Phase System**
+* **Player Health:** The player starts with 100 health and has 2 phases. When health drops to 0, the enemy performs a finisher, and the player enters phase 2 with their health reset to 100. If health drops to 0 again, the player dies.
+* **Enemy Health:** Enemies also have a phase system, ranging from 1 to 5 phases depending on the arena number. Each enemy has 100 health per phase.
+* **Finishers:** When an enemy's health bar is depleted, they become stunned and play a looped stun animation waiting for player input. Player must press LMB to execute the finisher (no time limit). This transitions the enemy to their next phase with full health, or kills them if it was their last phase.
+* **Training Dummy:** Special case - has 2 phases and 100 health, but respawns automatically after being killed for continuous practice.
+
+**6. Progression and Rewards**
+* **Game Flow:** The player starts in a safe zone with a training dummy, proceeds to Arena 1 for combat, and upon victory, moves to an intermediate safe zone before the next arena.
+* **Memory System:** In the zones between arenas, the player can spend `Fragments` to unlock memories. Uses UE5's standard save game system for persistence.
+* **Fragments:** These are earned by performing finishers on enemies. The amount gained increases with each phase defeated (e.g., a 4-phase enemy yields 1+2+3+4 = 10 fragments).
+* **First Memory:** Reduces required counter-attacks for hack ability from 6 to 4. Additional memories will be added later.
+* **Arena Structure:** 5 arenas total, each with identical design but different enemies. No environmental mechanics initially.
+* **Persistence:** Both `Fragments` and unlocked memories are carried over after the player dies, forming the core meta-progression.
+
+**7. Technical Implementation Details**
+* **Target Platform:** PC only, 60 FPS target.
+* **Animation System:** Hybrid approach using Animation Blueprints for state machines and C++ for core logic. Heavy use of Animation Notifies for gameplay events.
+* **Input System:** Enhanced Input with input buffering for smooth combat execution.
+* **Enemy AI:** Will be implemented later - enemies currently use placeholder behavior with response animations.
+* **UI Design:** Boss-style enemy health bar at top (wide), player health at bottom-left, both with phase indicators. Visual effects handle combat feedback.
+* **Camera System:** Auto lock-on within 1500 units, no manual toggle, enables strafe movement during combat.
+* **Asset Creation:** Custom animations and models will be created specifically for this project.
