@@ -1,0 +1,35 @@
+{
+	"version": 1,
+	"changelists": [
+		{
+			"guid": "00000000000000000000000000000000",
+			"description": "Default Uncontrolled Changelist",
+			"files": [
+				"D:/Unreal Projects/SecondWind/Content/blueprints/BP_ThirdPersonCharacter.uasset",
+				"D:/Unreal Projects/SecondWind/Content/blueprints/Input/Actions/IA_Look.uasset",
+				"D:/Unreal Projects/SecondWind/Content/blueprints/Input/Actions/IA_Move.uasset",
+				"D:/Unreal Projects/SecondWind/Content/blueprints/Input/IMC_Default.uasset",
+				"D:/Unreal Projects/SecondWind/Content/blueprints/Input/Actions/IA_Attack.uasset",
+				"D:/Unreal Projects/SecondWind/Content/blueprints/BP_gamemode.uasset",
+				"D:/Unreal Projects/SecondWind/Content/ThirdPerson/Maps/ThirdPersonMap.umap",
+				"D:/Unreal Projects/SecondWind/Content/blueprints/BP_Traniningdummy.uasset",
+				"D:/Unreal Projects/SecondWind/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/4/TJ/DKXW5Z9TDA49TJRTMG0S5M.uasset",
+				"D:/Unreal Projects/SecondWind/Content/blueprints/Input/Actions/IA_Block.uasset",
+				"D:/Unreal Projects/SecondWind/Content/blueprints/Input/Actions/IA_Dodge.uasset",
+				"D:/Unreal Projects/SecondWind/Content/blueprints/Input/Actions/IA_Hack.uasset",
+				"D:/Unreal Projects/SecondWind/Content/blueprints/BP_Arena.uasset",
+				"D:/Unreal Projects/SecondWind/Content/blueprints/BP_ArenaEnemy.uasset",
+				"D:/Unreal Projects/SecondWind/Content/blueprints/BP_ArenaManager.uasset",
+				"D:/Unreal Projects/SecondWind/Content/blueprints/BP_Arenagamemode.uasset",
+				"D:/Unreal Projects/SecondWind/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/9/MO/72II2GSLK9VS0ULW9SACWH.uasset",
+				"D:/Unreal Projects/SecondWind/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/6/HF/9H7TKAXH9DD8KI3TIXGI2I.uasset",
+				"D:/Unreal Projects/SecondWind/Content/blueprints/Input/Actions/IA_Jump.uasset",
+				"D:/Unreal Projects/SecondWind/Content/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.uasset",
+				"D:/Unreal Projects/SecondWind/Content/ThirdPerson/Input/IMC_Default.uasset",
+				"D:/Unreal Projects/SecondWind/Content/ThirdPerson/Input/Actions/IA_Move.uasset",
+				"D:/Unreal Projects/SecondWind/Content/ThirdPerson/Input/Actions/IA_Look.uasset",
+				"D:/Unreal Projects/SecondWind/Content/ThirdPerson/Input/Actions/IA_Jump.uasset"
+			]
+		}
+	]
+}

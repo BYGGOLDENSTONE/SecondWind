@@ -1,0 +1,67 @@
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Character.h"
+#include "ArenaEnemy.generated.h"
+
+class UHealthComponent;
+
+UCLASS()
+class SECONDWIND_API AArenaEnemy : public ACharacter
+{
+    GENERATED_BODY()
+
+public:
+    AArenaEnemy();
+
+protected:
+    virtual void BeginPlay() override;
+
+public:
+    virtual void Tick(float DeltaTime) override;
+    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+    void InitializeEnemy(int32 ArenaNumber);
+
+    UFUNCTION()
+    void OnPhaseTransition();
+
+    UFUNCTION()
+    void OnEnemyDeath();
+
+    int32 GetCurrentPhase() const { return CurrentPhase; }
+    int32 GetMaxPhases() const { return MaxPhases; }
+    bool IsInFinisherState() const { return bInFinisherState; }
+
+    void ExecuteFinisher();
+    int32 CalculateFragmentReward() const;
+
+protected:
+    void SetupPhases();
+    void StartNextPhase();
+    void EnterFinisherState();
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    UHealthComponent* HealthComponent;
+
+    UPROPERTY(EditDefaultsOnly, Category = "Combat")
+    int32 BaseDamage = 10;
+
+    UPROPERTY(EditDefaultsOnly, Category = "Combat")
+    float AttackRange = 150.0f;
+
+private:
+    UPROPERTY()
+    int32 ArenaLevel = 1;
+
+    UPROPERTY()
+    int32 CurrentPhase = 1;
+
+    UPROPERTY()
+    int32 MaxPhases = 1;
+
+    UPROPERTY()
+    bool bInFinisherState = false;
+
+    FTimerHandle FinisherTimeoutHandle;
+};

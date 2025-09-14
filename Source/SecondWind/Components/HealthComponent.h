@@ -10,6 +10,8 @@ class UHackComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float, NewHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthDepleted);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPhaseChanged, int32, NewPhase);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPhaseTransition);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class SECONDWIND_API UHealthComponent : public UActorComponent
@@ -31,6 +33,12 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Health")
 	FOnPhaseChanged OnPhaseChanged;
+
+	UPROPERTY(BlueprintAssignable, Category = "Health")
+	FOnPhaseTransition OnPhaseTransition;
+
+	UPROPERTY(BlueprintAssignable, Category = "Health")
+	FOnDeath OnDeath;
 
 	UFUNCTION()
 	void TakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType,

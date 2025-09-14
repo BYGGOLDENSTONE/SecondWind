@@ -6,8 +6,9 @@
 **Core Focus:** 1v1 close-quarters combat with deep mechanics from simple abilities
 
 ## 📍 Current Status
-**Phase:** 4 of 10 - Advanced Combat ✅ COMPLETED
-**Next:** Phase 5 - Arena System (Week 6)
+**Phase:** 5B of 10 - Physical Arena System (Room-based Progression)
+**Previous:** Phase 5A - Basic Arena System ✅ COMPLETED
+**Next:** Phase 6 - Memory System (Week 7)
 **Timeline:** 10 phases over 11 weeks
 
 ### Phase 1 Completed Components
@@ -73,16 +74,22 @@
 Source/SecondWind/
 ├── Components/
 │   ├── CombatComponent.cpp/h        [Attack system with counter-attack]
-│   ├── HealthComponent.cpp/h        [Health/phases]
+│   ├── HealthComponent.cpp/h        [Health/phases with finisher system]
 │   ├── BlockingComponent.cpp/h      [Directional blocking]
 │   ├── DodgeComponent.cpp/h          [Dodge & dash mechanics]
 │   ├── CameraLockOnComponent.cpp/h  [Auto lock-on system]
 │   ├── HackComponent.cpp/h           [Hack special ability]
 │   ├── HackUIComponent.cpp/h        [Hack progress UI]
+│   ├── FragmentComponent.cpp/h       [Fragment currency]
 ├── Actors/
 │   ├── TrainingDummy.cpp/h          [Test enemy]
+│   ├── Arena.cpp/h                   [Arena base class]
+│   ├── ArenaEnemy.cpp/h              [Enemy with phases]
+│   ├── ArenaManager.cpp/h            [Arena progression]
+├── GameModes/
+│   ├── SecondWindArenaGameMode.cpp/h [Arena game flow]
 ├── SecondWindCharacter.cpp/h        [Player character]
-└── SecondWindGameMode.cpp/h         [Game mode]
+└── SecondWindGameMode.cpp/h         [Base game mode]
 ```
 
 ## 📋 Implementation Phases
@@ -113,10 +120,40 @@ Basic attack, health system, training dummy - All tested and working
 - 50 damage with 1000 range
 - Visual feedback for availability
 
-### Phase 5: Arena System
-- 5 arenas progression
-- Fragment rewards
-- Game mode structure
+### Phase 5A: Arena System (Basic) ✅ COMPLETED
+- ✅ `AArena` - Arena management class - Functional
+- ✅ `AArenaEnemy` - Enemy base class with phase system - Functional
+- ✅ `AArenaManager` - Arena transitions and progression - Functional
+- ✅ `UFragmentComponent` - Fragment currency system - Functional
+- ✅ `ASecondWindArenaGameMode` - Game flow management - Functional
+- ✅ 5 arena progression with scaling difficulty
+- ✅ Fragment rewards based on enemy phases
+- ✅ Safe zone and training area transitions
+
+### Phase 5B: Physical Room System 🚧 IN PROGRESS
+**Goal:** Replace teleport-based transitions with physical room navigation
+
+#### Planned Components:
+- `ARoomTrigger` - Collision-based room transition system
+- `AArenaDoor` - Interactive doors that spawn enemies
+- `ASafeZoneRoom` - Marketplace rooms between arenas
+- `ARoomManager` - Manages room progression and state
+
+#### Room Layout Design:
+```
+[Starting Hub] → [Arena 1] → [Safe Zone 1] → [Arena 2] → [Safe Zone 2] → ...
+     ↓               ↓             ↓              ↓             ↓
+Training Dummy    Enemy 1     Marketplace     Enemy 2     Marketplace
+```
+
+#### Key Features:
+- Physical movement between rooms (no teleporting)
+- Collision volumes trigger room transitions
+- Doors open when entering arena (spawns enemy)
+- Defeated enemies respawn if revisiting rooms
+- Safe zones act as marketplaces for memory purchases
+- Linear progression (always moving forward)
+- Visual continuity throughout the level
 
 ### Phase 6: Memory System
 - Save/load functionality
@@ -164,8 +201,8 @@ Basic attack, health system, training dummy - All tested and working
 
 ## 🔧 Development Commands
 ```bash
-# Build project (if needed)
-UnrealBuildTool SecondWind Win64 Development
+# IMPORTANT: NEVER attempt to build or compile the project
+# The user will handle all compilation and building
 
 # Common file locations
 Config/DefaultInput.ini     # Input mappings

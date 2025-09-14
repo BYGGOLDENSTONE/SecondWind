@@ -105,11 +105,13 @@ void UHealthComponent::HandleHealthDepleted()
 
 	if (CurrentPhase < MaxPhases)
 	{
+		OnPhaseTransition.Broadcast();
 		TransitionToNextPhase();
 	}
 	else
 	{
 		UE_LOG(LogTemp, Log, TEXT("%s has been defeated!"), *GetOwner()->GetName());
+		OnDeath.Broadcast();
 	}
 }
 

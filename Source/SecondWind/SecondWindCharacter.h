@@ -17,6 +17,7 @@ class UHealthComponent;
 class UBlockingComponent;
 class UDodgeComponent;
 class UCameraLockOnComponent;
+class UFragmentComponent;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
@@ -89,6 +90,10 @@ class ASecondWindCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	class UHackUIComponent* HackUIComponent;
 
+	/** Fragment Component */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UFragmentComponent* FragmentComponent;
+
 public:
 	ASecondWindCharacter();
 	
@@ -118,6 +123,10 @@ protected:
 
 	/** Called for hack attack */
 	void PerformHack();
+
+	/** Debug arena controls */
+	void StartArenaDebug();
+	void NextArenaDebug();
 
 
 protected:

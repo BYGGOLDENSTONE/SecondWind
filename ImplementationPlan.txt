@@ -10,8 +10,8 @@
 - **UI System:** All UI implemented in C++ using Slate framework
 - **Blueprints:** Only for asset references and minimal configuration
 
-**Current Status:** Phase 2 - Blocking System ✅ COMPLETED
-**Next Session:** Begin Phase 3 - Dodge & Movement
+**Current Status:** Phase 5 - Arena System ✅ COMPLETED
+**Next Session:** Begin Phase 6 - Memory System
 
 =============================================================================
 
@@ -158,9 +158,9 @@
 
 =============================================================================
 
-### PHASE 5: ARENA SYSTEM (Week 6)
+### PHASE 5A: ARENA SYSTEM - BASIC (Week 6)
 **Priority:** HIGH - Game Structure
-**Status:** PENDING
+**Status:** ✅ COMPLETED
 
 **Goals:**
 - Game mode and progression structure
@@ -169,30 +169,89 @@
 - Fragment earning system
 
 **Tasks:**
-1. [ ] Game Mode Implementation
-   - Create AGameModeSecondWind (extends AGameModeBase)
+1. [✅] Game Mode Implementation
+   - Create ASecondWindArenaGameMode (extends AGameModeBase)
    - Arena progression logic and state management
    - Safe zone and training area management
 
-2. [ ] Arena Management System
+2. [✅] Arena Management System
    - Create AArenaManager for transitions
    - Arena 1-5 basic setup (identical layouts)
    - Safe zone between arenas functionality
 
-3. [ ] Enemy Base Class
+3. [✅] Enemy Base Class
    - Create AArenaEnemy (extends ACharacter)
    - Phase system implementation (1-5 phases per arena)
    - Health scaling and phase transitions (100 HP reset)
    - Finisher system with forced waiting animations
-   - Glowing weak side visual indicators
+   - Glowing weak side visual indicators (placeholder)
 
-4. [ ] Fragment System Foundation
+4. [✅] Fragment System Foundation
    - Finisher-based fragment earning calculation
    - Cumulative phase rewards (1+2+3+4 = 10 for 4-phase enemy)
    - Fragment counting and persistence preparation
 
 **Deliverable:** Working arena progression with basic enemy system
 **Testing:** Can progress through arenas, earn fragments from finishers
+
+=============================================================================
+
+### PHASE 5B: PHYSICAL ROOM SYSTEM (Week 6-7)
+**Priority:** HIGH - Enhanced Game Structure
+**Status:** PENDING
+
+**Goals:**
+- Physical room-based progression (no teleporting)
+- Collision-based room transitions
+- Door interaction system for enemy spawning
+- Linear level progression with safe zones as marketplaces
+
+**Tasks:**
+1. [ ] Room Trigger System
+   - Create ARoomTrigger (collision volumes for room transitions)
+   - OnBeginOverlap handles room entry logic
+   - Tracks player progression through rooms
+   - Manages room state (visited, cleared, active)
+
+2. [ ] Arena Door System
+   - Create AArenaDoor (interactive door actors)
+   - Door opening animation/sequence
+   - Spawns arena enemy when door opens
+   - Respawns defeated enemies on revisit
+   - Blocks return path during combat
+
+3. [ ] Physical Room Layout
+   - Create ASafeZoneRoom for marketplace areas
+   - Update ARoomManager for physical progression
+   - Design linear room connections
+   - Starting Hub → Arena 1 → Safe Zone 1 → Arena 2 → etc.
+   - Each room physically connected (no loading screens)
+
+4. [ ] Safe Zone Marketplace
+   - Convert safe zones to marketplace rooms
+   - Physical shop interface locations
+   - Memory purchase interaction points
+   - Visual indicators for available upgrades
+   - Fragment display in physical space
+
+5. [ ] Room State Management
+   - Track which rooms are cleared
+   - Enemy respawn logic for backtracking
+   - Save room progression state
+   - Lock/unlock door mechanics
+   - Visual feedback for room status
+
+**Implementation Details:**
+- Player walks through physical spaces (no teleportation)
+- Collision volumes at room boundaries trigger transitions
+- Doors provide visual/audio feedback and spawn enemies
+- Safe zones between each arena serve as marketplaces
+- Defeated enemies respawn if player backtracks
+- Linear progression ensures player moves forward
+- All rooms exist in same level (seamless experience)
+
+**Deliverable:** Physical room-based progression system
+**Testing:** Walk through rooms, trigger doors, defeat enemies, use marketplaces
 
 =============================================================================
 
@@ -374,13 +433,20 @@
 =============================================================================
 
 ### SESSION TRACKING:
-**Current Phase:** 5
-**Next Tasks:** Create arena system and game mode structure
-**Completion Status:** 4/10 phases complete
+**Current Phase:** 5B
+**Next Tasks:** Implement physical room system with collision-based transitions
+**Completion Status:** 5A/10 phases complete (5B pending)
 
 ### NOTES FOR NEXT SESSION:
-- Phase 1-4 complete: Combat, Blocking, Dodge/Movement, Special Abilities
-- Hack system fully functional with counter-attack requirements
-- Counter-attacks only work during counter windows (1s after block/dodge)
-- Phase order updated: Arena → Memory → UI → Animation → SFX/VFX → Enemy AI
-- Training dummy remains simple until all systems are in place
+- Phase 1-5A complete: Combat, Blocking, Dodge/Movement, Special Abilities, Basic Arena System
+- Phase 5B planned: Physical room progression with doors and marketplaces
+- Need to implement:
+  * ARoomTrigger for collision-based transitions
+  * AArenaDoor for enemy spawning interactions
+  * ASafeZoneRoom for marketplace areas
+  * Physical level layout with connected rooms
+- Room progression: Starting Hub → Arena 1 → Safe Zone 1 → Arena 2 → etc.
+- Safe zones will serve as marketplaces for memory purchases
+- Enemies respawn when revisiting defeated arenas
+- Phase order: 5B Physical Rooms → Memory → UI → Animation → SFX/VFX → Enemy AI
+- Training dummy remains in starting hub

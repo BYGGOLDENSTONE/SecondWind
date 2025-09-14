@@ -11,6 +11,12 @@
     <None Include="..\..\Source\SecondWindEditor.Target.cs">
       <Filter>Source</Filter>
     </None>
+    <None Include="..\..\.gitattributes" />
+    <None Include="..\..\.gitignore" />
+    <None Include="..\..\.vsconfig" />
+    <None Include="..\..\CLAUDE.md" />
+    <None Include="..\..\GDD.txt" />
+    <None Include="..\..\ImplementationPlan.txt" />
     <Filter Include="Config">
       <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
     </Filter>
@@ -52,6 +58,93 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\SecondWind\SecondWindGameMode.h">
       <Filter>Source\SecondWind</Filter>
+    </ClCompile>
+    <Filter Include="Source\SecondWind\Actors">
+      <UniqueIdentifier>{0761A560-D4D6-3D32-A153-D5377D6B61F9}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\SecondWind\Actors\Arena.cpp">
+      <Filter>Source\SecondWind\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Actors\Arena.h">
+      <Filter>Source\SecondWind\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Actors\ArenaEnemy.cpp">
+      <Filter>Source\SecondWind\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Actors\ArenaEnemy.h">
+      <Filter>Source\SecondWind\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Actors\ArenaManager.cpp">
+      <Filter>Source\SecondWind\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Actors\ArenaManager.h">
+      <Filter>Source\SecondWind\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Actors\TrainingDummy.cpp">
+      <Filter>Source\SecondWind\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Actors\TrainingDummy.h">
+      <Filter>Source\SecondWind\Actors</Filter>
+    </ClCompile>
+    <Filter Include="Source\SecondWind\Components">
+      <UniqueIdentifier>{2AB5C402-B508-3C0D-9C99-8BF7BFF3084C}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\SecondWind\Components\BlockingComponent.cpp">
+      <Filter>Source\SecondWind\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Components\BlockingComponent.h">
+      <Filter>Source\SecondWind\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Components\CameraLockOnComponent.cpp">
+      <Filter>Source\SecondWind\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Components\CameraLockOnComponent.h">
+      <Filter>Source\SecondWind\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Components\CombatComponent.cpp">
+      <Filter>Source\SecondWind\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Components\CombatComponent.h">
+      <Filter>Source\SecondWind\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Components\DodgeComponent.cpp">
+      <Filter>Source\SecondWind\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Components\DodgeComponent.h">
+      <Filter>Source\SecondWind\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Components\FragmentComponent.cpp">
+      <Filter>Source\SecondWind\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Components\FragmentComponent.h">
+      <Filter>Source\SecondWind\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Components\HackComponent.cpp">
+      <Filter>Source\SecondWind\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Components\HackComponent.h">
+      <Filter>Source\SecondWind\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Components\HackUIComponent.cpp">
+      <Filter>Source\SecondWind\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Components\HackUIComponent.h">
+      <Filter>Source\SecondWind\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Components\HealthComponent.cpp">
+      <Filter>Source\SecondWind\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Components\HealthComponent.h">
+      <Filter>Source\SecondWind\Components</Filter>
+    </ClCompile>
+    <Filter Include="Source\SecondWind\GameModes">
+      <UniqueIdentifier>{DF834EAD-24FB-3387-8B45-3B23EBCDB155}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\SecondWind\GameModes\SecondWindArenaGameMode.cpp">
+      <Filter>Source\SecondWind\GameModes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\GameModes\SecondWindArenaGameMode.h">
+      <Filter>Source\SecondWind\GameModes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
