@@ -133,27 +133,34 @@ Basic attack, health system, training dummy - All tested and working
 ### Phase 5B: Physical Room System 🚧 IN PROGRESS
 **Goal:** Replace teleport-based transitions with physical room navigation
 
-#### Planned Components:
-- `ARoomTrigger` - Collision-based room transition system
-- `AArenaDoor` - Interactive doors that spawn enemies
-- `ASafeZoneRoom` - Marketplace rooms between arenas
-- `ARoomManager` - Manages room progression and state
+#### Code Cleanup Required:
+- **Remove**: ArenaManager teleportation logic
+- **Remove**: Debug keys (1, 2) for transitions
+- **Remove**: Complex state management
+- **Keep**: FragmentComponent, ArenaEnemy base class
 
-#### Room Layout Design:
+#### New Components:
+- `AArenaDoor` - Interactive doors with proximity detection
+- `ADoorProximityTrigger` - 2-second proximity requirement for activation
+- `ASafeZoneCorridor` - Marketplace corridors between arenas
+- `ASimplifiedArenaSystem` - Minimal door and enemy management
+
+#### Gameplay Flow:
 ```
-[Starting Hub] → [Arena 1] → [Safe Zone 1] → [Arena 2] → [Safe Zone 2] → ...
-     ↓               ↓             ↓              ↓             ↓
-Training Dummy    Enemy 1     Marketplace     Enemy 2     Marketplace
+[Starting Hub] → [Door 1] → [Arena 1] → [Exit] → [Safe Zone Corridor 1] → [Door 2] → [Arena 2] → ...
+      ↓            ↓           ↓          ↓              ↓                   ↓           ↓
+Training Dummy  2sec wait   Enemy 1   Defeated      Marketplace         2sec wait    Enemy 2
+                Door Opens                                              Door Opens   (Enemy 1 despawns)
 ```
 
-#### Key Features:
-- Physical movement between rooms (no teleporting)
-- Collision volumes trigger room transitions
-- Doors open when entering arena (spawns enemy)
-- Defeated enemies respawn if revisiting rooms
-- Safe zones act as marketplaces for memory purchases
-- Linear progression (always moving forward)
-- Visual continuity throughout the level
+#### Key Mechanics:
+1. **Door Interaction**: Stand in proximity box for 2 seconds to activate
+2. **Door Opening**: Animation plays while enemy spawns behind door
+3. **Enemy Management**: Only current arena enemy exists (previous despawns on new arena entry)
+4. **Safe Zone Corridors**: Linear marketplace hallways between arenas
+5. **No Backtracking**: Doors lock after passing through
+6. **Visual Feedback**: Door proximity UI shows 2-second timer
+7. **Audio Cues**: Door opening sounds, enemy spawn alerts
 
 ### Phase 6: Memory System
 - Save/load functionality

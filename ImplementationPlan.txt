@@ -202,56 +202,57 @@
 
 **Goals:**
 - Physical room-based progression (no teleporting)
-- Collision-based room transitions
-- Door interaction system for enemy spawning
-- Linear level progression with safe zones as marketplaces
+- Proximity-based door interactions (2-second hold)
+- Simple linear progression through connected spaces
+- Safe zone corridors as marketplaces between arenas
 
-**Tasks:**
-1. [ ] Room Trigger System
-   - Create ARoomTrigger (collision volumes for room transitions)
-   - OnBeginOverlap handles room entry logic
-   - Tracks player progression through rooms
-   - Manages room state (visited, cleared, active)
+**Refactoring Tasks:**
+1. [ ] Remove Phase 5A Placeholder Code
+   - Remove teleportation logic from ArenaManager
+   - Remove debug keys (1 and 2) for arena transitions
+   - Simplify GameMode (no complex state management)
+   - Remove spawn/despawn location arrays
+   - Keep only: FragmentComponent, ArenaEnemy base class
 
+**New Implementation Tasks:**
 2. [ ] Arena Door System
-   - Create AArenaDoor (interactive door actors)
-   - Door opening animation/sequence
-   - Spawns arena enemy when door opens
-   - Respawns defeated enemies on revisit
-   - Blocks return path during combat
+   - Create AArenaDoor (interactive door with proximity detection)
+   - ADoorProximityTrigger (2-second hold requirement)
+   - Door opening sequence/animation
+   - Spawn current arena enemy when door opens
+   - Despawn previous arena enemy (if any)
+   - Lock door after player enters arena
 
-3. [ ] Physical Room Layout
-   - Create ASafeZoneRoom for marketplace areas
-   - Update ARoomManager for physical progression
-   - Design linear room connections
-   - Starting Hub → Arena 1 → Safe Zone 1 → Arena 2 → etc.
-   - Each room physically connected (no loading screens)
-
-4. [ ] Safe Zone Marketplace
-   - Convert safe zones to marketplace rooms
-   - Physical shop interface locations
+3. [ ] Safe Zone Corridors
+   - Create ASafeZoneCorridor (marketplace hallways)
+   - Linear corridor design between arenas
    - Memory purchase interaction points
-   - Visual indicators for available upgrades
-   - Fragment display in physical space
+   - Fragment display UI in physical space
+   - No combat in corridors
 
-5. [ ] Room State Management
-   - Track which rooms are cleared
-   - Enemy respawn logic for backtracking
-   - Save room progression state
-   - Lock/unlock door mechanics
-   - Visual feedback for room status
+4. [ ] Physical Level Layout
+   - Build connected room sequence in level
+   - Starting Hub (training dummy) → Door 1 → Arena 1 → Safe Corridor 1 → Door 2 → Arena 2 → etc.
+   - Each room physically exists (no teleporting)
+   - Clear visual distinction between areas
+   - One-way progression (doors lock behind)
 
-**Implementation Details:**
-- Player walks through physical spaces (no teleportation)
-- Collision volumes at room boundaries trigger transitions
-- Doors provide visual/audio feedback and spawn enemies
-- Safe zones between each arena serve as marketplaces
-- Defeated enemies respawn if player backtracks
-- Linear progression ensures player moves forward
-- All rooms exist in same level (seamless experience)
+5. [ ] Simplified Enemy Management
+   - Only one arena enemy exists at a time
+   - Current enemy spawns when door opens
+   - Previous enemy despawns automatically
+   - No complex respawn logic needed
+   - Enemy tied to specific arena room
 
-**Deliverable:** Physical room-based progression system
-**Testing:** Walk through rooms, trigger doors, defeat enemies, use marketplaces
+**Key Simplifications from 5A:**
+- No teleportation (walk everywhere)
+- No complex state machines (proximity triggers handle flow)
+- Single enemy at a time (no multi-enemy management)
+- Linear progression (no backtracking complexity)
+- Physical space tells the story (no abstract systems)
+
+**Deliverable:** Clean, physical room-based progression
+**Testing:** Walk to door → Wait 2 seconds → Door opens → Enter arena → Defeat enemy → Walk to safe zone → Purchase upgrades → Continue
 
 =============================================================================
 
