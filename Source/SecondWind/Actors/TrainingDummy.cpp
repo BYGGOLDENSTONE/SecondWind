@@ -1,5 +1,5 @@
-#include "Actors/TrainingDummy.h"
-#include "Components/HealthComponent.h"
+#include "TrainingDummy.h"
+#include "../Components/HealthComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"

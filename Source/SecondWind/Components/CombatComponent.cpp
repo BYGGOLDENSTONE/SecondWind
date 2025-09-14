@@ -1,4 +1,4 @@
-#include "Components/CombatComponent.h"
+#include "CombatComponent.h"
 #include "GameFramework/Character.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/World.h"
