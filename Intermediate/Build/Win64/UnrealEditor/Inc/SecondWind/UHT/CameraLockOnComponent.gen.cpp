@@ -55,11 +55,33 @@ struct Z_Construct_UClass_UCameraLockOnComponent_Statics
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_RotationSpeed_MetaData[] = {
 		{ "Category", "Lock-On Settings" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// Reduced for smoother camera movement\n" },
+#endif
 		{ "ModuleRelativePath", "Components/CameraLockOnComponent.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Reduced for smoother camera movement" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_InitialLockOnSpeed_MetaData[] = {
+		{ "Category", "Lock-On Settings" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// Reduced for smoother character rotation\n" },
+#endif
+		{ "ModuleRelativePath", "Components/CameraLockOnComponent.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Reduced for smoother character rotation" },
+#endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bAutoLockOn_MetaData[] = {
 		{ "Category", "Lock-On Settings" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// Even slower speed for initial lock-on\n" },
+#endif
 		{ "ModuleRelativePath", "Components/CameraLockOnComponent.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Even slower speed for initial lock-on" },
+#endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_LockedCameraPitch_MetaData[] = {
 		{ "Category", "Lock-On Settings" },
@@ -83,6 +105,7 @@ struct Z_Construct_UClass_UCameraLockOnComponent_Statics
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_ArenaEnemyLockRange;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_CameraLagSpeed;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_RotationSpeed;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_InitialLockOnSpeed;
 	static void NewProp_bAutoLockOn_SetBit(void* Obj);
 	static const UECodeGen_Private::FBoolPropertyParams NewProp_bAutoLockOn;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_LockedCameraPitch;
@@ -100,6 +123,7 @@ const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UCameraLockOnCo
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UCameraLockOnComponent_Statics::NewProp_ArenaEnemyLockRange = { "ArenaEnemyLockRange", nullptr, (EPropertyFlags)0x0040000000000001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCameraLockOnComponent, ArenaEnemyLockRange), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ArenaEnemyLockRange_MetaData), NewProp_ArenaEnemyLockRange_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UCameraLockOnComponent_Statics::NewProp_CameraLagSpeed = { "CameraLagSpeed", nullptr, (EPropertyFlags)0x0040000000000001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCameraLockOnComponent, CameraLagSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CameraLagSpeed_MetaData), NewProp_CameraLagSpeed_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UCameraLockOnComponent_Statics::NewProp_RotationSpeed = { "RotationSpeed", nullptr, (EPropertyFlags)0x0040000000000001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCameraLockOnComponent, RotationSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_RotationSpeed_MetaData), NewProp_RotationSpeed_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UCameraLockOnComponent_Statics::NewProp_InitialLockOnSpeed = { "InitialLockOnSpeed", nullptr, (EPropertyFlags)0x0040000000000001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCameraLockOnComponent, InitialLockOnSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InitialLockOnSpeed_MetaData), NewProp_InitialLockOnSpeed_MetaData) };
 void Z_Construct_UClass_UCameraLockOnComponent_Statics::NewProp_bAutoLockOn_SetBit(void* Obj)
 {
 	((UCameraLockOnComponent*)Obj)->bAutoLockOn = 1;
@@ -117,6 +141,7 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UCameraLo
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCameraLockOnComponent_Statics::NewProp_ArenaEnemyLockRange,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCameraLockOnComponent_Statics::NewProp_CameraLagSpeed,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCameraLockOnComponent_Statics::NewProp_RotationSpeed,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCameraLockOnComponent_Statics::NewProp_InitialLockOnSpeed,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCameraLockOnComponent_Statics::NewProp_bAutoLockOn,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCameraLockOnComponent_Statics::NewProp_LockedCameraPitch,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCameraLockOnComponent_Statics::NewProp_bMaintainPitchWhenLocked,
@@ -163,10 +188,10 @@ UCameraLockOnComponent::~UCameraLockOnComponent() {}
 struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_CameraLockOnComponent_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UCameraLockOnComponent, UCameraLockOnComponent::StaticClass, TEXT("UCameraLockOnComponent"), &Z_Registration_Info_UClass_UCameraLockOnComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCameraLockOnComponent), 286588794U) },
+		{ Z_Construct_UClass_UCameraLockOnComponent, UCameraLockOnComponent::StaticClass, TEXT("UCameraLockOnComponent"), &Z_Registration_Info_UClass_UCameraLockOnComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCameraLockOnComponent), 4206573070U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_CameraLockOnComponent_h_3888704323(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_CameraLockOnComponent_h_419943021(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_CameraLockOnComponent_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_CameraLockOnComponent_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

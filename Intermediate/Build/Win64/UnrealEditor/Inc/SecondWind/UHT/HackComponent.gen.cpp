@@ -404,6 +404,48 @@ DEFINE_FUNCTION(UHackComponent::execResetCounters)
 }
 // End Class UHackComponent Function ResetCounters
 
+// Begin Class UHackComponent Function SetRequiredCounters
+struct Z_Construct_UFunction_UHackComponent_SetRequiredCounters_Statics
+{
+	struct HackComponent_eventSetRequiredCounters_Parms
+	{
+		int32 NewRequirement;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Components/HackComponent.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FIntPropertyParams NewProp_NewRequirement;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UHackComponent_SetRequiredCounters_Statics::NewProp_NewRequirement = { "NewRequirement", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(HackComponent_eventSetRequiredCounters_Parms, NewRequirement), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UHackComponent_SetRequiredCounters_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UHackComponent_SetRequiredCounters_Statics::NewProp_NewRequirement,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UHackComponent_SetRequiredCounters_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UHackComponent_SetRequiredCounters_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UHackComponent, nullptr, "SetRequiredCounters", nullptr, nullptr, Z_Construct_UFunction_UHackComponent_SetRequiredCounters_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UHackComponent_SetRequiredCounters_Statics::PropPointers), sizeof(Z_Construct_UFunction_UHackComponent_SetRequiredCounters_Statics::HackComponent_eventSetRequiredCounters_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UHackComponent_SetRequiredCounters_Statics::Function_MetaDataParams), Z_Construct_UFunction_UHackComponent_SetRequiredCounters_Statics::Function_MetaDataParams) };
+static_assert(sizeof(Z_Construct_UFunction_UHackComponent_SetRequiredCounters_Statics::HackComponent_eventSetRequiredCounters_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UHackComponent_SetRequiredCounters()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UHackComponent_SetRequiredCounters_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UHackComponent::execSetRequiredCounters)
+{
+	P_GET_PROPERTY(FIntProperty,Z_Param_NewRequirement);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->SetRequiredCounters(Z_Param_NewRequirement);
+	P_NATIVE_END;
+}
+// End Class UHackComponent Function SetRequiredCounters
+
 // Begin Class UHackComponent Function TryExecuteHack
 struct Z_Construct_UFunction_UHackComponent_TryExecuteHack_Statics
 {
@@ -468,6 +510,7 @@ void UHackComponent::StaticRegisterNativesUHackComponent()
 		{ "IsHackAvailable", &UHackComponent::execIsHackAvailable },
 		{ "RegisterUnblockedHit", &UHackComponent::execRegisterUnblockedHit },
 		{ "ResetCounters", &UHackComponent::execResetCounters },
+		{ "SetRequiredCounters", &UHackComponent::execSetRequiredCounters },
 		{ "TryExecuteHack", &UHackComponent::execTryExecuteHack },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
@@ -584,6 +627,7 @@ struct Z_Construct_UClass_UHackComponent_Statics
 		{ &Z_Construct_UFunction_UHackComponent_IsHackAvailable, "IsHackAvailable" }, // 3234802785
 		{ &Z_Construct_UFunction_UHackComponent_RegisterUnblockedHit, "RegisterUnblockedHit" }, // 3380830760
 		{ &Z_Construct_UFunction_UHackComponent_ResetCounters, "ResetCounters" }, // 3185655901
+		{ &Z_Construct_UFunction_UHackComponent_SetRequiredCounters, "SetRequiredCounters" }, // 1739269271
 		{ &Z_Construct_UFunction_UHackComponent_TryExecuteHack, "TryExecuteHack" }, // 222314631
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
@@ -667,10 +711,10 @@ UHackComponent::~UHackComponent() {}
 struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HackComponent_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UHackComponent, UHackComponent::StaticClass, TEXT("UHackComponent"), &Z_Registration_Info_UClass_UHackComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UHackComponent), 3931572057U) },
+		{ Z_Construct_UClass_UHackComponent, UHackComponent::StaticClass, TEXT("UHackComponent"), &Z_Registration_Info_UClass_UHackComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UHackComponent), 579661021U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HackComponent_h_650873250(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HackComponent_h_344184594(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HackComponent_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HackComponent_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

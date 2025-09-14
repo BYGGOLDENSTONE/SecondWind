@@ -4,7 +4,6 @@
 #include "GameFramework/GameModeBase.h"
 #include "SecondWindArenaGameMode.generated.h"
 
-class ASimplifiedArenaSystem;
 class ALevelLayoutManager;
 class ATrainingDummy;
 class ASecondWindCharacter;
@@ -28,10 +27,8 @@ public:
     void OnPlayerVictory(int32 ArenaNumber, int32 FragmentsEarned);
     void OnPlayerDefeat();
 
-    ASimplifiedArenaSystem* GetSimplifiedArenaSystem() const { return SimplifiedArenaSystem; }
     ALevelLayoutManager* GetLevelLayoutManager() const { return LevelLayoutManager; }
     ATrainingDummy* GetTrainingDummy() const { return TrainingDummy; }
-    bool IsUsingLevelLayoutManager() const { return bUseLevelLayoutManager; }
 
     void SpawnTrainingDummy();
     void RemoveTrainingDummy();
@@ -39,12 +36,6 @@ public:
 protected:
     void InitializeGameSystems();
     void SetupSafeZone();
-
-    UPROPERTY(EditDefaultsOnly, Category = "Arena")
-    bool bUseLevelLayoutManager = false;
-
-    UPROPERTY(EditDefaultsOnly, Category = "Arena")
-    TSubclassOf<ASimplifiedArenaSystem> SimplifiedArenaSystemClass;
 
     UPROPERTY(EditDefaultsOnly, Category = "Arena")
     TSubclassOf<ALevelLayoutManager> LevelLayoutManagerClass;
@@ -59,9 +50,6 @@ protected:
     FVector TrainingDummySpawnLocation = FVector(-2000, 500, 100);
 
 private:
-    UPROPERTY()
-    ASimplifiedArenaSystem* SimplifiedArenaSystem = nullptr;
-
     UPROPERTY()
     ALevelLayoutManager* LevelLayoutManager = nullptr;
 

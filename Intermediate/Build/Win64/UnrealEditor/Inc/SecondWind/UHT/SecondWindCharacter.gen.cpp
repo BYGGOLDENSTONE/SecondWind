@@ -28,9 +28,43 @@ SECONDWIND_API UClass* Z_Construct_UClass_UHealthComponent_NoRegister();
 UPackage* Z_Construct_UPackage__Script_SecondWind();
 // End Cross Module References
 
+// Begin Class ASecondWindCharacter Function OnPlayerDeath
+struct Z_Construct_UFunction_ASecondWindCharacter_OnPlayerDeath_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "SecondWindCharacter.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ASecondWindCharacter_OnPlayerDeath_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_ASecondWindCharacter, nullptr, "OnPlayerDeath", nullptr, nullptr, nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00080401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ASecondWindCharacter_OnPlayerDeath_Statics::Function_MetaDataParams), Z_Construct_UFunction_ASecondWindCharacter_OnPlayerDeath_Statics::Function_MetaDataParams) };
+UFunction* Z_Construct_UFunction_ASecondWindCharacter_OnPlayerDeath()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ASecondWindCharacter_OnPlayerDeath_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ASecondWindCharacter::execOnPlayerDeath)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnPlayerDeath();
+	P_NATIVE_END;
+}
+// End Class ASecondWindCharacter Function OnPlayerDeath
+
 // Begin Class ASecondWindCharacter
 void ASecondWindCharacter::StaticRegisterNativesASecondWindCharacter()
 {
+	UClass* Class = ASecondWindCharacter::StaticClass();
+	static const FNameNativePtrPair Funcs[] = {
+		{ "OnPlayerDeath", &ASecondWindCharacter::execOnPlayerDeath },
+	};
+	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
 IMPLEMENT_CLASS_NO_AUTO_REGISTRATION(ASecondWindCharacter);
 UClass* Z_Construct_UClass_ASecondWindCharacter_NoRegister()
@@ -262,6 +296,10 @@ struct Z_Construct_UClass_ASecondWindCharacter_Statics
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_FragmentComponent;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
+	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
+		{ &Z_Construct_UFunction_ASecondWindCharacter_OnPlayerDeath, "OnPlayerDeath" }, // 707703416
+	};
+	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
 		TCppClassTypeTraits<ASecondWindCharacter>::IsAbstract,
 	};
@@ -314,11 +352,11 @@ const UECodeGen_Private::FClassParams Z_Construct_UClass_ASecondWindCharacter_St
 	"Game",
 	&StaticCppClassTypeInfo,
 	DependentSingletons,
-	nullptr,
+	FuncInfo,
 	Z_Construct_UClass_ASecondWindCharacter_Statics::PropPointers,
 	nullptr,
 	UE_ARRAY_COUNT(DependentSingletons),
-	0,
+	UE_ARRAY_COUNT(FuncInfo),
 	UE_ARRAY_COUNT(Z_Construct_UClass_ASecondWindCharacter_Statics::PropPointers),
 	0,
 	0x008000A4u,
@@ -344,10 +382,10 @@ ASecondWindCharacter::~ASecondWindCharacter() {}
 struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_ASecondWindCharacter, ASecondWindCharacter::StaticClass, TEXT("ASecondWindCharacter"), &Z_Registration_Info_UClass_ASecondWindCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ASecondWindCharacter), 689329771U) },
+		{ Z_Construct_UClass_ASecondWindCharacter, ASecondWindCharacter::StaticClass, TEXT("ASecondWindCharacter"), &Z_Registration_Info_UClass_ASecondWindCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ASecondWindCharacter), 859018122U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_1799006762(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_3717530484(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

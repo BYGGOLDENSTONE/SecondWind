@@ -1,9 +1,9 @@
 #include "ArenaEnemy.h"
 #include "../Components/HealthComponent.h"
+#include "../Systems/EnemyManager.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "ArenaZone.h"
-#include "SimplifiedArenaSystem.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/DamageEvents.h"
 
@@ -23,6 +23,15 @@ void AArenaEnemy::BeginPlay()
 {
     Super::BeginPlay();
 
+    // Register with enemy manager
+    if (UGameInstance* GameInstance = GetGameInstance())
+    {
+        if (UEnemyManager* EnemyManager = GameInstance->GetSubsystem<UEnemyManager>())
+        {
+            EnemyManager->RegisterEnemy(this);
+        }
+    }
+
     if (HealthComponent)
     {
         HealthComponent->OnPhaseTransition.AddDynamic(this, &AArenaEnemy::OnPhaseTransition);
@@ -32,6 +41,20 @@ void AArenaEnemy::BeginPlay()
     // Start attacking every 2-3 seconds
     GetWorldTimerManager().SetTimer(AttackTimerHandle, this, &AArenaEnemy::PerformAttack,
         FMath::RandRange(2.0f, 3.0f), true, 1.0f);
+}
+
+void AArenaEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    // Unregister from enemy manager
+    if (UGameInstance* GameInstance = GetGameInstance())
+    {
+        if (UEnemyManager* EnemyManager = GameInstance->GetSubsystem<UEnemyManager>())
+        {
+            EnemyManager->UnregisterEnemy(this);
+        }
+    }
+
+    Super::EndPlay(EndPlayReason);
 }
 
 void AArenaEnemy::Tick(float DeltaTime)
@@ -106,14 +129,12 @@ void AArenaEnemy::OnEnemyDeath()
             OwnerZone->OnEnemyDefeated(this);
         }
 
-        // Also notify SimplifiedArenaSystem if it exists
-        TArray<AActor*> FoundSystems;
-        UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASimplifiedArenaSystem::StaticClass(), FoundSystems);
-        if (FoundSystems.Num() > 0)
+        // Unregister from enemy manager on death
+        if (UGameInstance* GameInstance = GetGameInstance())
         {
-            if (ASimplifiedArenaSystem* ArenaSystem = Cast<ASimplifiedArenaSystem>(FoundSystems[0]))
+            if (UEnemyManager* EnemyManager = GameInstance->GetSubsystem<UEnemyManager>())
             {
-                ArenaSystem->OnEnemyDefeated(this);
+                EnemyManager->UnregisterEnemy(this);
             }
         }
     }

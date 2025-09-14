@@ -1,5 +1,4 @@
 #include "SecondWindArenaGameMode.h"
-#include "../Actors/SimplifiedArenaSystem.h"
 #include "../Actors/LevelLayoutManager.h"
 #include "../Actors/ArenaZone.h"
 #include "../Actors/TrainingDummy.h"
@@ -29,8 +28,8 @@ void ASecondWindArenaGameMode::PostLogin(APlayerController* NewPlayer)
         PlayerCharacter = Cast<ASecondWindCharacter>(PlayerPawn);
         if (PlayerCharacter)
         {
-            // If using LevelLayoutManager, spawn in Zone 0 (Starting Hub)
-            if (bUseLevelLayoutManager && LevelLayoutManager)
+            // Spawn in Zone 0 (Starting Hub) using LevelLayoutManager
+            if (LevelLayoutManager)
             {
                 if (AArenaZone* StartingHub = LevelLayoutManager->GetZone(0))
                 {
@@ -80,8 +79,8 @@ void ASecondWindArenaGameMode::OnPlayerVictory(int32 ArenaNumber, int32 Fragment
     UE_LOG(LogTemp, Warning, TEXT("GameMode: Player victorious in Arena %d! Earned %d fragments"),
         ArenaNumber, FragmentsEarned);
 
-    // Fragments handled by SimplifiedArenaSystem
-    UE_LOG(LogTemp, Warning, TEXT("Fragment tracking moved to SimplifiedArenaSystem"));
+    // Fragments handled by LevelLayoutManager zones
+    UE_LOG(LogTemp, Warning, TEXT("Fragment tracking handled by zone system"));
 
     if (ArenaNumber >= 5)
     {
@@ -110,77 +109,52 @@ void ASecondWindArenaGameMode::OnPlayerDefeat()
 
 void ASecondWindArenaGameMode::SpawnTrainingDummy()
 {
-    // Training dummy spawned by SimplifiedArenaSystem
-    UE_LOG(LogTemp, Warning, TEXT("Training dummy spawning moved to SimplifiedArenaSystem"));
+    // Training dummy should be placed manually in editor
+    UE_LOG(LogTemp, Warning, TEXT("Training dummy should be placed manually in editor"));
 }
 
 void ASecondWindArenaGameMode::RemoveTrainingDummy()
 {
-    // Training dummy removal handled by SimplifiedArenaSystem
-    UE_LOG(LogTemp, Warning, TEXT("Training dummy removal moved to SimplifiedArenaSystem"));
+    // Training dummy removal not needed with manual placement
+    UE_LOG(LogTemp, Warning, TEXT("Training dummy removal not needed with manual placement"));
 }
 
 void ASecondWindArenaGameMode::InitializeGameSystems()
 {
-    if (bUseLevelLayoutManager)
+    // Always use LevelLayoutManager (Phase 5C system)
+    TArray<AActor*> FoundManagers;
+    UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALevelLayoutManager::StaticClass(), FoundManagers);
+
+    if (FoundManagers.Num() > 0)
     {
-        TArray<AActor*> FoundManagers;
-        UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALevelLayoutManager::StaticClass(), FoundManagers);
-
-        if (FoundManagers.Num() > 0)
-        {
-            LevelLayoutManager = Cast<ALevelLayoutManager>(FoundManagers[0]);
-            UE_LOG(LogTemp, Warning, TEXT("Using pre-placed LevelLayoutManager"));
-        }
-        else if (LevelLayoutManagerClass)
-        {
-            FActorSpawnParameters SpawnParams;
-            SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-            LevelLayoutManager = GetWorld()->SpawnActor<ALevelLayoutManager>(
-                LevelLayoutManagerClass,
-                FVector::ZeroVector,
-                FRotator::ZeroRotator,
-                SpawnParams
-            );
-
-            if (LevelLayoutManager)
-            {
-                UE_LOG(LogTemp, Warning, TEXT("Spawned LevelLayoutManager"));
-            }
-        }
-        else
-        {
-            UE_LOG(LogTemp, Error, TEXT("No LevelLayoutManager found or class set"));
-        }
+        LevelLayoutManager = Cast<ALevelLayoutManager>(FoundManagers[0]);
+        UE_LOG(LogTemp, Warning, TEXT("Using pre-placed LevelLayoutManager"));
     }
-    else
+    else if (LevelLayoutManagerClass)
     {
-        if (!SimplifiedArenaSystemClass)
-        {
-            UE_LOG(LogTemp, Error, TEXT("No SimplifiedArenaSystem class set in GameMode"));
-            return;
-        }
-
         FActorSpawnParameters SpawnParams;
         SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-        SimplifiedArenaSystem = GetWorld()->SpawnActor<ASimplifiedArenaSystem>(
-            SimplifiedArenaSystemClass,
+        LevelLayoutManager = GetWorld()->SpawnActor<ALevelLayoutManager>(
+            LevelLayoutManagerClass,
             FVector::ZeroVector,
             FRotator::ZeroRotator,
             SpawnParams
         );
 
-        if (SimplifiedArenaSystem)
+        if (LevelLayoutManager)
         {
-            UE_LOG(LogTemp, Warning, TEXT("Simplified Arena System initialized"));
+            UE_LOG(LogTemp, Warning, TEXT("Spawned LevelLayoutManager"));
         }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("No LevelLayoutManager found or class set"));
     }
 }
 
 void ASecondWindArenaGameMode::SetupSafeZone()
 {
-    // Safe zone setup handled by SimplifiedArenaSystem
-    UE_LOG(LogTemp, Warning, TEXT("Safe zone setup moved to SimplifiedArenaSystem"));
+    // Safe zones are pre-placed in the level as corridors
+    UE_LOG(LogTemp, Warning, TEXT("Safe zones are pre-placed in the level"));
 }

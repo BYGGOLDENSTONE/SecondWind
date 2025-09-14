@@ -13,10 +13,11 @@ void EmptyLinkFunctionForGeneratedCodeSecondWindArenaGameMode() {}
 COREUOBJECT_API UClass* Z_Construct_UClass_UClass();
 COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FVector();
 ENGINE_API UClass* Z_Construct_UClass_AGameModeBase();
-SECONDWIND_API UClass* Z_Construct_UClass_AArenaManager_NoRegister();
+SECONDWIND_API UClass* Z_Construct_UClass_ALevelLayoutManager_NoRegister();
 SECONDWIND_API UClass* Z_Construct_UClass_ASecondWindArenaGameMode();
 SECONDWIND_API UClass* Z_Construct_UClass_ASecondWindArenaGameMode_NoRegister();
 SECONDWIND_API UClass* Z_Construct_UClass_ASecondWindCharacter_NoRegister();
+SECONDWIND_API UClass* Z_Construct_UClass_ASimplifiedArenaSystem_NoRegister();
 SECONDWIND_API UClass* Z_Construct_UClass_ATrainingDummy_NoRegister();
 UPackage* Z_Construct_UPackage__Script_SecondWind();
 // End Cross Module References
@@ -39,7 +40,15 @@ struct Z_Construct_UClass_ASecondWindArenaGameMode_Statics
 		{ "ModuleRelativePath", "GameModes/SecondWindArenaGameMode.h" },
 		{ "ShowCategories", "Input|MouseInput Input|TouchInput" },
 	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ArenaManagerClass_MetaData[] = {
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bUseLevelLayoutManager_MetaData[] = {
+		{ "Category", "Arena" },
+		{ "ModuleRelativePath", "GameModes/SecondWindArenaGameMode.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_SimplifiedArenaSystemClass_MetaData[] = {
+		{ "Category", "Arena" },
+		{ "ModuleRelativePath", "GameModes/SecondWindArenaGameMode.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_LevelLayoutManagerClass_MetaData[] = {
 		{ "Category", "Arena" },
 		{ "ModuleRelativePath", "GameModes/SecondWindArenaGameMode.h" },
 	};
@@ -55,7 +64,10 @@ struct Z_Construct_UClass_ASecondWindArenaGameMode_Statics
 		{ "Category", "Spawning" },
 		{ "ModuleRelativePath", "GameModes/SecondWindArenaGameMode.h" },
 	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ArenaManager_MetaData[] = {
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_SimplifiedArenaSystem_MetaData[] = {
+		{ "ModuleRelativePath", "GameModes/SecondWindArenaGameMode.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_LevelLayoutManager_MetaData[] = {
 		{ "ModuleRelativePath", "GameModes/SecondWindArenaGameMode.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TrainingDummy_MetaData[] = {
@@ -71,11 +83,15 @@ struct Z_Construct_UClass_ASecondWindArenaGameMode_Statics
 		{ "ModuleRelativePath", "GameModes/SecondWindArenaGameMode.h" },
 	};
 #endif // WITH_METADATA
-	static const UECodeGen_Private::FClassPropertyParams NewProp_ArenaManagerClass;
+	static void NewProp_bUseLevelLayoutManager_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_bUseLevelLayoutManager;
+	static const UECodeGen_Private::FClassPropertyParams NewProp_SimplifiedArenaSystemClass;
+	static const UECodeGen_Private::FClassPropertyParams NewProp_LevelLayoutManagerClass;
 	static const UECodeGen_Private::FClassPropertyParams NewProp_TrainingDummyClass;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_SafeZoneSpawnLocation;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_TrainingDummySpawnLocation;
-	static const UECodeGen_Private::FObjectPropertyParams NewProp_ArenaManager;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_SimplifiedArenaSystem;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_LevelLayoutManager;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_TrainingDummy;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_PlayerCharacter;
 	static void NewProp_bInSafeZone_SetBit(void* Obj);
@@ -88,11 +104,18 @@ struct Z_Construct_UClass_ASecondWindArenaGameMode_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
-const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_ArenaManagerClass = { "ArenaManagerClass", nullptr, (EPropertyFlags)0x0024080000010001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASecondWindArenaGameMode, ArenaManagerClass), Z_Construct_UClass_UClass, Z_Construct_UClass_AArenaManager_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ArenaManagerClass_MetaData), NewProp_ArenaManagerClass_MetaData) };
+void Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_bUseLevelLayoutManager_SetBit(void* Obj)
+{
+	((ASecondWindArenaGameMode*)Obj)->bUseLevelLayoutManager = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_bUseLevelLayoutManager = { "bUseLevelLayoutManager", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(ASecondWindArenaGameMode), &Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_bUseLevelLayoutManager_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bUseLevelLayoutManager_MetaData), NewProp_bUseLevelLayoutManager_MetaData) };
+const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_SimplifiedArenaSystemClass = { "SimplifiedArenaSystemClass", nullptr, (EPropertyFlags)0x0024080000010001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASecondWindArenaGameMode, SimplifiedArenaSystemClass), Z_Construct_UClass_UClass, Z_Construct_UClass_ASimplifiedArenaSystem_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SimplifiedArenaSystemClass_MetaData), NewProp_SimplifiedArenaSystemClass_MetaData) };
+const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_LevelLayoutManagerClass = { "LevelLayoutManagerClass", nullptr, (EPropertyFlags)0x0024080000010001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASecondWindArenaGameMode, LevelLayoutManagerClass), Z_Construct_UClass_UClass, Z_Construct_UClass_ALevelLayoutManager_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_LevelLayoutManagerClass_MetaData), NewProp_LevelLayoutManagerClass_MetaData) };
 const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_TrainingDummyClass = { "TrainingDummyClass", nullptr, (EPropertyFlags)0x0024080000010001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASecondWindArenaGameMode, TrainingDummyClass), Z_Construct_UClass_UClass, Z_Construct_UClass_ATrainingDummy_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TrainingDummyClass_MetaData), NewProp_TrainingDummyClass_MetaData) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_SafeZoneSpawnLocation = { "SafeZoneSpawnLocation", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASecondWindArenaGameMode, SafeZoneSpawnLocation), Z_Construct_UScriptStruct_FVector, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SafeZoneSpawnLocation_MetaData), NewProp_SafeZoneSpawnLocation_MetaData) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_TrainingDummySpawnLocation = { "TrainingDummySpawnLocation", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASecondWindArenaGameMode, TrainingDummySpawnLocation), Z_Construct_UScriptStruct_FVector, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TrainingDummySpawnLocation_MetaData), NewProp_TrainingDummySpawnLocation_MetaData) };
-const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_ArenaManager = { "ArenaManager", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASecondWindArenaGameMode, ArenaManager), Z_Construct_UClass_AArenaManager_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ArenaManager_MetaData), NewProp_ArenaManager_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_SimplifiedArenaSystem = { "SimplifiedArenaSystem", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASecondWindArenaGameMode, SimplifiedArenaSystem), Z_Construct_UClass_ASimplifiedArenaSystem_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SimplifiedArenaSystem_MetaData), NewProp_SimplifiedArenaSystem_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_LevelLayoutManager = { "LevelLayoutManager", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASecondWindArenaGameMode, LevelLayoutManager), Z_Construct_UClass_ALevelLayoutManager_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_LevelLayoutManager_MetaData), NewProp_LevelLayoutManager_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_TrainingDummy = { "TrainingDummy", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASecondWindArenaGameMode, TrainingDummy), Z_Construct_UClass_ATrainingDummy_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TrainingDummy_MetaData), NewProp_TrainingDummy_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_PlayerCharacter = { "PlayerCharacter", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASecondWindArenaGameMode, PlayerCharacter), Z_Construct_UClass_ASecondWindCharacter_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PlayerCharacter_MetaData), NewProp_PlayerCharacter_MetaData) };
 void Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_bInSafeZone_SetBit(void* Obj)
@@ -102,11 +125,14 @@ void Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_bInSafeZone_Se
 const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_bInSafeZone = { "bInSafeZone", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(ASecondWindArenaGameMode), &Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_bInSafeZone_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bInSafeZone_MetaData), NewProp_bInSafeZone_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_CurrentArenaProgress = { "CurrentArenaProgress", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASecondWindArenaGameMode, CurrentArenaProgress), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CurrentArenaProgress_MetaData), NewProp_CurrentArenaProgress_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_ASecondWindArenaGameMode_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_ArenaManagerClass,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_bUseLevelLayoutManager,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_SimplifiedArenaSystemClass,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_LevelLayoutManagerClass,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_TrainingDummyClass,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_SafeZoneSpawnLocation,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_TrainingDummySpawnLocation,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_ArenaManager,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_SimplifiedArenaSystem,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_LevelLayoutManager,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_TrainingDummy,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_PlayerCharacter,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASecondWindArenaGameMode_Statics::NewProp_bInSafeZone,
@@ -153,10 +179,10 @@ ASecondWindArenaGameMode::~ASecondWindArenaGameMode() {}
 struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_GameModes_SecondWindArenaGameMode_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_ASecondWindArenaGameMode, ASecondWindArenaGameMode::StaticClass, TEXT("ASecondWindArenaGameMode"), &Z_Registration_Info_UClass_ASecondWindArenaGameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ASecondWindArenaGameMode), 3621966481U) },
+		{ Z_Construct_UClass_ASecondWindArenaGameMode, ASecondWindArenaGameMode::StaticClass, TEXT("ASecondWindArenaGameMode"), &Z_Registration_Info_UClass_ASecondWindArenaGameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ASecondWindArenaGameMode), 1905205759U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_GameModes_SecondWindArenaGameMode_h_666684238(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_GameModes_SecondWindArenaGameMode_h_1054410529(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_GameModes_SecondWindArenaGameMode_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_GameModes_SecondWindArenaGameMode_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

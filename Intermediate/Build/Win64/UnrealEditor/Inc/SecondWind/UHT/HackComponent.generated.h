@@ -31,6 +31,7 @@ SECONDWIND_API void FOnCountersReset_DelegateWrapper(const FMulticastScriptDeleg
 
 
 #define FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HackComponent_h_15_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execSetRequiredCounters); \
 	DECLARE_FUNCTION(execGetUnblockedHits); \
 	DECLARE_FUNCTION(execGetRequiredCounters); \
 	DECLARE_FUNCTION(execGetCurrentCounters); \

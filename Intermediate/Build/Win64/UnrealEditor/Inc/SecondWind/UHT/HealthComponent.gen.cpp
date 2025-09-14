@@ -355,6 +355,35 @@ DEFINE_FUNCTION(UHealthComponent::execGetMaxPhases)
 }
 // End Class UHealthComponent Function GetMaxPhases
 
+// Begin Class UHealthComponent Function HealToFull
+struct Z_Construct_UFunction_UHealthComponent_HealToFull_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Components/HealthComponent.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UHealthComponent_HealToFull_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UHealthComponent, nullptr, "HealToFull", nullptr, nullptr, nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UHealthComponent_HealToFull_Statics::Function_MetaDataParams), Z_Construct_UFunction_UHealthComponent_HealToFull_Statics::Function_MetaDataParams) };
+UFunction* Z_Construct_UFunction_UHealthComponent_HealToFull()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UHealthComponent_HealToFull_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UHealthComponent::execHealToFull)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HealToFull();
+	P_NATIVE_END;
+}
+// End Class UHealthComponent Function HealToFull
+
 // Begin Class UHealthComponent Function IsAlive
 struct Z_Construct_UFunction_UHealthComponent_IsAlive_Statics
 {
@@ -591,6 +620,7 @@ void UHealthComponent::StaticRegisterNativesUHealthComponent()
 		{ "GetCurrentPhase", &UHealthComponent::execGetCurrentPhase },
 		{ "GetMaxHealth", &UHealthComponent::execGetMaxHealth },
 		{ "GetMaxPhases", &UHealthComponent::execGetMaxPhases },
+		{ "HealToFull", &UHealthComponent::execHealToFull },
 		{ "IsAlive", &UHealthComponent::execIsAlive },
 		{ "ResetHealth", &UHealthComponent::execResetHealth },
 		{ "SetBlockingComponent", &UHealthComponent::execSetBlockingComponent },
@@ -656,6 +686,7 @@ struct Z_Construct_UClass_UHealthComponent_Statics
 		{ &Z_Construct_UFunction_UHealthComponent_GetCurrentPhase, "GetCurrentPhase" }, // 1773731663
 		{ &Z_Construct_UFunction_UHealthComponent_GetMaxHealth, "GetMaxHealth" }, // 3108686473
 		{ &Z_Construct_UFunction_UHealthComponent_GetMaxPhases, "GetMaxPhases" }, // 47949175
+		{ &Z_Construct_UFunction_UHealthComponent_HealToFull, "HealToFull" }, // 377243087
 		{ &Z_Construct_UFunction_UHealthComponent_IsAlive, "IsAlive" }, // 3499508117
 		{ &Z_Construct_UFunction_UHealthComponent_ResetHealth, "ResetHealth" }, // 4262297127
 		{ &Z_Construct_UFunction_UHealthComponent_SetBlockingComponent, "SetBlockingComponent" }, // 2762564697
@@ -725,10 +756,10 @@ UHealthComponent::~UHealthComponent() {}
 struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HealthComponent_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UHealthComponent, UHealthComponent::StaticClass, TEXT("UHealthComponent"), &Z_Registration_Info_UClass_UHealthComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UHealthComponent), 1146989853U) },
+		{ Z_Construct_UClass_UHealthComponent, UHealthComponent::StaticClass, TEXT("UHealthComponent"), &Z_Registration_Info_UClass_UHealthComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UHealthComponent), 2705656183U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HealthComponent_h_4015060838(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HealthComponent_h_3092601797(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HealthComponent_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HealthComponent_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

@@ -8,6 +8,7 @@
 #include "DrawDebugHelpers.h"
 #include "SecondWind/Actors/TrainingDummy.h"
 #include "SecondWind/Actors/ArenaEnemy.h"
+#include "SecondWind/Systems/EnemyManager.h"
 #include "HealthComponent.h"
 
 UCameraLockOnComponent::UCameraLockOnComponent()
@@ -138,15 +139,15 @@ AActor* UCameraLockOnComponent::FindBestTarget() const
 
     TArray<AActor*> PotentialTargets;
 
-    // Find all training dummies
-    TArray<AActor*> TrainingDummies;
-    UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATrainingDummy::StaticClass(), TrainingDummies);
-    PotentialTargets.Append(TrainingDummies);
-
-    // Find arena enemies
-    TArray<AActor*> ArenaEnemies;
-    UGameplayStatics::GetAllActorsOfClass(GetWorld(), AArenaEnemy::StaticClass(), ArenaEnemies);
-    PotentialTargets.Append(ArenaEnemies);
+    // Get all registered enemies from the enemy manager
+    if (UGameInstance* GameInstance = OwnerCharacter->GetGameInstance())
+    {
+        if (UEnemyManager* EnemyManager = GameInstance->GetSubsystem<UEnemyManager>())
+        {
+            // Get enemies within max lock range (use arena enemy range as it's larger)
+            PotentialTargets = EnemyManager->GetEnemiesInRange(OwnerCharacter->GetActorLocation(), ArenaEnemyLockRange);
+        }
+    }
 
     AActor* BestTarget = nullptr;
     float BestScore = FLT_MAX;

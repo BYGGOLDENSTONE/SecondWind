@@ -39,6 +39,7 @@ SECONDWIND_API void FOnDeath_DelegateWrapper(const FMulticastScriptDelegate& OnD
 
 
 #define FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HealthComponent_h_19_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execHealToFull); \
 	DECLARE_FUNCTION(execSetBlockingComponent); \
 	DECLARE_FUNCTION(execSetMaxPhases); \
 	DECLARE_FUNCTION(execResetHealth); \

@@ -13,6 +13,7 @@ void EmptyLinkFunctionForGeneratedCodeArenaEnemy() {}
 ENGINE_API UClass* Z_Construct_UClass_ACharacter();
 SECONDWIND_API UClass* Z_Construct_UClass_AArenaEnemy();
 SECONDWIND_API UClass* Z_Construct_UClass_AArenaEnemy_NoRegister();
+SECONDWIND_API UClass* Z_Construct_UClass_AArenaZone_NoRegister();
 SECONDWIND_API UClass* Z_Construct_UClass_UHealthComponent_NoRegister();
 UPackage* Z_Construct_UPackage__Script_SecondWind();
 // End Cross Module References
@@ -123,6 +124,9 @@ struct Z_Construct_UClass_AArenaEnemy_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bInFinisherState_MetaData[] = {
 		{ "ModuleRelativePath", "Actors/ArenaEnemy.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OwnerZone_MetaData[] = {
+		{ "ModuleRelativePath", "Actors/ArenaEnemy.h" },
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_HealthComponent;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_BaseDamage;
@@ -132,6 +136,7 @@ struct Z_Construct_UClass_AArenaEnemy_Statics
 	static const UECodeGen_Private::FIntPropertyParams NewProp_MaxPhases;
 	static void NewProp_bInFinisherState_SetBit(void* Obj);
 	static const UECodeGen_Private::FBoolPropertyParams NewProp_bInFinisherState;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_OwnerZone;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
@@ -155,6 +160,7 @@ void Z_Construct_UClass_AArenaEnemy_Statics::NewProp_bInFinisherState_SetBit(voi
 	((AArenaEnemy*)Obj)->bInFinisherState = 1;
 }
 const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_AArenaEnemy_Statics::NewProp_bInFinisherState = { "bInFinisherState", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(AArenaEnemy), &Z_Construct_UClass_AArenaEnemy_Statics::NewProp_bInFinisherState_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bInFinisherState_MetaData), NewProp_bInFinisherState_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AArenaEnemy_Statics::NewProp_OwnerZone = { "OwnerZone", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaEnemy, OwnerZone), Z_Construct_UClass_AArenaZone_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OwnerZone_MetaData), NewProp_OwnerZone_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AArenaEnemy_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaEnemy_Statics::NewProp_HealthComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaEnemy_Statics::NewProp_BaseDamage,
@@ -163,6 +169,7 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AArenaEne
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaEnemy_Statics::NewProp_CurrentPhase,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaEnemy_Statics::NewProp_MaxPhases,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaEnemy_Statics::NewProp_bInFinisherState,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaEnemy_Statics::NewProp_OwnerZone,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AArenaEnemy_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_AArenaEnemy_Statics::DependentSingletons[])() = {
@@ -205,10 +212,10 @@ AArenaEnemy::~AArenaEnemy() {}
 struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AArenaEnemy, AArenaEnemy::StaticClass, TEXT("AArenaEnemy"), &Z_Registration_Info_UClass_AArenaEnemy, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AArenaEnemy), 1388650482U) },
+		{ Z_Construct_UClass_AArenaEnemy, AArenaEnemy::StaticClass, TEXT("AArenaEnemy"), &Z_Registration_Info_UClass_AArenaEnemy, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AArenaEnemy), 157945514U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_1758790078(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_3917734091(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

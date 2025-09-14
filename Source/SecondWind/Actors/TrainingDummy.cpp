@@ -1,6 +1,7 @@
 #include "TrainingDummy.h"
 #include "../Components/HealthComponent.h"
 #include "../Components/CombatComponent.h"
+#include "../Systems/EnemyManager.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -33,6 +34,15 @@ void ATrainingDummy::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Register with enemy manager
+	if (UGameInstance* GameInstance = GetGameInstance())
+	{
+		if (UEnemyManager* EnemyManager = GameInstance->GetSubsystem<UEnemyManager>())
+		{
+			EnemyManager->RegisterEnemy(this);
+		}
+	}
+
 	if (HealthComponent)
 	{
 		HealthComponent->OnHealthDepleted.AddDynamic(this, &ATrainingDummy::OnHealthDepleted);
@@ -43,6 +53,20 @@ void ATrainingDummy::BeginPlay()
 	{
 		GetWorldTimerManager().SetTimer(AttackTimerHandle, this, &ATrainingDummy::PerformTestAttack, AttackInterval, true, AttackInterval);
 	}
+}
+
+void ATrainingDummy::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	// Unregister from enemy manager
+	if (UGameInstance* GameInstance = GetGameInstance())
+	{
+		if (UEnemyManager* EnemyManager = GameInstance->GetSubsystem<UEnemyManager>())
+		{
+			EnemyManager->UnregisterEnemy(this);
+		}
+	}
+
+	Super::EndPlay(EndPlayReason);
 }
 
 void ATrainingDummy::Tick(float DeltaTime)
@@ -85,6 +109,15 @@ void ATrainingDummy::Respawn()
 
 	SetActorLocation(GetActorLocation() + FVector(0, 0, 100));
 	SetActorLocation(GetActorLocation() - FVector(0, 0, 100));
+
+	// Re-register with enemy manager after respawn
+	if (UGameInstance* GameInstance = GetGameInstance())
+	{
+		if (UEnemyManager* EnemyManager = GameInstance->GetSubsystem<UEnemyManager>())
+		{
+			EnemyManager->RegisterEnemy(this);
+		}
+	}
 
 	if (bAutoAttackPlayer)
 	{
