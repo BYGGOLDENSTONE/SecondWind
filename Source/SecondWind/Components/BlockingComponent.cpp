@@ -75,7 +75,8 @@ void UBlockingComponent::StartBlocking()
 	{
 		bIsBlocking = true;
 		bBlockingJustStarted = true;
-		AccumulatedMouseX = 0.0f;
+		ReferenceMouseX = 0.0f;  // Reset reference position
+		CurrentMouseX = 0.0f;     // Reset current position
 		CurrentBlockDirection = EBlockDirection::Center;
 
 		UE_LOG(LogTemp, Log, TEXT("Started blocking"));
@@ -88,7 +89,8 @@ void UBlockingComponent::StopBlocking()
 	{
 		bIsBlocking = false;
 		CurrentBlockDirection = EBlockDirection::Center;
-		AccumulatedMouseX = 0.0f;
+		ReferenceMouseX = 0.0f;
+		CurrentMouseX = 0.0f;
 
 		bInCounterWindow = false;
 		CounterWindowTimer = 0.0f;
@@ -105,24 +107,31 @@ void UBlockingComponent::UpdateBlockDirection(float MouseX)
 		return;
 	}
 
-	if (bBlockingJustStarted)
-	{
-		InitialMouseX = MouseX;
-		return;
-	}
+	// Accumulate mouse movement to track position
+	CurrentMouseX += MouseX * MouseSensitivity * 0.5f;
 
-	AccumulatedMouseX += MouseX * MouseSensitivity;
+	// Calculate position relative to reference (when blocking started)
+	float RelativePosition = CurrentMouseX - ReferenceMouseX;
 
-	float ClampedMouseX = FMath::Clamp(AccumulatedMouseX, -1.0f, 1.0f);
+	// Normalize the relative position for block direction calculation
+	// Using 30 units for easier side block activation
+	float NormalizedPosition = FMath::Clamp(RelativePosition / 30.0f, -1.0f, 1.0f);
 
-	EBlockDirection NewDirection = CalculateBlockDirection(ClampedMouseX);
+	EBlockDirection NewDirection = CalculateBlockDirection(NormalizedPosition);
 
 	if (NewDirection != CurrentBlockDirection)
 	{
 		CurrentBlockDirection = NewDirection;
-		UE_LOG(LogTemp, Log, TEXT("Block direction changed to: %s"),
+		UE_LOG(LogTemp, Log, TEXT("Block direction changed to: %s (Relative Pos: %.1f, Normalized: %.3f)"),
 			CurrentBlockDirection == EBlockDirection::Left ? TEXT("Left") :
-			CurrentBlockDirection == EBlockDirection::Right ? TEXT("Right") : TEXT("Center"));
+			CurrentBlockDirection == EBlockDirection::Right ? TEXT("Right") : TEXT("Center"),
+			RelativePosition, NormalizedPosition);
+	}
+
+	// Reset the flag after first update
+	if (bBlockingJustStarted)
+	{
+		bBlockingJustStarted = false;
 	}
 }
 
@@ -169,6 +178,10 @@ void UBlockingComponent::UpdateCounterWindow(float DeltaTime)
 
 EBlockDirection UBlockingComponent::CalculateBlockDirection(float NormalizedMouseX) const
 {
+	// With threshold of 0.4:
+	// Left: < -0.4 (move mouse left from starting position)
+	// Center: -0.4 to 0.4 (stay near starting position - easy to maintain)
+	// Right: > 0.4 (move mouse right from starting position)
 	if (NormalizedMouseX < -BlockZoneThreshold)
 	{
 		return EBlockDirection::Left;

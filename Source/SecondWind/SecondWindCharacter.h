@@ -15,6 +15,8 @@ struct FInputActionValue;
 class UCombatComponent;
 class UHealthComponent;
 class UBlockingComponent;
+class UDodgeComponent;
+class UCameraLockOnComponent;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
@@ -43,6 +45,10 @@ class ASecondWindCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* BlockAction;
 
+	/** Dodge Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* DodgeAction;
+
 	/** Move Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* MoveAction;
@@ -63,11 +69,21 @@ class ASecondWindCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UBlockingComponent* BlockingComponent;
 
+	/** Dodge Component */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UDodgeComponent* DodgeComponent;
+
+	/** Camera Lock-On Component */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UCameraLockOnComponent* CameraLockOnComponent;
+
 public:
 	ASecondWindCharacter();
 	
 
 protected:
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
@@ -81,6 +97,12 @@ protected:
 	/** Called for block input */
 	void StartBlocking();
 	void StopBlocking();
+
+	/** Called for dodge input */
+	void Dodge();
+
+	/** Called for leap attack during dash */
+	void TryLeapAttack();
 			
 
 protected:

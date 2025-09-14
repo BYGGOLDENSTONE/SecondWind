@@ -13,6 +13,8 @@
 #include "Components/CombatComponent.h"
 #include "Components/HealthComponent.h"
 #include "Components/BlockingComponent.h"
+#include "Components/DodgeComponent.h"
+#include "Components/CameraLockOnComponent.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -21,6 +23,8 @@ DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 ASecondWindCharacter::ASecondWindCharacter()
 {
+	PrimaryActorTick.bCanEverTick = true;
+
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 		
@@ -30,8 +34,9 @@ ASecondWindCharacter::ASecondWindCharacter()
 	bUseControllerRotationRoll = false;
 
 	// Configure character movement
-	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
+	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f); // ...at this rotation rate
+	GetCharacterMovement()->bUseControllerDesiredRotation = false; // We'll handle rotation manually when locked on
 
 	// Note: For faster iteration times these variables, and many more, can be tweaked in the Character Blueprint
 	// instead of recompiling to adjust them
@@ -68,6 +73,12 @@ ASecondWindCharacter::ASecondWindCharacter()
 	// Create blocking component
 	BlockingComponent = CreateDefaultSubobject<UBlockingComponent>(TEXT("BlockingComponent"));
 
+	// Create dodge component
+	DodgeComponent = CreateDefaultSubobject<UDodgeComponent>(TEXT("DodgeComponent"));
+
+	// Create camera lock-on component
+	CameraLockOnComponent = CreateDefaultSubobject<UCameraLockOnComponent>(TEXT("CameraLockOnComponent"));
+
 	// Link components
 	if (CombatComponent && BlockingComponent)
 	{
@@ -76,6 +87,32 @@ ASecondWindCharacter::ASecondWindCharacter()
 	if (HealthComponent && BlockingComponent)
 	{
 		HealthComponent->SetBlockingComponent(BlockingComponent);
+	}
+}
+
+void ASecondWindCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void ASecondWindCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	// Dynamically adjust rotation behavior based on lock-on state
+	if (CameraLockOnComponent && GetCharacterMovement())
+	{
+		if (CameraLockOnComponent->IsLockedOn())
+		{
+			// Disable orient to movement when locked on
+			// Character rotation will be handled by CameraLockOnComponent
+			GetCharacterMovement()->bOrientRotationToMovement = false;
+		}
+		else
+		{
+			// Enable normal rotation when not locked on
+			GetCharacterMovement()->bOrientRotationToMovement = true;
+		}
 	}
 }
 
@@ -108,8 +145,12 @@ void ASecondWindCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 		EnhancedInputComponent->BindAction(BlockAction, ETriggerEvent::Started, this, &ASecondWindCharacter::StartBlocking);
 		EnhancedInputComponent->BindAction(BlockAction, ETriggerEvent::Completed, this, &ASecondWindCharacter::StopBlocking);
 
+		// Dodge
+		EnhancedInputComponent->BindAction(DodgeAction, ETriggerEvent::Started, this, &ASecondWindCharacter::Dodge);
+
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASecondWindCharacter::Move);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Completed, this, &ASecondWindCharacter::Move);
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASecondWindCharacter::Look);
@@ -125,21 +166,33 @@ void ASecondWindCharacter::Move(const FInputActionValue& Value)
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
+	// Pass movement input to dodge component for tracking
+	if (DodgeComponent)
+	{
+		DodgeComponent->HandleMovementInput(Value);
+	}
+
 	if (Controller != nullptr)
 	{
-		// find out which way is forward
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
+		// Check if we're locked on and should use modified movement
+		if (CameraLockOnComponent && CameraLockOnComponent->IsLockedOn())
+		{
+			// Use modified strafe movement when locked on
+			FVector ModifiedInput = CameraLockOnComponent->GetModifiedMovementInput(FVector(MovementVector.Y, MovementVector.X, 0));
+			AddMovementInput(ModifiedInput.GetSafeNormal(), ModifiedInput.Size());
+		}
+		else
+		{
+			// Normal movement when not locked on
+			const FRotator Rotation = Controller->GetControlRotation();
+			const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-		// get forward vector
-		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	
-		// get right vector 
-		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+			const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+			const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-		// add movement 
-		AddMovementInput(ForwardDirection, MovementVector.Y);
-		AddMovementInput(RightDirection, MovementVector.X);
+			AddMovementInput(ForwardDirection, MovementVector.Y);
+			AddMovementInput(RightDirection, MovementVector.X);
+		}
 	}
 }
 
@@ -150,20 +203,50 @@ void ASecondWindCharacter::Look(const FInputActionValue& Value)
 
 	if (Controller != nullptr)
 	{
-		// add yaw and pitch input to controller
-		AddControllerYawInput(LookAxisVector.X);
-		AddControllerPitchInput(LookAxisVector.Y);
-
-		// Update block direction if blocking
-		if (BlockingComponent && BlockingComponent->IsBlocking())
+		// When locked on, mouse only controls blocking direction, not camera
+		if (CameraLockOnComponent && CameraLockOnComponent->IsLockedOn())
 		{
-			BlockingComponent->UpdateBlockDirection(LookAxisVector.X);
+			// Only update block direction when locked on
+			if (BlockingComponent && BlockingComponent->IsBlocking())
+			{
+				BlockingComponent->UpdateBlockDirection(LookAxisVector.X);
+			}
+			// Don't add controller input - camera is controlled by lock-on
+		}
+		else
+		{
+			// Normal camera control when not locked on
+			AddControllerYawInput(LookAxisVector.X);
+			AddControllerPitchInput(LookAxisVector.Y);
+
+			// Update block direction if blocking
+			if (BlockingComponent && BlockingComponent->IsBlocking())
+			{
+				BlockingComponent->UpdateBlockDirection(LookAxisVector.X);
+			}
 		}
 	}
 }
 
 void ASecondWindCharacter::Attack()
 {
+	// Check if we can perform a leap attack during dash
+	if (DodgeComponent && DodgeComponent->CanPerformLeapAttack())
+	{
+		DodgeComponent->PerformLeapAttack();
+		return;
+	}
+
+	// Check if we're in a counter window
+	if (DodgeComponent && DodgeComponent->IsInCounterWindow() && CombatComponent)
+	{
+		// Perform counter-attack
+		CombatComponent->PerformAttack();
+		UE_LOG(LogTemplateCharacter, Log, TEXT("Performing counter-attack from dodge"));
+		return;
+	}
+
+	// Normal attack
 	if (CombatComponent)
 	{
 		CombatComponent->PerformAttack();
@@ -191,5 +274,21 @@ void ASecondWindCharacter::StopBlocking()
 	{
 		BlockingComponent->StopBlocking();
 		UE_LOG(LogTemplateCharacter, Log, TEXT("Stopped blocking"));
+	}
+}
+
+void ASecondWindCharacter::Dodge()
+{
+	if (DodgeComponent)
+	{
+		DodgeComponent->HandleDodgeInput();
+	}
+}
+
+void ASecondWindCharacter::TryLeapAttack()
+{
+	if (DodgeComponent && DodgeComponent->CanPerformLeapAttack())
+	{
+		DodgeComponent->PerformLeapAttack();
 	}
 }

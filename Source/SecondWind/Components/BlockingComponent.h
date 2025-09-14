@@ -62,7 +62,7 @@ private:
 	float MouseSensitivity = 1.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Blocking")
-	float BlockZoneThreshold = 0.5f;
+	float BlockZoneThreshold = 0.4f;
 
 	bool bIsBlocking = false;
 	EBlockDirection CurrentBlockDirection = EBlockDirection::Center;
@@ -71,8 +71,8 @@ private:
 	float CounterWindowTimer = 0.0f;
 	EBlockDirection CounterDirection = EBlockDirection::None;
 
-	float AccumulatedMouseX = 0.0f;
-	float InitialMouseX = 0.0f;
+	float ReferenceMouseX = 0.0f;  // Mouse position when blocking started
+	float CurrentMouseX = 0.0f;    // Current accumulated mouse position
 	bool bBlockingJustStarted = false;
 
 	void UpdateCounterWindow(float DeltaTime);

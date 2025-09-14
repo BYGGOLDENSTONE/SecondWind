@@ -6,8 +6,8 @@
 **Core Focus:** 1v1 close-quarters combat with deep mechanics from simple abilities
 
 ## 📍 Current Status
-**Phase:** 2 of 8 - Blocking System ✅ COMPLETED
-**Next:** Phase 3 - Dodge & Movement (Week 4-5)
+**Phase:** 3 of 8 - Dodge & Movement ✅ COMPLETED
+**Next:** Phase 4 - Advanced Combat (Week 5)
 **Timeline:** 8 phases over 11 weeks
 
 ### Phase 1 Completed Components
@@ -20,10 +20,21 @@
 
 ### Phase 2 Completed Components
 - ✅ `UBlockingComponent` - Directional blocking system - Functional
-- ✅ 1D horizontal mouse control (left/center/right zones)
+- ✅ Position-based mouse control (tracks relative position from block start)
 - ✅ 40% damage reduction when blocking correctly
 - ✅ Counter-attack window system (0.5s)
-- ✅ Block zone threshold: 0.5 (±50% from center for side blocks)
+- ✅ Block zone threshold: 0.4 with 30 unit sensitivity
+
+### Phase 3 Completed Components
+- ✅ `UDodgeComponent` - Strategic dodge system - Functional
+- ✅ `UCameraLockOnComponent` - Auto lock-on system - Functional
+- ✅ Dodge mechanics (A/S/D + Space with 0.1s hold)
+- ✅ Dash system (W + Space)
+- ✅ Leap attack capability during dash
+- ✅ 1 second counter windows after dodges
+- ✅ Camera lock with fixed pitch, horizontal-only tracking
+- ✅ Strafe movement when locked on
+- ✅ Mouse input disabled for camera when locked (blocking only)
 
 ## ⚙️ Technical Requirements
 
@@ -36,26 +47,30 @@
 
 ### Combat System
 - **Movement:** 300 walk speed, no jump
-- **Camera:** Auto lock-on, no manual toggle
-  - Training Dummy: 600 units lock range (for testing)
+- **Camera:** Auto lock-on, no manual toggle ✅ IMPLEMENTED
+  - Training Dummy: 600 units lock range
   - Arena Enemies: 1500 units lock range
-  - **NOTE:** Camera lock not yet implemented - blocking system designed for locked camera
+  - Fixed pitch when locked (-20° default)
+  - Mouse controls blocking only when locked
 - **Input:** Enhanced Input with 100-300ms buffer
 - **Blocking:** RMB + horizontal mouse movement
-  - Center zone: ±50% from center (easier to trigger)
-  - Side zones: Beyond ±50% threshold
+  - Position-based: tracks mouse position relative to block start
+  - Center zone: ±40% from reference (default, easy to maintain)
+  - Side zones: Move 12+ units left/right from reference
 
 ## 📁 Project Structure
 ```
 Source/SecondWind/
 ├── Components/
-│   ├── CombatComponent.cpp/h    [Attack system]
-│   ├── HealthComponent.cpp/h    [Health/phases]
-│   ├── BlockingComponent.cpp/h  [Directional blocking]
+│   ├── CombatComponent.cpp/h        [Attack system]
+│   ├── HealthComponent.cpp/h        [Health/phases]
+│   ├── BlockingComponent.cpp/h      [Directional blocking]
+│   ├── DodgeComponent.cpp/h          [Dodge & dash mechanics]
+│   ├── CameraLockOnComponent.cpp/h  [Auto lock-on system]
 ├── Actors/
-│   ├── TrainingDummy.cpp/h      [Test enemy]
-├── SecondWindCharacter.cpp/h    [Player character]
-└── SecondWindGameMode.cpp/h     [Game mode]
+│   ├── TrainingDummy.cpp/h          [Test enemy]
+├── SecondWindCharacter.cpp/h        [Player character]
+└── SecondWindGameMode.cpp/h         [Game mode]
 ```
 
 ## 📋 Implementation Phases
@@ -70,10 +85,13 @@ Basic attack, health system, training dummy - All tested and working
 - Counter-attack windows (0.5s)
 - No parry mechanic
 
-### Phase 3: Dodge & Movement
-- Strategic dodge (A/S/D + Space)
-- Dash & leap attack (W + Space)
-- Weak side mechanics
+### Phase 3: Dodge & Movement ✅ COMPLETED
+- Strategic dodge (A/S/D + Space with 0.1s hold)
+- Dash & leap attack (W + Space, LMB during dash)
+- Camera lock-on system (auto-targeting)
+- Strafe movement when locked
+- Counter windows after dodges (1 second)
+- Weak side mechanics framework
 
 ### Phase 4: Special Abilities
 - Hack attack (6 counter requirement)
