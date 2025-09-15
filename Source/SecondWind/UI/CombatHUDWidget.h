@@ -40,10 +40,6 @@ private:
     TSharedPtr<SHorizontalBox> PlayerPhaseIndicators;
     TSharedPtr<SHorizontalBox> EnemyPhaseIndicators;
     TSharedPtr<STextBlock> FragmentCountText;
-    TSharedPtr<SVerticalBox> CounterArrowContainer;
-    TArray<TSharedPtr<SBorder>> CounterArrows;
-    TSharedPtr<SBorder> HackReadyBox;
-    TSharedPtr<STextBlock> HackReadyText;
     TSharedPtr<SOverlay> EnemyHealthContainer;
     TSharedPtr<SVerticalBox> DamageNumberContainer;
 
@@ -60,8 +56,6 @@ private:
     void CreatePhaseIndicator(TSharedPtr<SHorizontalBox> Container, int32 PhaseIndex, bool bIsActive);
     void UpdatePhaseIndicators(TSharedPtr<SHorizontalBox> Container, int32 CurrentPhase, int32 MaxPhases);
     FSlateColor GetHealthBarColor(float HealthPercent) const;
-    void UpdateCounterArrows();
-    void UpdateHackReadyIndicator();
 
     float PlayerCurrentHealth;
     float PlayerMaxHealth;
@@ -80,4 +74,13 @@ private:
     bool bInCounterWindow;
     bool bCanCounter;
     bool bHackReady;
+    bool bShowRedWarning;
+    float RedPulseTime;  // For animating the red warning
+
+    // Counter symbols UI
+    TSharedPtr<SVerticalBox> CounterSymbolContainer;
+    TArray<TSharedPtr<SBorder>> CounterSymbols;
+    TSharedPtr<STextBlock> HackReadyText;
+    void UpdateCounterSymbols();
+    FSlateColor GetCounterSymbolColor(int32 SymbolIndex) const;
 };

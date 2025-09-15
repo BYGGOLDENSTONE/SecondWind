@@ -87,6 +87,18 @@ void UHackComponent::RegisterUnblockedHit()
     UnblockedHits++;
     UE_LOG(LogTemp, Warning, TEXT("HackComponent: Unblocked hit registered. Count: %d/%d"), UnblockedHits, UnblockedHitsToReset);
 
+    // Update HUD to show warning state
+    if (UWorld* World = GetWorld())
+    {
+        if (APlayerController* PC = World->GetFirstPlayerController())
+        {
+            if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
+            {
+                HUD->UpdateHackProgress(CounterAttacks, RequiredCounters, UnblockedHits);
+            }
+        }
+    }
+
     // Check if we need to reset
     if (UnblockedHits >= UnblockedHitsToReset)
     {

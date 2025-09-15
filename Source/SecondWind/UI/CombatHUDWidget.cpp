@@ -26,6 +26,8 @@ void SCombatHUDWidget::Construct(const FArguments& InArgs)
     RequiredHackCounters = 6;
     bInCounterWindow = false;
     bCanCounter = false;
+    bShowRedWarning = false;
+    RedPulseTime = 0.0f;
 
     ChildSlot
     [
@@ -125,16 +127,55 @@ void SCombatHUDWidget::Construct(const FArguments& InArgs)
         .VAlign(VAlign_Bottom)
         .Padding(50, 0, 0, 50)
         [
-            SNew(SBox)
-            .WidthOverride(400)
-            .HeightOverride(80)
-            [
-                SNew(SVerticalBox)
+            SNew(SVerticalBox)
 
-                + SVerticalBox::Slot()
-                .AutoHeight()
+            // Counter symbols above health bar
+            + SVerticalBox::Slot()
+            .AutoHeight()
+            .HAlign(HAlign_Left)  // Align left to prevent stretching
+            .Padding(0, 0, 0, 10)
+            [
+                SNew(SBox)
+                .WidthOverride(100)  // Constrain width for counter symbols
                 [
-                    SNew(SBorder)
+                    SNew(SVerticalBox)
+
+                    // Hack Ready text (hidden by default)
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(0, 0, 0, 5)
+                    [
+                        SAssignNew(HackReadyText, STextBlock)
+                        .Text(FText::FromString("HACK READY"))
+                        .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
+                        .ColorAndOpacity(FSlateColor(FLinearColor(0.0f, 1.0f, 1.0f, 1.0f)))
+                        .Visibility(EVisibility::Hidden)
+                    ]
+
+                    // Counter symbols container
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .HAlign(HAlign_Left)  // Align symbols left
+                    [
+                        SAssignNew(CounterSymbolContainer, SVerticalBox)
+                    ]
+                ]
+            ]
+
+            // Player health bar
+            + SVerticalBox::Slot()
+            .AutoHeight()
+            [
+                SNew(SBox)
+                .WidthOverride(400)
+                .HeightOverride(80)
+                [
+                    SNew(SVerticalBox)
+
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    [
+                        SNew(SBorder)
                     .BorderImage(FCoreStyle::Get().GetBrush("ToolPanel.GroupBorder"))
                     .BorderBackgroundColor(FSlateColor(FLinearColor(0.0f, 0.0f, 0.0f, 0.7f)))
                     .Padding(4)
@@ -171,17 +212,18 @@ void SCombatHUDWidget::Construct(const FArguments& InArgs)
                             .ColorAndOpacity(FSlateColor(FLinearColor::White))
                         ]
                     ]
-                ]
+                    ]
 
-                + SVerticalBox::Slot()
-                .AutoHeight()
-                .Padding(0, 5, 0, 0)
-                [
-                    SNew(SHorizontalBox)
-                    + SHorizontalBox::Slot()
-                    .HAlign(HAlign_Left)
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(0, 5, 0, 0)
                     [
-                        SAssignNew(PlayerPhaseIndicators, SHorizontalBox)
+                        SNew(SHorizontalBox)
+                        + SHorizontalBox::Slot()
+                        .HAlign(HAlign_Left)
+                        [
+                            SAssignNew(PlayerPhaseIndicators, SHorizontalBox)
+                        ]
                     ]
                 ]
             ]
@@ -211,77 +253,49 @@ void SCombatHUDWidget::Construct(const FArguments& InArgs)
             ]
         ]
 
-        + SOverlay::Slot()
-        .HAlign(HAlign_Left)
-        .VAlign(VAlign_Center)
-        .Padding(50, 0, 0, 0)
-        [
-            SNew(SVerticalBox)
-
-            + SVerticalBox::Slot()
-            .AutoHeight()
-            [
-                SAssignNew(CounterArrowContainer, SVerticalBox)
-            ]
-
-            + SVerticalBox::Slot()
-            .AutoHeight()
-            .Padding(0, 10, 0, 0)
-            [
-                SAssignNew(HackReadyBox, SBorder)
-                .BorderImage(FCoreStyle::Get().GetBrush("ToolPanel.GroupBorder"))
-                .BorderBackgroundColor(FSlateColor(FLinearColor(0.0f, 0.0f, 0.0f, 0.7f)))
-                .Padding(10)
-                [
-                    SAssignNew(HackReadyText, STextBlock)
-                    .Text(FText::FromString("HACK READY"))
-                    .Font(FCoreStyle::GetDefaultFontStyle("Bold", 14))
-                    .ColorAndOpacity(FSlateColor(FLinearColor(0.3f, 0.3f, 0.3f, 1.0f)))
-                    .Justification(ETextJustify::Center)
-                ]
-            ]
-        ]
     ];
 
     UpdatePhaseIndicators(PlayerPhaseIndicators, PlayerCurrentPhase, PlayerMaxPhases);
     UpdatePhaseIndicators(EnemyPhaseIndicators, EnemyCurrentPhase, EnemyMaxPhases);
 
-    // Initialize counter arrows (6 arrows for 6 counters needed)
-    CounterArrows.Empty();
-    for (int32 i = 0; i < 6; ++i)
-    {
-        TSharedPtr<SBorder> ArrowBorder;
-        CounterArrowContainer->AddSlot()
-        .AutoHeight()
-        .Padding(0, 2)
-        [
-            SNew(SBorder)
-            .BorderImage(FCoreStyle::Get().GetBrush("ToolPanel.GroupBorder"))
-            .BorderBackgroundColor(FSlateColor(FLinearColor(0.05f, 0.05f, 0.05f, 0.9f)))
-            .Padding(4)
-            [
-                SAssignNew(ArrowBorder, SBorder)
-                .BorderImage(FCoreStyle::Get().GetBrush("Symbols.RightArrow"))
-                .BorderBackgroundColor(FSlateColor(FLinearColor(0.2f, 0.2f, 0.2f, 1.0f)))
-                .Padding(0)
-                [
-                    SNew(SBox)
-                    .WidthOverride(32)
-                    .HeightOverride(32)
-                ]
-            ]
-        ];
-        CounterArrows.Add(ArrowBorder);
-    }
-
-    // Initialize unblocked hits and hack ready state
+    // Initialize hack state
+    CurrentHackCounters = 0;
+    RequiredHackCounters = 6;
     UnblockedHits = 0;
     bHackReady = false;
+
+    // Initialize counter symbols (6 symbols)
+    for (int32 i = 0; i < 6; ++i)
+    {
+        TSharedPtr<SBorder> Symbol;
+        CounterSymbolContainer->AddSlot()
+        .AutoHeight()
+        .Padding(0, 6)  // 6px spacing between symbols
+        [
+            SAssignNew(Symbol, SBorder)
+            .BorderImage(FCoreStyle::Get().GetBrush("WhiteTexture"))
+            .BorderBackgroundColor(FSlateColor(FLinearColor(0.0f, 0.0f, 0.0f, 0.7f)))
+            .Padding(FMargin(0, 0))
+            [
+                SNew(SBox)
+                .WidthOverride(50)   // Much narrower width (1/3 of health bar width)
+                .HeightOverride(12)  // Keep the same height
+            ]
+        ];
+        CounterSymbols.Add(Symbol);
+    }
 }
 
 void SCombatHUDWidget::Tick(const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime)
 {
     SCompoundWidget::Tick(AllottedGeometry, InCurrentTime, InDeltaTime);
+
+    // Animate red warning pulse
+    if (bShowRedWarning)
+    {
+        RedPulseTime += InDeltaTime;
+        UpdateCounterSymbols(); // Update colors every frame for smooth animation
+    }
 
     for (int32 i = ActiveDamageNumbers.Num() - 1; i >= 0; i--)
     {
@@ -372,18 +386,53 @@ void SCombatHUDWidget::UpdateFragmentCount(int32 Fragments)
 
 void SCombatHUDWidget::UpdateHackProgress(int32 CurrentCounters, int32 RequiredCounters, int32 UnblockedHitCount)
 {
+    int32 PrevUnblockedHits = UnblockedHits;
     CurrentHackCounters = CurrentCounters;
     RequiredHackCounters = RequiredCounters;
     UnblockedHits = UnblockedHitCount;
 
+    // Check if player took damage (unblocked hit increased)
+    if (UnblockedHitCount > PrevUnblockedHits && UnblockedHitCount > 0)
+    {
+        // First unblocked hit - show persistent red warning
+        if (UnblockedHitCount == 1)
+        {
+            bShowRedWarning = true;
+            RedPulseTime = 0.0f; // Reset pulse animation
+        }
+        // Second unblocked hit - counters were reset
+        else if (UnblockedHitCount >= 2)
+        {
+            // This shouldn't happen as UnblockedHits gets reset to 0 after second hit
+            bShowRedWarning = false;
+        }
+    }
+
+    // Clear red warning when counters are reset (CurrentCounters == 0 and UnblockedHitCount == 0)
+    if (CurrentCounters == 0 && UnblockedHitCount == 0)
+    {
+        bShowRedWarning = false;
+        RedPulseTime = 0.0f;
+    }
+
+    // Also clear red warning when hack is used (counters go from high to 0)
+    if (PrevUnblockedHits > 0 && UnblockedHitCount == 0)
+    {
+        bShowRedWarning = false;
+        RedPulseTime = 0.0f;
+    }
+
     // Check if hack is ready
     bHackReady = (CurrentCounters >= RequiredCounters);
 
-    // Update counter arrows
-    UpdateCounterArrows();
+    // Update hack ready text visibility
+    if (HackReadyText.IsValid())
+    {
+        HackReadyText->SetVisibility(bHackReady ? EVisibility::Visible : EVisibility::Hidden);
+    }
 
-    // Update hack ready indicator
-    UpdateHackReadyIndicator();
+    // Update counter symbols
+    UpdateCounterSymbols();
 }
 
 void SCombatHUDWidget::UpdateCounterIndicator(bool bInWindow, bool bCanPerformCounter)
@@ -471,52 +520,39 @@ FSlateColor SCombatHUDWidget::GetHealthBarColor(float HealthPercent) const
     }
 }
 
-void SCombatHUDWidget::UpdateCounterArrows()
+void SCombatHUDWidget::UpdateCounterSymbols()
 {
-    // Update arrow colors based on counter progress and unblocked hits
-    for (int32 i = 0; i < CounterArrows.Num(); ++i)
+    for (int32 i = 0; i < CounterSymbols.Num(); ++i)
     {
-        if (CounterArrows[i].IsValid())
+        if (CounterSymbols[i].IsValid())
         {
-            FSlateColor ArrowColor;
-
-            if (UnblockedHits > 0)
-            {
-                // Red color when player has taken unblocked hits
-                ArrowColor = FSlateColor(FLinearColor(0.8f, 0.1f, 0.1f, 1.0f));
-            }
-            else if (i < CurrentHackCounters)
-            {
-                // Cyan for filled counters
-                ArrowColor = FSlateColor(FLinearColor(0.0f, 0.8f, 0.8f, 1.0f));
-            }
-            else
-            {
-                // Dark gray for unfilled counters
-                ArrowColor = FSlateColor(FLinearColor(0.3f, 0.3f, 0.3f, 1.0f));
-            }
-
-            // Update the arrow image color
-            CounterArrows[i]->SetBorderBackgroundColor(ArrowColor);
+            CounterSymbols[i]->SetBorderBackgroundColor(GetCounterSymbolColor(i));
         }
     }
 }
 
-void SCombatHUDWidget::UpdateHackReadyIndicator()
+FSlateColor SCombatHUDWidget::GetCounterSymbolColor(int32 SymbolIndex) const
 {
-    if (HackReadyBox.IsValid() && HackReadyText.IsValid())
+    // Show pulsing red warning state for filled symbols when player is in danger
+    if (bShowRedWarning && SymbolIndex < CurrentHackCounters)
     {
-        if (bHackReady)
-        {
-            // Cyan glow when hack is ready
-            HackReadyBox->SetBorderBackgroundColor(FSlateColor(FLinearColor(0.0f, 0.3f, 0.3f, 1.0f)));
-            HackReadyText->SetColorAndOpacity(FSlateColor(FLinearColor(0.0f, 1.0f, 1.0f, 1.0f)));
-        }
-        else
-        {
-            // Dark gray when not ready
-            HackReadyBox->SetBorderBackgroundColor(FSlateColor(FLinearColor(0.0f, 0.0f, 0.0f, 0.7f)));
-            HackReadyText->SetColorAndOpacity(FSlateColor(FLinearColor(0.3f, 0.3f, 0.3f, 1.0f)));
-        }
+        // Create pulsing effect using sine wave (oscillates between 0 and 1)
+        float PulseValue = (FMath::Sin(RedPulseTime * 4.0f) + 1.0f) * 0.5f; // 4.0f controls speed
+
+        // Interpolate between dark red and bright red
+        float RedIntensity = FMath::Lerp(0.4f, 1.0f, PulseValue);  // Red channel: 0.4 to 1.0
+        float GreenBlue = FMath::Lerp(0.05f, 0.2f, PulseValue);    // Green/Blue: 0.05 to 0.2
+
+        return FSlateColor(FLinearColor(RedIntensity, GreenBlue, GreenBlue, 1.0f));
     }
+
+    // Symbol is filled with cyan (no warning state)
+    if (SymbolIndex < CurrentHackCounters)
+    {
+        return FSlateColor(FLinearColor(0.0f, 1.0f, 1.0f, 1.0f)); // Cyan
+    }
+
+    // Empty symbol - dark background like health bar background
+    return FSlateColor(FLinearColor(0.0f, 0.0f, 0.0f, 0.7f)); // Dark black with transparency
 }
+

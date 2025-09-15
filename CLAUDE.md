@@ -15,11 +15,14 @@
 ### Recent Improvements (Phase 7 - UI System)
 - ✅ Complete Combat HUD implemented in pure C++ Slate
 - ✅ Player & Enemy health bars with phase indicators
-- ✅ Redesigned counter system with vertical arrow indicators
-- ✅ "HACK READY" indicator box with cyan glow when available
+- ✅ Counter attack indicators (6 vertical bars above health)
+  - Dark black when empty (matches health bar background)
+  - Cyan when filled (successful counter attacks)
+  - Pulsing red warning after first unblocked hit (persistent)
+  - "HACK READY" text appears when all 6 counters filled
+  - 50px width, 12px height with 6px spacing
 - ✅ Fragment counter display
 - ✅ Damage numbers with floating animation
-- ✅ Counter arrows that change color (gray→cyan→red)
 - ✅ All UI elements update in real-time during combat
 
 ### Phase 6 Completed Features

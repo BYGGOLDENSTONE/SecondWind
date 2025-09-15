@@ -103,7 +103,8 @@ void ASecondWindHUD::BindToPlayer()
                 {
                     UpdateHackProgress(
                         HackComponent->GetCurrentCounters(),
-                        HackComponent->GetRequiredCounters()
+                        HackComponent->GetRequiredCounters(),
+                        HackComponent->GetUnblockedHits()
                     );
                 }
 
