@@ -5,6 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "ArenaZone.h"
+#include "EnemySpawnPoint.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/DamageEvents.h"
 
@@ -19,6 +20,7 @@ AArenaEnemy::AArenaEnemy()
     GetCharacterMovement()->MaxWalkSpeed = 400.f;
 
     OwnerZone = nullptr;
+    SpawnPoint = nullptr;
 }
 
 void AArenaEnemy::BeginPlay()
@@ -199,6 +201,13 @@ void AArenaEnemy::OnEnemyDeath()
         // Stop attacking when dead
         GetWorldTimerManager().ClearTimer(AttackTimerHandle);
 
+        // Notify the spawn point that this enemy is dead
+        if (SpawnPoint)
+        {
+            UE_LOG(LogTemp, Warning, TEXT("Notifying SpawnPoint that enemy is dead"));
+            SpawnPoint->OnSpawnedEnemyDied();
+        }
+
         // Notify the zone if using LevelLayoutManager system
         if (OwnerZone)
         {
@@ -325,6 +334,15 @@ void AArenaEnemy::SetOwnerZone(AArenaZone* Zone)
     else
     {
         UE_LOG(LogTemp, Error, TEXT("ERROR: SetOwnerZone called with NULL zone!"));
+    }
+}
+
+void AArenaEnemy::SetSpawnPoint(AEnemySpawnPoint* InSpawnPoint)
+{
+    SpawnPoint = InSpawnPoint;
+    if (SpawnPoint)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Enemy SpawnPoint set (Arena %d)"), SpawnPoint->ArenaNumber);
     }
 }
 

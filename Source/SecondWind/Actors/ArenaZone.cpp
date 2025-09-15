@@ -67,15 +67,19 @@ void AArenaZone::ActivateZone()
         return;
     }
 
+    // If zone was previously cleared, reset it first
     if (bIsCleared)
     {
-        UE_LOG(LogTemp, Error, TEXT("ERROR: Zone %d marked as cleared but trying to activate! Resetting zone."), ZoneNumber);
+        UE_LOG(LogTemp, Warning, TEXT("Zone %d was cleared from previous run - resetting before activation"), ZoneNumber);
         ResetZone();
+        // After reset, bIsCleared should be false
     }
 
+    // Now activate the zone
     bIsActive = true;
+    UE_LOG(LogTemp, Warning, TEXT("Zone %d activated - spawning enemies"), ZoneNumber);
 
-    // Spawn enemies
+    // Spawn enemies (zone is now active and not cleared)
     SpawnEnemies();
 
     // SIMPLE APPROACH: Find and lock ALL nearby doors
@@ -186,7 +190,18 @@ void AArenaZone::AddSpawnPoint(AEnemySpawnPoint* SpawnPoint)
 void AArenaZone::SpawnEnemies()
 {
     UE_LOG(LogTemp, Warning, TEXT("=== SPAWNING ENEMIES FOR ZONE %d ==="), ZoneNumber);
+    UE_LOG(LogTemp, Warning, TEXT("Zone state - Cleared: %s, Active: %s"),
+        bIsCleared ? TEXT("TRUE") : TEXT("FALSE"),
+        bIsActive ? TEXT("TRUE") : TEXT("FALSE"));
     UE_LOG(LogTemp, Warning, TEXT("Number of spawn points: %d"), SpawnPoints.Num());
+
+    // Don't spawn if zone is cleared AND we're not being activated
+    // (Activation should have reset the zone if it was cleared)
+    if (bIsCleared && !bIsActive)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Zone %d is cleared and not being activated - not spawning enemies"), ZoneNumber);
+        return;
+    }
 
     // Clear any existing enemies first (in case of reset)
     if (ActiveEnemies.Num() > 0)
@@ -301,40 +316,78 @@ void AArenaZone::CheckZoneClearStatus()
 
 void AArenaZone::ResetZone()
 {
+    UE_LOG(LogTemp, Warning, TEXT("=== RESETTING ZONE %d ==="), ZoneNumber);
+
+    // First despawn any existing enemies
+    if (ActiveEnemies.Num() > 0)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Zone %d has %d active enemies to clear"), ZoneNumber, ActiveEnemies.Num());
+        DespawnAllEnemies();
+    }
+
     // Reset zone state
     bIsCleared = false;
     bIsActive = false;
 
-    // Clear the active enemies list (they should already be despawned)
+    // Clear the active enemies list (should be empty after despawn)
     ActiveEnemies.Empty();
 
     // Clear the locked doors list
     LockedDoors.Empty();
 
-    UE_LOG(LogTemp, Warning, TEXT("Zone %d reset - cleared: %s, active: %s"),
-        ZoneNumber,
-        bIsCleared ? TEXT("TRUE") : TEXT("FALSE"),
-        bIsActive ? TEXT("TRUE") : TEXT("FALSE"));
+    // Reset all spawn points for this zone so they're ready to spawn fresh enemies
+    for (AEnemySpawnPoint* SpawnPoint : SpawnPoints)
+    {
+        if (SpawnPoint)
+        {
+            SpawnPoint->ResetSpawnPoint();
+        }
+    }
+
+    UE_LOG(LogTemp, Warning, TEXT("Zone %d reset complete - cleared: FALSE, active: FALSE, spawn points: %d"),
+        ZoneNumber, SpawnPoints.Num());
 }
 
 void AArenaZone::DespawnAllEnemies()
 {
-    UE_LOG(LogTemp, Warning, TEXT("Despawning all enemies in Zone %d (%d enemies)"), ZoneNumber, ActiveEnemies.Num());
+    UE_LOG(LogTemp, Warning, TEXT("=== DESPAWNING ALL ENEMIES IN ZONE %d ==="), ZoneNumber);
+    UE_LOG(LogTemp, Warning, TEXT("Active enemies to despawn: %d"), ActiveEnemies.Num());
 
     // Destroy all active enemies
+    int32 DestroyedCount = 0;
     for (int32 i = ActiveEnemies.Num() - 1; i >= 0; i--)
     {
         if (AArenaEnemy* Enemy = ActiveEnemies[i])
         {
             if (IsValid(Enemy))
             {
+                FString EnemyName = Enemy->GetName();
                 Enemy->Destroy();
-                UE_LOG(LogTemp, Warning, TEXT("Destroyed enemy in Zone %d"), ZoneNumber);
+                DestroyedCount++;
+                UE_LOG(LogTemp, Warning, TEXT("Destroyed enemy %s in Zone %d"), *EnemyName, ZoneNumber);
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("Enemy at index %d was already invalid"), i);
             }
         }
     }
 
+    UE_LOG(LogTemp, Warning, TEXT("Destroyed %d enemies in Zone %d"), DestroyedCount, ZoneNumber);
+
     // Clear the array
     ActiveEnemies.Empty();
+
+    // Also clear spawn point references
+    UE_LOG(LogTemp, Warning, TEXT("Resetting %d spawn points in Zone %d"), SpawnPoints.Num(), ZoneNumber);
+    for (AEnemySpawnPoint* SpawnPoint : SpawnPoints)
+    {
+        if (SpawnPoint)
+        {
+            SpawnPoint->ResetSpawnPoint();
+        }
+    }
+
+    UE_LOG(LogTemp, Warning, TEXT("Zone %d despawn complete"), ZoneNumber);
 }
 

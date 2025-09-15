@@ -72,7 +72,15 @@ AArenaEnemy* AEnemySpawnPoint::SpawnEnemy()
         return nullptr;
     }
 
+    // Always clear any existing reference first
     ClearSpawnPoint();
+
+    // Extra safety: Make absolutely sure we don't have a spawned actor
+    if (SpawnedActor)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("SpawnPoint still had SpawnedActor reference after ClearSpawnPoint! Force clearing."));
+        SpawnedActor = nullptr;
+    }
 
     if (EnemyClass)
     {
@@ -98,6 +106,9 @@ AArenaEnemy* AEnemySpawnPoint::SpawnEnemy()
 
             // Initialize the enemy AFTER BeginPlay has been called
             SpawnedEnemy->InitializeEnemy(ArenaNumber);
+
+            // Set the spawn point reference so the enemy can notify us when it dies
+            SpawnedEnemy->SetSpawnPoint(this);
 
             // Override phases if needed
             int32 PhasesToSet = GetEffectivePhases();
@@ -155,11 +166,32 @@ ATrainingDummy* AEnemySpawnPoint::SpawnTrainingDummy()
 
 void AEnemySpawnPoint::ClearSpawnPoint()
 {
-    if (SpawnedActor && IsValid(SpawnedActor))
+    if (SpawnedActor)
     {
-        SpawnedActor->Destroy();
+        if (IsValid(SpawnedActor))
+        {
+            UE_LOG(LogTemp, Warning, TEXT("Spawn point destroying existing actor: %s"), *SpawnedActor->GetName());
+            SpawnedActor->Destroy();
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("Spawn point had invalid/destroyed actor reference - clearing"));
+        }
+        // Always clear the reference, whether the actor was valid or not
         SpawnedActor = nullptr;
     }
+}
+
+void AEnemySpawnPoint::ResetSpawnPoint()
+{
+    // Clear any existing spawned actor reference
+    if (SpawnedActor)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Spawn point clearing reference to: %s (Arena %d)"),
+            IsValid(SpawnedActor) ? *SpawnedActor->GetName() : TEXT("invalid actor"), ArenaNumber);
+    }
+    SpawnedActor = nullptr;
+    UE_LOG(LogTemp, Warning, TEXT("Spawn point reset for Arena %d - ready to spawn new enemy"), ArenaNumber);
 }
 
 void AEnemySpawnPoint::SetEnemyPhases(int32 Phases)
@@ -175,4 +207,15 @@ int32 AEnemySpawnPoint::GetEffectivePhases() const
     }
 
     return FMath::Min(ArenaNumber, 5);
+}
+
+void AEnemySpawnPoint::OnSpawnedEnemyDied()
+{
+    UE_LOG(LogTemp, Warning, TEXT("Spawn point notified that enemy died - clearing reference (Arena %d)"), ArenaNumber);
+    SpawnedActor = nullptr;
+}
+
+bool AEnemySpawnPoint::HasSpawnedEnemy() const
+{
+    return SpawnedActor != nullptr && IsValid(SpawnedActor);
 }

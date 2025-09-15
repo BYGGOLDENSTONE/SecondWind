@@ -323,8 +323,9 @@ int32 ALevelLayoutManager::GetHighestClearedZone() const
 void ALevelLayoutManager::ResetLevelForNewRun()
 {
     UE_LOG(LogTemp, Warning, TEXT("=== RESETTING LEVEL FOR NEW RUN ==="));
+    UE_LOG(LogTemp, Warning, TEXT("Found %d zones and %d doors to reset"), ArenaZones.Num(), AllDoors.Num());
 
-    // Reset all arena zones
+    // Reset all arena zones FIRST (before touching doors)
     for (auto& ZonePair : ArenaZones)
     {
         if (AArenaZone* Zone = ZonePair.Value)
@@ -340,14 +341,15 @@ void ALevelLayoutManager::ResetLevelForNewRun()
         }
     }
 
-    // Simple reset: just close all doors (zones will manage locking when activated)
+    // Hard reset all doors to closed position
+    UE_LOG(LogTemp, Warning, TEXT("Resetting %d doors..."), AllDoors.Num());
     for (AArenaDoor* Door : AllDoors)
     {
-        if (Door)
+        if (Door && IsValid(Door))
         {
-            Door->CloseDoor();
-            Door->SetDoorLocked(false);  // Unlock all doors - zones will lock what they need
-            UE_LOG(LogTemp, Warning, TEXT("Reset door %d: closed and unlocked"), Door->GetDoorID());
+            Door->ResetDoor();  // Use ResetDoor for immediate closure
+            // Don't unlock here - keep them closed
+            UE_LOG(LogTemp, Warning, TEXT("Reset door %d: hard reset to closed position"), Door->GetDoorID());
         }
     }
 

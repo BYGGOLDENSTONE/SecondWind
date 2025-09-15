@@ -45,6 +45,9 @@ public:
     AArenaEnemy* SpawnEnemy();
     ATrainingDummy* SpawnTrainingDummy();
     void ClearSpawnPoint();
+    void ResetSpawnPoint();  // Reset without destroying (for new runs)
+    void OnSpawnedEnemyDied();  // Called when the spawned enemy dies
+    bool HasSpawnedEnemy() const;  // Check if spawn point has an enemy
     void SetEnemyPhases(int32 Phases);
     int32 GetEffectivePhases() const;
 

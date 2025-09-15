@@ -54,6 +54,7 @@ public:
 
     bool CanOpen() const;
     void SetDoorLocked(bool bLocked);
+    void ResetDoor();  // Hard reset for new runs
     int32 GetDoorID() const { return DoorID; }
 
     UFUNCTION()
@@ -85,7 +86,7 @@ protected:
     float DoorOpenSpeed = 2.0f;
 
     UPROPERTY(EditDefaultsOnly, Category = "Door Settings")
-    float DoorOpenAngle = 90.0f;
+    float DoorOpenHeight = 300.0f;  // How high the door slides up
 
     UPROPERTY(EditDefaultsOnly, Category = "Door Settings")
     FVector ProximityBoxExtent = FVector(150.0f, 150.0f, 100.0f);  // Smaller to avoid overlap
@@ -98,8 +99,10 @@ private:
     EDoorType DoorType = EDoorType::SafeZone;
     bool bPlayerInProximity = false;
     float ProximityTime = 0.0f;
-    float CurrentDoorAngle = 0.0f;
+    float CurrentDoorHeight = 0.0f;  // Current vertical offset
     float TimeOpenRemaining = 0.0f;  // Auto-close timer
+    float ResetGracePeriod = 0.0f;  // Prevents interaction right after reset
+    FVector InitialDoorLocation = FVector::ZeroVector;  // Store the closed position from editor
 
     // Unique ID for this door
     int32 DoorID = -1;

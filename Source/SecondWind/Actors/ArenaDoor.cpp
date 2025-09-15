@@ -37,6 +37,66 @@ void AArenaDoor::BeginPlay()
     UE_LOG(LogTemp, Warning, TEXT("Door initialized with ID: %d (Name: %s, Location: %s)"),
         DoorID, *GetName(), *GetActorLocation().ToString());
 
+    // CRITICAL: Ensure door starts in closed position regardless of editor placement
+    DoorState = EDoorState::Closed;
+    ProximityTime = 0.0f;
+    TimeOpenRemaining = 0.0f;
+    bPlayerInProximity = false;
+    ResetGracePeriod = 0.5f;  // Small grace period on game start too
+
+    // Find the door mesh component to slide
+    TArray<UStaticMeshComponent*> MeshComponents;
+    GetComponents<UStaticMeshComponent>(MeshComponents);
+
+    for (UStaticMeshComponent* MeshComp : MeshComponents)
+    {
+        if (MeshComp)
+        {
+            FString CompName = MeshComp->GetName();
+
+            // Try to identify the actual door mesh (not the frame)
+            if (CompName.Contains(TEXT("Door")) && !CompName.Contains(TEXT("Frame")))
+            {
+                DoorMesh = MeshComp;
+                UE_LOG(LogTemp, Warning, TEXT("Door %d found mesh: %s"), DoorID, *CompName);
+                break;
+            }
+        }
+    }
+
+    // If we still don't have a door mesh, just use the first static mesh that isn't the frame
+    if (!DoorMesh && MeshComponents.Num() > 0)
+    {
+        for (UStaticMeshComponent* MeshComp : MeshComponents)
+        {
+            FString CompName = MeshComp->GetName();
+            if (!CompName.Contains(TEXT("Frame")))
+            {
+                DoorMesh = MeshComp;
+                UE_LOG(LogTemp, Warning, TEXT("Door %d using first non-frame mesh: %s"), DoorID, *CompName);
+                break;
+            }
+        }
+    }
+
+    if (DoorMesh)
+    {
+        // Store the initial position for the closed state
+        InitialDoorLocation = DoorMesh->GetRelativeLocation();
+        CurrentDoorHeight = 0.0f;  // Start closed
+
+        UE_LOG(LogTemp, Warning, TEXT("Door %d initialized - Mesh: %s, Initial Position: %s"),
+            DoorID, *DoorMesh->GetName(), *InitialDoorLocation.ToString());
+
+        // Set collision to block movement when closed
+        DoorMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+        DoorMesh->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("Door %d has NO suitable mesh component for sliding!"), DoorID);
+    }
+
     // Set up proximity trigger with proper collision
     if (ProximityTrigger)
     {
@@ -54,6 +114,17 @@ void AArenaDoor::BeginPlay()
 void AArenaDoor::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+
+    // Handle reset grace period
+    if (ResetGracePeriod > 0.0f)
+    {
+        ResetGracePeriod -= DeltaTime;
+        if (ResetGracePeriod <= 0.0f)
+        {
+            UE_LOG(LogTemp, Warning, TEXT("Door %d grace period ended, now interactive"), DoorID);
+        }
+        return;  // Skip all door logic during grace period
+    }
 
     UpdateProximityTimer(DeltaTime);
     UpdateDoorAnimation(DeltaTime);
@@ -74,6 +145,13 @@ void AArenaDoor::UpdateProximityTimer(float DeltaTime)
 {
     if (DoorState == EDoorState::Locked || DoorState == EDoorState::Open)
     {
+        return;
+    }
+
+    // Safety check: ensure door is actually closed visually before allowing opening
+    if (CurrentDoorHeight > 1.0f)
+    {
+        // Door is still visually open, don't process proximity
         return;
     }
 
@@ -115,36 +193,49 @@ void AArenaDoor::UpdateDoorAnimation(float DeltaTime)
 {
     if (DoorState == EDoorState::Opening)
     {
-        CurrentDoorAngle = FMath::FInterpTo(CurrentDoorAngle, DoorOpenAngle, DeltaTime, DoorOpenSpeed);
+        // Slide door upward
+        CurrentDoorHeight = FMath::FInterpTo(CurrentDoorHeight, DoorOpenHeight, DeltaTime, DoorOpenSpeed);
 
         if (DoorMesh)
         {
-            FRotator NewRotation = DoorMesh->GetRelativeRotation();
-            NewRotation.Yaw = CurrentDoorAngle;
-            DoorMesh->SetRelativeRotation(NewRotation);
+            FVector NewLocation = InitialDoorLocation;
+            NewLocation.Z += CurrentDoorHeight;
+            DoorMesh->SetRelativeLocation(NewLocation);
+
+            // When door is high enough, disable collision so players can pass
+            if (CurrentDoorHeight > 50.0f)
+            {
+                DoorMesh->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+            }
         }
 
-        if (FMath::IsNearlyEqual(CurrentDoorAngle, DoorOpenAngle, 1.0f))
+        if (FMath::IsNearlyEqual(CurrentDoorHeight, DoorOpenHeight, 1.0f))
         {
             DoorState = EDoorState::Open;
-            UE_LOG(LogTemp, Warning, TEXT("Door %d fully opened"), DoorID);
+            UE_LOG(LogTemp, Warning, TEXT("Door %d fully opened (Height: %.1f)"), DoorID, CurrentDoorHeight);
         }
     }
-    else if (DoorState == EDoorState::Closed && CurrentDoorAngle > 0.1f)
+    else if (DoorState == EDoorState::Closed && CurrentDoorHeight > 0.1f)
     {
-        // Animate door closing
-        CurrentDoorAngle = FMath::FInterpTo(CurrentDoorAngle, 0.0f, DeltaTime, DoorOpenSpeed);
+        // Slide door downward
+        CurrentDoorHeight = FMath::FInterpTo(CurrentDoorHeight, 0.0f, DeltaTime, DoorOpenSpeed);
 
         if (DoorMesh)
         {
-            FRotator NewRotation = DoorMesh->GetRelativeRotation();
-            NewRotation.Yaw = CurrentDoorAngle;
-            DoorMesh->SetRelativeRotation(NewRotation);
+            FVector NewLocation = InitialDoorLocation;
+            NewLocation.Z += CurrentDoorHeight;
+            DoorMesh->SetRelativeLocation(NewLocation);
+
+            // When door is almost closed, enable collision to block players
+            if (CurrentDoorHeight < 50.0f)
+            {
+                DoorMesh->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
+            }
         }
 
-        if (FMath::IsNearlyEqual(CurrentDoorAngle, 0.0f, 1.0f))
+        if (FMath::IsNearlyEqual(CurrentDoorHeight, 0.0f, 1.0f))
         {
-            CurrentDoorAngle = 0.0f;
+            CurrentDoorHeight = 0.0f;
             UE_LOG(LogTemp, Warning, TEXT("Door %d fully closed"), DoorID);
         }
     }
@@ -172,7 +263,22 @@ void AArenaDoor::OpenDoor()
     {
         DoorState = EDoorState::Opening;
         TimeOpenRemaining = AutoCloseDelay;  // Reset auto-close timer
-        UE_LOG(LogTemp, Warning, TEXT("Door %d opening... (will auto-close in %.1f seconds)"), DoorID, AutoCloseDelay);
+
+        if (DoorMesh)
+        {
+            FVector CurrentLoc = DoorMesh->GetRelativeLocation();
+            UE_LOG(LogTemp, Warning, TEXT("Door %d sliding up... Current Z: %.1f, Target Z: %.1f"),
+                DoorID, CurrentLoc.Z, InitialDoorLocation.Z + DoorOpenHeight);
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("Door %d has NO DoorMesh - cannot open!"), DoorID);
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Door %d OpenDoor called but state is not Closed (State: %d)"),
+            DoorID, (int32)DoorState);
     }
 }
 
@@ -258,4 +364,34 @@ void AArenaDoor::SetDoorLocked(bool bLocked)
     {
         UnlockDoor();
     }
+}
+
+void AArenaDoor::ResetDoor()
+{
+    // Force door to closed state immediately (for new run resets)
+    DoorState = EDoorState::Closed;
+    ProximityTime = 0.0f;
+    TimeOpenRemaining = 0.0f;
+    bPlayerInProximity = false;
+    ResetGracePeriod = 1.0f;  // 1 second grace period after reset
+
+    // Immediately set door to closed position (no animation)
+    CurrentDoorHeight = 0.0f;
+    if (DoorMesh)
+    {
+        // Reset to the initial closed position
+        DoorMesh->SetRelativeLocation(InitialDoorLocation);
+        // Re-enable collision
+        DoorMesh->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
+    }
+
+    // Clear any pending overlaps to prevent auto-opening
+    if (ProximityTrigger)
+    {
+        ProximityTrigger->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+        ProximityTrigger->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+    }
+
+    UE_LOG(LogTemp, Warning, TEXT("Door %d hard reset to closed position (Height: 0, Grace: %.1fs)"),
+        DoorID, ResetGracePeriod);
 }

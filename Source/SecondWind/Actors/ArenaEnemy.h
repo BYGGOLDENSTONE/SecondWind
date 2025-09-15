@@ -41,6 +41,8 @@ public:
     void SetPhaseCount(int32 PhaseCount);
     void SetOwnerZone(class AArenaZone* Zone);
     class AArenaZone* GetOwnerZone() const { return OwnerZone; }
+    void SetSpawnPoint(class AEnemySpawnPoint* SpawnPoint);
+    class AEnemySpawnPoint* GetSpawnPoint() const { return SpawnPoint; }
 
 protected:
     void SetupPhases();
@@ -75,6 +77,9 @@ private:
 
     UPROPERTY()
     class AArenaZone* OwnerZone;
+
+    UPROPERTY()
+    class AEnemySpawnPoint* SpawnPoint;
 
     FTimerHandle AttackTimerHandle;
     void PerformAttack();
