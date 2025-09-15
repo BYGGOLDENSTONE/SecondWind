@@ -135,33 +135,39 @@ void URunManager::ResetPlayerToHub()
         FVector SpawnLocation = FVector(0, 0, 100); // Default fallback
         FRotator SpawnRotation = FRotator(0, 0, 0);
 
-        // Try to find Zone 0 (Starting Hub) using LevelLayoutManager
-        TArray<AActor*> FoundManagers;
-        UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALevelLayoutManager::StaticClass(), FoundManagers);
-        if (FoundManagers.Num() > 0)
+        // PRIORITY 1: Try to find a PlayerStart (this is the intended spawn point)
+        TArray<AActor*> PlayerStarts;
+        UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), PlayerStarts);
+        if (PlayerStarts.Num() > 0)
         {
-            if (ALevelLayoutManager* LevelManager = Cast<ALevelLayoutManager>(FoundManagers[0]))
+            SpawnLocation = PlayerStarts[0]->GetActorLocation();
+            SpawnRotation = PlayerStarts[0]->GetActorRotation();
+            UE_LOG(LogTemp, Warning, TEXT("Using PlayerStart at %s"),
+                *SpawnLocation.ToString());
+        }
+        else
+        {
+            // PRIORITY 2: If no PlayerStart, try to find Zone 0 center as fallback
+            TArray<AActor*> FoundManagers;
+            UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALevelLayoutManager::StaticClass(), FoundManagers);
+            if (FoundManagers.Num() > 0)
             {
-                if (AArenaZone* StartingHub = LevelManager->GetZone(0))
+                if (ALevelLayoutManager* LevelManager = Cast<ALevelLayoutManager>(FoundManagers[0]))
                 {
-                    SpawnLocation = StartingHub->GetActorLocation();
-                    SpawnRotation = StartingHub->GetActorRotation();
-                    UE_LOG(LogTemp, Warning, TEXT("Found Starting Hub (Zone 0) at %s"),
-                        *SpawnLocation.ToString());
+                    if (AArenaZone* StartingHub = LevelManager->GetZone(0))
+                    {
+                        SpawnLocation = StartingHub->GetActorLocation();
+                        SpawnRotation = StartingHub->GetActorRotation();
+                        UE_LOG(LogTemp, Warning, TEXT("No PlayerStart found, using Starting Hub (Zone 0) center at %s"),
+                            *SpawnLocation.ToString());
+                    }
                 }
             }
-        }
 
-        // If no Zone 0, try to find a PlayerStart
-        if (SpawnLocation == FVector(0, 0, 100))
-        {
-            TArray<AActor*> PlayerStarts;
-            UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), PlayerStarts);
-            if (PlayerStarts.Num() > 0)
+            // PRIORITY 3: Last resort fallback
+            if (SpawnLocation == FVector(0, 0, 100))
             {
-                SpawnLocation = PlayerStarts[0]->GetActorLocation();
-                SpawnRotation = PlayerStarts[0]->GetActorRotation();
-                UE_LOG(LogTemp, Warning, TEXT("Using PlayerStart at %s"),
+                UE_LOG(LogTemp, Warning, TEXT("No PlayerStart or Zone 0 found, using default spawn at %s"),
                     *SpawnLocation.ToString());
             }
         }

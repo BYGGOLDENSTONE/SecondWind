@@ -30,27 +30,19 @@ void ASecondWindArenaGameMode::PostLogin(APlayerController* NewPlayer)
         PlayerCharacter = Cast<ASecondWindCharacter>(PlayerPawn);
         if (PlayerCharacter)
         {
-            // Spawn in Zone 0 (Starting Hub) using LevelLayoutManager
+            // Don't override spawn location - let the PlayerStart handle it
+            // Just log where the player spawned
+            FVector SpawnLocation = PlayerCharacter->GetActorLocation();
+            UE_LOG(LogTemp, Warning, TEXT("Player spawned at PlayerStart location: %s"), *SpawnLocation.ToString());
+
+            // Verify we're in the Starting Hub zone
             if (LevelLayoutManager)
             {
                 if (AArenaZone* StartingHub = LevelLayoutManager->GetZone(0))
                 {
-                    FVector HubLocation = StartingHub->GetActorLocation();
-                    PlayerCharacter->SetActorLocation(HubLocation);
-                    UE_LOG(LogTemp, Warning, TEXT("Player spawned in Starting Hub (Zone 0)"));
+                    UE_LOG(LogTemp, Warning, TEXT("Starting Hub (Zone 0) confirmed at: %s"),
+                        *StartingHub->GetActorLocation().ToString());
                 }
-                else
-                {
-                    // Fallback to default spawn location
-                    PlayerCharacter->SetActorLocation(SafeZoneSpawnLocation);
-                    UE_LOG(LogTemp, Warning, TEXT("Player spawned at default safe zone (no Starting Hub found)"));
-                }
-            }
-            else
-            {
-                // Legacy system spawn location
-                PlayerCharacter->SetActorLocation(SafeZoneSpawnLocation);
-                UE_LOG(LogTemp, Warning, TEXT("Player spawned in safe zone (legacy system)"));
             }
         }
     }
