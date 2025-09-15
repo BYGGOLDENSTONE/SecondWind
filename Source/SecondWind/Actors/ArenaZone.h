@@ -28,12 +28,6 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Arena")
     FName ZoneName;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Arena")
-    AArenaDoor* EntryDoor;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Arena")
-    AArenaDoor* ExitDoor;
-
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     UBoxComponent* ZoneBounds;
 
@@ -65,6 +59,9 @@ public:
 
 private:
     ALevelLayoutManager* LayoutManager;
+
+    // Simple door management - just track what we locked
+    TArray<AArenaDoor*> LockedDoors;
 
     UFUNCTION()
     void OnZoneBoundsBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

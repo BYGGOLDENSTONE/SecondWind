@@ -5,6 +5,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 
+// Initialize static counter
+int32 AArenaDoor::NextDoorID = 0;
+
 AArenaDoor::AArenaDoor()
 {
     PrimaryActorTick.bCanEverTick = true;
@@ -29,8 +32,21 @@ void AArenaDoor::BeginPlay()
 {
     Super::BeginPlay();
 
-    ProximityTrigger->OnComponentBeginOverlap.AddDynamic(this, &AArenaDoor::OnProximityBeginOverlap);
-    ProximityTrigger->OnComponentEndOverlap.AddDynamic(this, &AArenaDoor::OnProximityEndOverlap);
+    // Assign unique ID to this door
+    DoorID = NextDoorID++;
+    UE_LOG(LogTemp, Warning, TEXT("Door initialized with ID: %d (Name: %s, Location: %s)"),
+        DoorID, *GetName(), *GetActorLocation().ToString());
+
+    // Set up proximity trigger with proper collision
+    if (ProximityTrigger)
+    {
+        ProximityTrigger->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+        ProximityTrigger->SetCollisionResponseToAllChannels(ECR_Ignore);
+        ProximityTrigger->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+
+        ProximityTrigger->OnComponentBeginOverlap.AddDynamic(this, &AArenaDoor::OnProximityBeginOverlap);
+        ProximityTrigger->OnComponentEndOverlap.AddDynamic(this, &AArenaDoor::OnProximityEndOverlap);
+    }
 
     PlayerCharacter = Cast<ASecondWindCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 }
@@ -41,6 +57,17 @@ void AArenaDoor::Tick(float DeltaTime)
 
     UpdateProximityTimer(DeltaTime);
     UpdateDoorAnimation(DeltaTime);
+
+    // Auto-close timer when door is open and player is not nearby
+    if (DoorState == EDoorState::Open && !bPlayerInProximity)
+    {
+        TimeOpenRemaining -= DeltaTime;
+        if (TimeOpenRemaining <= 0.0f)
+        {
+            CloseDoor();
+            UE_LOG(LogTemp, Warning, TEXT("Door %d auto-closed after %.1f seconds"), DoorID, AutoCloseDelay);
+        }
+    }
 }
 
 void AArenaDoor::UpdateProximityTimer(float DeltaTime)
@@ -56,7 +83,7 @@ void AArenaDoor::UpdateProximityTimer(float DeltaTime)
         {
             if (ProximityTime > 0.0f)
             {
-                UE_LOG(LogTemp, Warning, TEXT("Door %d locked - defeat enemy first!"), ArenaNumber);
+                UE_LOG(LogTemp, Warning, TEXT("Door %d locked - defeat enemy first!"), DoorID);
                 ProximityTime = 0.0f;
             }
             return;
@@ -74,7 +101,7 @@ void AArenaDoor::UpdateProximityTimer(float DeltaTime)
         static float LastLoggedProgress = 0.0f;
         if (FMath::Abs(Progress - LastLoggedProgress) >= 0.25f || Progress >= 1.0f)
         {
-            UE_LOG(LogTemp, Warning, TEXT("Door %d proximity progress: %.1f%%"), ArenaNumber, Progress * 100.0f);
+            UE_LOG(LogTemp, Warning, TEXT("Door %d proximity progress: %.1f%%"), DoorID, Progress * 100.0f);
             LastLoggedProgress = Progress;
         }
     }
@@ -100,7 +127,25 @@ void AArenaDoor::UpdateDoorAnimation(float DeltaTime)
         if (FMath::IsNearlyEqual(CurrentDoorAngle, DoorOpenAngle, 1.0f))
         {
             DoorState = EDoorState::Open;
-            UE_LOG(LogTemp, Warning, TEXT("Door %d fully opened"), ArenaNumber);
+            UE_LOG(LogTemp, Warning, TEXT("Door %d fully opened"), DoorID);
+        }
+    }
+    else if (DoorState == EDoorState::Closed && CurrentDoorAngle > 0.1f)
+    {
+        // Animate door closing
+        CurrentDoorAngle = FMath::FInterpTo(CurrentDoorAngle, 0.0f, DeltaTime, DoorOpenSpeed);
+
+        if (DoorMesh)
+        {
+            FRotator NewRotation = DoorMesh->GetRelativeRotation();
+            NewRotation.Yaw = CurrentDoorAngle;
+            DoorMesh->SetRelativeRotation(NewRotation);
+        }
+
+        if (FMath::IsNearlyEqual(CurrentDoorAngle, 0.0f, 1.0f))
+        {
+            CurrentDoorAngle = 0.0f;
+            UE_LOG(LogTemp, Warning, TEXT("Door %d fully closed"), DoorID);
         }
     }
 }
@@ -115,7 +160,7 @@ void AArenaDoor::OnProximityRequirementMet()
         {
             if (AGameModeBase* GameMode = World->GetAuthGameMode())
             {
-                UE_LOG(LogTemp, Warning, TEXT("Door %d activated - ready to enter Arena %d"), ArenaNumber, ArenaNumber);
+                UE_LOG(LogTemp, Warning, TEXT("Door %d activated"), DoorID);
             }
         }
     }
@@ -126,26 +171,19 @@ void AArenaDoor::OpenDoor()
     if (DoorState == EDoorState::Closed)
     {
         DoorState = EDoorState::Opening;
-        UE_LOG(LogTemp, Warning, TEXT("Door %d opening..."), ArenaNumber);
+        TimeOpenRemaining = AutoCloseDelay;  // Reset auto-close timer
+        UE_LOG(LogTemp, Warning, TEXT("Door %d opening... (will auto-close in %.1f seconds)"), DoorID, AutoCloseDelay);
     }
 }
 
 void AArenaDoor::CloseDoor()
 {
-    if (DoorState == EDoorState::Open)
-    {
-        DoorState = EDoorState::Closed;
-        CurrentDoorAngle = 0.0f;
+    // Force close the door regardless of current state
+    DoorState = EDoorState::Closed;
+    ProximityTime = 0.0f;  // Reset proximity timer
+    // Don't immediately set angle to 0 - let it animate closed
 
-        if (DoorMesh)
-        {
-            FRotator NewRotation = DoorMesh->GetRelativeRotation();
-            NewRotation.Yaw = 0.0f;
-            DoorMesh->SetRelativeRotation(NewRotation);
-        }
-
-        UE_LOG(LogTemp, Warning, TEXT("Door %d closed"), ArenaNumber);
-    }
+    UE_LOG(LogTemp, Warning, TEXT("Door %d closing..."), DoorID);
 }
 
 void AArenaDoor::LockDoor()
@@ -153,7 +191,7 @@ void AArenaDoor::LockDoor()
     DoorState = EDoorState::Locked;
     CloseDoor();
     ProximityTime = 0.0f;
-    UE_LOG(LogTemp, Warning, TEXT("Door %d locked"), ArenaNumber);
+    UE_LOG(LogTemp, Warning, TEXT("Door %d locked"), DoorID);
 }
 
 void AArenaDoor::UnlockDoor()
@@ -161,7 +199,7 @@ void AArenaDoor::UnlockDoor()
     if (DoorState == EDoorState::Locked)
     {
         DoorState = EDoorState::Closed;
-        UE_LOG(LogTemp, Warning, TEXT("Door %d unlocked"), ArenaNumber);
+        UE_LOG(LogTemp, Warning, TEXT("Door %d unlocked"), DoorID);
     }
 }
 
@@ -174,11 +212,11 @@ void AArenaDoor::OnProximityBeginOverlap(UPrimitiveComponent* OverlappedComponen
 
         if (!CanOpen() && DoorType == EDoorType::ArenaExit)
         {
-            UE_LOG(LogTemp, Warning, TEXT("Door %d locked - defeat the enemy first!"), ArenaNumber);
+            UE_LOG(LogTemp, Warning, TEXT("Door %d locked - defeat the enemy first!"), DoorID);
         }
         else
         {
-            UE_LOG(LogTemp, Warning, TEXT("Player entered Door %d proximity"), ArenaNumber);
+            UE_LOG(LogTemp, Warning, TEXT("Player entered Door %d proximity"), DoorID);
         }
     }
 }
@@ -189,33 +227,25 @@ void AArenaDoor::OnProximityEndOverlap(UPrimitiveComponent* OverlappedComponent,
     if (OtherActor && OtherActor == PlayerCharacter)
     {
         bPlayerInProximity = false;
-        UE_LOG(LogTemp, Warning, TEXT("Player left Door %d proximity"), ArenaNumber);
+        ProximityTime = 0.0f; // Reset proximity timer
+
+        // AUTO-CLOSE: If door is open, close it when player leaves
+        if (DoorState == EDoorState::Open)
+        {
+            CloseDoor();
+            UE_LOG(LogTemp, Warning, TEXT("Door %d auto-closed after player passed through"), DoorID);
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("Player left Door %d proximity"), DoorID);
+        }
     }
 }
 
 bool AArenaDoor::CanOpen() const
 {
-    // Safe zone and starting hub doors are always accessible
-    if (DoorType == EDoorType::SafeZone || DoorType == EDoorType::StartingHub)
-    {
-        return true;
-    }
-
-    // Arena entry doors are always accessible
-    if (DoorType == EDoorType::ArenaEntry)
-    {
-        return true;
-    }
-
-    // Arena exit doors require combat to be cleared
-    if (DoorType == EDoorType::ArenaExit && bRequiresCombatClear)
-    {
-        // Combat clear is now handled by the ArenaZone system
-        // The zone will unlock doors when combat is cleared
-        return DoorState != EDoorState::Locked;
-    }
-
-    return !bRequiresCombatClear;
+    // Simple: doors can only open if they're not locked
+    return DoorState != EDoorState::Locked;
 }
 
 void AArenaDoor::SetDoorLocked(bool bLocked)

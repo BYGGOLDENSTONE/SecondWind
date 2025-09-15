@@ -49,17 +49,12 @@ public:
     float GetProximityTime() const { return ProximityTime; }
     EDoorState GetDoorState() const { return DoorState; }
 
-    void SetArenaNumber(int32 Number) { ArenaNumber = Number; }
-    int32 GetArenaNumber() const { return ArenaNumber; }
-
     void SetDoorType(EDoorType Type) { DoorType = Type; }
     EDoorType GetDoorType() const { return DoorType; }
 
-    void SetRequiresCombatClear(bool bRequires) { bRequiresCombatClear = bRequires; }
     bool CanOpen() const;
-
     void SetDoorLocked(bool bLocked);
-    int32 GetRequiredArenaNumber() const { return ArenaNumber - 1; }
+    int32 GetDoorID() const { return DoorID; }
 
     UFUNCTION()
     void OnProximityBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -93,16 +88,22 @@ protected:
     float DoorOpenAngle = 90.0f;
 
     UPROPERTY(EditDefaultsOnly, Category = "Door Settings")
-    FVector ProximityBoxExtent = FVector(200.0f, 200.0f, 100.0f);
+    FVector ProximityBoxExtent = FVector(150.0f, 150.0f, 100.0f);  // Smaller to avoid overlap
+
+    UPROPERTY(EditDefaultsOnly, Category = "Door Settings")
+    float AutoCloseDelay = 3.0f;  // Time door stays open before auto-closing
 
 private:
     EDoorState DoorState = EDoorState::Closed;
     EDoorType DoorType = EDoorType::SafeZone;
     bool bPlayerInProximity = false;
-    bool bRequiresCombatClear = false;
     float ProximityTime = 0.0f;
     float CurrentDoorAngle = 0.0f;
-    int32 ArenaNumber = 0;
+    float TimeOpenRemaining = 0.0f;  // Auto-close timer
+
+    // Unique ID for this door
+    int32 DoorID = -1;
+    static int32 NextDoorID;
 
     UPROPERTY()
     ASecondWindCharacter* PlayerCharacter = nullptr;

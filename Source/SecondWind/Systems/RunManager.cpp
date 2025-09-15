@@ -37,30 +37,37 @@ void URunManager::Deinitialize()
 
 void URunManager::StartNewRun()
 {
+    UE_LOG(LogTemp, Warning, TEXT("=== STARTING NEW RUN ==="));
+
     if (bRunActive)
     {
+        UE_LOG(LogTemp, Warning, TEXT("Previous run still active, ending it first"));
         EndCurrentRun(false);
     }
 
     CurrentRunNumber++;
     bRunActive = true;
 
+    UE_LOG(LogTemp, Warning, TEXT("Starting Run %d"), CurrentRunNumber);
+
     // Reset player but keep fragments and memories
     if (UFragmentSystem* FragmentSystem = GetGameInstance()->GetSubsystem<UFragmentSystem>())
     {
         FragmentSystem->ResetForNewRun();
+        UE_LOG(LogTemp, Warning, TEXT("Fragment system reset for new run"));
     }
 
     if (UMemorySystem* MemorySystem = GetGameInstance()->GetSubsystem<UMemorySystem>())
     {
         MemorySystem->ResetForNewRun();
+        UE_LOG(LogTemp, Warning, TEXT("Memory system reset for new run"));
     }
 
     ResetPlayerToHub();
 
     OnRunStarted.Broadcast(CurrentRunNumber);
 
-    UE_LOG(LogTemp, Warning, TEXT("Run %d started! Fragments and memories preserved from previous run."),
+    UE_LOG(LogTemp, Warning, TEXT("=== RUN %d STARTED - Fragments and memories preserved ==="),
         CurrentRunNumber);
 }
 
@@ -87,8 +94,11 @@ void URunManager::EndCurrentRun(bool bCompleted)
 
 void URunManager::OnPlayerDeath()
 {
+    UE_LOG(LogTemp, Warning, TEXT("=== PLAYER DEATH DETECTED ==="));
+
     if (!bRunActive)
     {
+        UE_LOG(LogTemp, Error, TEXT("ERROR: Player died but no run is active!"));
         return;
     }
 
@@ -101,22 +111,39 @@ void URunManager::OnPlayerDeath()
     FTimerHandle NewRunTimer;
     GetWorld()->GetTimerManager().SetTimer(NewRunTimer, [this]()
     {
+        UE_LOG(LogTemp, Warning, TEXT("Timer fired - starting new run after death"));
         StartNewRun();
     }, 3.0f, false);
+
+    UE_LOG(LogTemp, Warning, TEXT("New run will start in 3 seconds..."));
 }
 
 void URunManager::ResetPlayerToHub()
 {
+    UE_LOG(LogTemp, Warning, TEXT("=== RESETTING PLAYER TO HUB ==="));
+
     // First, reset the entire level (zones, doors, enemies)
     TArray<AActor*> FoundManagers;
     UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALevelLayoutManager::StaticClass(), FoundManagers);
+
+    UE_LOG(LogTemp, Warning, TEXT("Found %d LevelLayoutManagers"), FoundManagers.Num());
+
     if (FoundManagers.Num() > 0)
     {
         if (ALevelLayoutManager* LevelManager = Cast<ALevelLayoutManager>(FoundManagers[0]))
         {
+            UE_LOG(LogTemp, Warning, TEXT("Calling LevelManager->ResetLevelForNewRun()"));
             LevelManager->ResetLevelForNewRun();
-            UE_LOG(LogTemp, Warning, TEXT("Level reset for new run"));
+            UE_LOG(LogTemp, Warning, TEXT("Level reset completed"));
         }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("ERROR: Failed to cast to ALevelLayoutManager"));
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("ERROR: No LevelLayoutManager found in level!"));
     }
 
     // Reset player position to starting hub

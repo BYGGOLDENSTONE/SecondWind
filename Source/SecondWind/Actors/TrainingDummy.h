@@ -23,6 +23,7 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
+	void Respawn();
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
@@ -56,7 +57,6 @@ private:
 	UFUNCTION()
 	void OnPhaseTransition();
 
-	void Respawn();
 	void PlayHitReaction();
 	void PerformTestAttack();
 };

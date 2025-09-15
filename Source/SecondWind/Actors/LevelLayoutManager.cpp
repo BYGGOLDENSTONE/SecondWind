@@ -7,6 +7,7 @@
 #include "TrainingDummy.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
+#include "../Components/HealthComponent.h"
 
 ALevelLayoutManager::ALevelLayoutManager()
 {
@@ -169,18 +170,8 @@ void ALevelLayoutManager::ValidateLevelSetup()
 
 void ALevelLayoutManager::InitializeStartingArea()
 {
-    // No longer auto-spawning training dummy - placed manually in editor
-    // SpawnTrainingDummy();
-
-    UpdateDoorStates();
-
-    if (AArenaZone* StartZone = GetZone(0))
-    {
-        if (StartZone->ExitDoor)
-        {
-            StartZone->ExitDoor->SetDoorLocked(false);
-        }
-    }
+    // Simple initialization - doors will be managed by zones when combat starts
+    UE_LOG(LogTemp, Warning, TEXT("Starting area initialized - doors managed by zone combat system"));
 }
 
 void ALevelLayoutManager::SpawnTrainingDummy()
@@ -215,6 +206,38 @@ void ALevelLayoutManager::SpawnTrainingDummy()
     // }
 }
 
+void ALevelLayoutManager::RespawnTrainingDummies()
+{
+    // Find all training dummies in the level and respawn them if dead
+    TArray<AActor*> FoundDummies;
+    UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATrainingDummy::StaticClass(), FoundDummies);
+
+    for (AActor* Actor : FoundDummies)
+    {
+        if (ATrainingDummy* Dummy = Cast<ATrainingDummy>(Actor))
+        {
+            // Check if the dummy is dead and needs respawning
+            if (UHealthComponent* HealthComp = Dummy->FindComponentByClass<UHealthComponent>())
+            {
+                if (!HealthComp->IsAlive())
+                {
+                    // Respawn the dummy
+                    Dummy->Respawn();
+                    UE_LOG(LogTemp, Warning, TEXT("Respawned training dummy: %s"), *Dummy->GetName());
+                }
+                else
+                {
+                    // Just reset health to full if alive
+                    HealthComp->ResetHealth();
+                    UE_LOG(LogTemp, Warning, TEXT("Reset health for training dummy: %s"), *Dummy->GetName());
+                }
+            }
+        }
+    }
+
+    UE_LOG(LogTemp, Warning, TEXT("Checked %d training dummies for respawn"), FoundDummies.Num());
+}
+
 void ALevelLayoutManager::OnPlayerEnterZone(int32 ZoneNumber)
 {
     if (bInCombat)
@@ -240,7 +263,8 @@ void ALevelLayoutManager::OnZoneCleared(int32 ZoneNumber)
 
     UE_LOG(LogTemp, Warning, TEXT("Arena %d cleared! Total cleared: %d"), ZoneNumber, TotalArenasCleared);
 
-    UpdateDoorStates();
+    // DON'T auto-update door states - let zones manage their own doors
+    // UpdateDoorStates();  // REMOVED - this was causing issues
 
     if (ZoneNumber == 5)
     {
@@ -264,21 +288,6 @@ void ALevelLayoutManager::SpawnEnemiesForZone(int32 ZoneNumber)
     }
 }
 
-void ALevelLayoutManager::UpdateDoorStates()
-{
-    for (AArenaDoor* Door : AllDoors)
-    {
-        if (Door)
-        {
-            int32 RequiredArena = Door->GetRequiredArenaNumber();
-            if (RequiredArena > 0)
-            {
-                bool bShouldBeLocked = !IsZoneCleared(RequiredArena - 1);
-                Door->SetDoorLocked(bShouldBeLocked);
-            }
-        }
-    }
-}
 
 AArenaZone* ALevelLayoutManager::GetZone(int32 ZoneNumber) const
 {
@@ -326,18 +335,19 @@ void ALevelLayoutManager::ResetLevelForNewRun()
             // Reset zone state
             Zone->ResetZone();
 
-            UE_LOG(LogTemp, Warning, TEXT("Reset Zone %d"), ZonePair.Key);
+            UE_LOG(LogTemp, Warning, TEXT("Reset Zone %d - Cleared: %s"),
+                ZonePair.Key, Zone->IsZoneCleared() ? TEXT("TRUE") : TEXT("FALSE"));
         }
     }
 
-    // Reset all doors to closed state
+    // Simple reset: just close all doors (zones will manage locking when activated)
     for (AArenaDoor* Door : AllDoors)
     {
         if (Door)
         {
             Door->CloseDoor();
-            Door->SetDoorLocked(true);
-            UE_LOG(LogTemp, Warning, TEXT("Closed and locked door: %s"), *Door->GetName());
+            Door->SetDoorLocked(false);  // Unlock all doors - zones will lock what they need
+            UE_LOG(LogTemp, Warning, TEXT("Reset door %d: closed and unlocked"), Door->GetDoorID());
         }
     }
 
@@ -356,14 +366,11 @@ void ALevelLayoutManager::ResetLevelForNewRun()
     bInCombat = false;
     TotalArenasCleared = 0;
 
-    // Respawn training dummy if needed
-    if (TrainingDummySpawnPoint && !CurrentTrainingDummy)
-    {
-        SpawnTrainingDummy();
-    }
+    // Find and respawn all training dummies
+    RespawnTrainingDummies();
 
-    // Update door states based on reset
-    UpdateDoorStates();
+    // Initialize starting area doors properly
+    InitializeStartingArea();
 
     UE_LOG(LogTemp, Warning, TEXT("=== LEVEL RESET COMPLETE ==="));
 }

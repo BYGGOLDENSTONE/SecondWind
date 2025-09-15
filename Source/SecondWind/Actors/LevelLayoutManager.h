@@ -58,7 +58,6 @@ public:
     void OnEnemyDefeated(AArenaEnemy* Enemy, int32 ZoneNumber);
 
     void SpawnEnemiesForZone(int32 ZoneNumber);
-    void UpdateDoorStates();
     void InitializeStartingArea();
 
     AArenaZone* GetZone(int32 ZoneNumber) const;
@@ -75,6 +74,7 @@ private:
     void DiscoverCorridors();
     void ValidateLevelSetup();
     void SpawnTrainingDummy();
+    void RespawnTrainingDummies();
 
     UPROPERTY()
     AEnemySpawnPoint* TrainingDummySpawnPoint;
