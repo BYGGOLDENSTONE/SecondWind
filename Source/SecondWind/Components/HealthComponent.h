@@ -40,6 +40,10 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Health")
 	FOnDeath OnDeath;
 
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEnterFinisherState);
+	UPROPERTY(BlueprintAssignable, Category = "Health")
+	FOnEnterFinisherState OnEnterFinisherState;
+
 	UFUNCTION()
 	void TakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType,
 		class AController* InstigatedBy, AActor* DamageCauser);
@@ -58,6 +62,12 @@ public:
 
 	UFUNCTION()
 	bool IsAlive() const { return CurrentPhase <= MaxPhases && CurrentHealth > 0; }
+
+	UFUNCTION()
+	bool IsInFinisherState() const { return bInFinisherState; }
+
+	UFUNCTION()
+	void ExecuteFinisher();
 
 	UFUNCTION()
 	void ResetHealth();
@@ -80,9 +90,11 @@ private:
 
 	float CurrentHealth;
 	int32 CurrentPhase = 1;
+	bool bInFinisherState = false;
 
 	void HandleHealthDepleted();
 	void TransitionToNextPhase();
+	void EnterFinisherState();
 
 	UBlockingComponent* BlockingComponent = nullptr;
 	UHackComponent* HackComponent = nullptr;

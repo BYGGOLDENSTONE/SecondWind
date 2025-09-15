@@ -217,3 +217,76 @@ bool UCombatComponent::IsInCounterWindow() const
 
 	return bInBlockCounter || bInDodgeCounter;
 }
+
+void UCombatComponent::ExecuteFinisher()
+{
+	AActor* Owner = GetOwner();
+	if (!Owner)
+	{
+		return;
+	}
+
+	// Find a target that is in finisher state
+	AActor* Target = GetFinisherTarget();
+	if (Target)
+	{
+		// Check if target has a health component in finisher state
+		if (UHealthComponent* TargetHealth = Target->FindComponentByClass<UHealthComponent>())
+		{
+			if (TargetHealth->IsInFinisherState())
+			{
+				TargetHealth->ExecuteFinisher();
+				UE_LOG(LogTemp, Warning, TEXT("*** FINISHER EXECUTED on %s ***"), *Target->GetName());
+
+				// Visual feedback
+				#if WITH_EDITOR
+				FVector FinisherLocation = Target->GetActorLocation();
+				DrawDebugSphere(GetWorld(), FinisherLocation, 100.0f, 16, FColor::Yellow, false, 1.0f);
+				#endif
+			}
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No target in finisher state found"));
+	}
+}
+
+bool UCombatComponent::CanExecuteFinisher() const
+{
+	// Can execute finisher if there's a target in finisher state nearby
+	return GetFinisherTarget() != nullptr;
+}
+
+AActor* UCombatComponent::GetFinisherTarget() const
+{
+	AActor* Owner = GetOwner();
+	if (!Owner)
+	{
+		return nullptr;
+	}
+
+	// Search for enemies in finisher state within range
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACharacter::StaticClass(), FoundActors);
+
+	for (AActor* Actor : FoundActors)
+	{
+		if (Actor == Owner)
+			continue;
+
+		float Distance = FVector::Dist(Owner->GetActorLocation(), Actor->GetActorLocation());
+		if (Distance <= AttackRange * 1.5f) // Slightly larger range for finishers
+		{
+			if (UHealthComponent* Health = Actor->FindComponentByClass<UHealthComponent>())
+			{
+				if (Health->IsInFinisherState())
+				{
+					return Actor;
+				}
+			}
+		}
+	}
+
+	return nullptr;
+}

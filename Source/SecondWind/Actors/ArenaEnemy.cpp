@@ -52,6 +52,7 @@ void AArenaEnemy::BeginPlay()
     {
         HealthComponent->OnPhaseTransition.AddDynamic(this, &AArenaEnemy::OnPhaseTransition);
         HealthComponent->OnDeath.AddDynamic(this, &AArenaEnemy::OnEnemyDeath);
+        HealthComponent->OnEnterFinisherState.AddDynamic(this, &AArenaEnemy::EnterFinisherState);
         UE_LOG(LogTemp, Warning, TEXT("ArenaEnemy: Health delegates bound successfully"));
     }
     else
@@ -83,7 +84,7 @@ void AArenaEnemy::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 
     // Continuously face and move toward player when in combat
-    if (!IsDefeated() && !bInFinisherState)
+    if (!IsDefeated() && !HealthComponent->IsInFinisherState())
     {
         AActor* Player = FindPlayer();
         if (Player)
@@ -169,6 +170,10 @@ void AArenaEnemy::OnPhaseTransition()
 
     // Start the next phase (re-enable movement, adjust stats, etc.)
     StartNextPhase();
+
+    // Restart attack timer for next phase
+    GetWorldTimerManager().SetTimer(AttackTimerHandle, this, &AArenaEnemy::PerformAttack,
+        FMath::RandRange(2.0f, 3.0f), true, 1.0f);
 }
 
 void AArenaEnemy::OnEnemyDeath()
@@ -220,17 +225,13 @@ void AArenaEnemy::OnEnemyDeath()
 
 void AArenaEnemy::ExecuteFinisher()
 {
-    if (!bInFinisherState)
+    if (!HealthComponent || !HealthComponent->IsInFinisherState())
     {
         return;
     }
 
-    bInFinisherState = false;
-    CurrentPhase++;
-
-    UE_LOG(LogTemp, Warning, TEXT("Finisher executed! Moving to phase %d/%d"), CurrentPhase, MaxPhases);
-
-    StartNextPhase();
+    // Let the HealthComponent handle the finisher
+    HealthComponent->ExecuteFinisher();
 }
 
 int32 AArenaEnemy::CalculateFragmentReward() const
@@ -268,20 +269,11 @@ void AArenaEnemy::SetupPhases()
 
 void AArenaEnemy::StartNextPhase()
 {
-    // Exit finisher state if we were in one
-    bInFinisherState = false;
-
     // Re-enable movement
     if (GetCharacterMovement())
     {
         GetCharacterMovement()->SetMovementMode(MOVE_Walking);
         GetCharacterMovement()->MaxWalkSpeed = 400.f + (CurrentPhase - 1) * 50.f;
-    }
-
-    // Reset health for new phase
-    if (HealthComponent)
-    {
-        HealthComponent->ResetHealth();
     }
 
     // Scale up damage for new phase
@@ -293,8 +285,15 @@ void AArenaEnemy::StartNextPhase()
 
 void AArenaEnemy::EnterFinisherState()
 {
-    bInFinisherState = true;
-    GetCharacterMovement()->DisableMovement();
+    // Stop all movement when entering finisher state
+    if (GetCharacterMovement())
+    {
+        GetCharacterMovement()->DisableMovement();
+        GetCharacterMovement()->StopMovementImmediately();
+    }
+
+    // Stop attack timer
+    GetWorldTimerManager().ClearTimer(AttackTimerHandle);
 
     UE_LOG(LogTemp, Warning, TEXT("Enemy stunned! Waiting for finisher..."));
 }
@@ -329,7 +328,7 @@ void AArenaEnemy::SetOwnerZone(AArenaZone* Zone)
 
 void AArenaEnemy::PerformAttack()
 {
-    if (!IsDefeated() && !bInFinisherState)
+    if (!IsDefeated() && HealthComponent && !HealthComponent->IsInFinisherState())
     {
         AActor* Player = FindPlayer();
         if (Player)
@@ -359,4 +358,9 @@ AActor* AArenaEnemy::FindPlayer() const
 {
     ACharacter* PlayerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
     return PlayerCharacter;
+}
+
+bool AArenaEnemy::IsInFinisherState() const
+{
+    return HealthComponent && HealthComponent->IsInFinisherState();
 }

@@ -50,6 +50,12 @@ private:
 	UFUNCTION()
 	void OnPhaseChanged(int32 NewPhase);
 
+	UFUNCTION()
+	void OnEnterFinisherState();
+
+	UFUNCTION()
+	void OnPhaseTransition();
+
 	void Respawn();
 	void PlayHitReaction();
 	void PerformTestAttack();

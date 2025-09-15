@@ -26,7 +26,13 @@ public:
 	void PerformAttack();
 
 	UFUNCTION()
+	void ExecuteFinisher();
+
+	UFUNCTION()
 	bool CanAttack() const;
+
+	UFUNCTION()
+	bool CanExecuteFinisher() const;
 
 	UFUNCTION()
 	void SetBlockingComponent(UBlockingComponent* InBlockingComponent) { BlockingComponent = InBlockingComponent; }
@@ -47,6 +53,7 @@ private:
 	void ExecuteAttack();
 	void ResetAttack();
 	AActor* GetTargetInRange() const;
+	AActor* GetFinisherTarget() const;
 	void ApplyDamageToTarget(AActor* Target);
 	bool IsInCounterWindow() const;
 

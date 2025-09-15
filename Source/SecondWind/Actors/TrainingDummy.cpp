@@ -47,6 +47,8 @@ void ATrainingDummy::BeginPlay()
 	{
 		HealthComponent->OnHealthDepleted.AddDynamic(this, &ATrainingDummy::OnHealthDepleted);
 		HealthComponent->OnPhaseChanged.AddDynamic(this, &ATrainingDummy::OnPhaseChanged);
+		HealthComponent->OnEnterFinisherState.AddDynamic(this, &ATrainingDummy::OnEnterFinisherState);
+		HealthComponent->OnPhaseTransition.AddDynamic(this, &ATrainingDummy::OnPhaseTransition);
 	}
 
 	if (bAutoAttackPlayer)
@@ -131,9 +133,28 @@ void ATrainingDummy::PlayHitReaction()
 	UE_LOG(LogTemp, Log, TEXT("Training Dummy hit reaction"));
 }
 
+void ATrainingDummy::OnEnterFinisherState()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Training Dummy entered finisher state - waiting for finisher"));
+
+	// Stop attacking when in finisher state
+	GetWorldTimerManager().ClearTimer(AttackTimerHandle);
+}
+
+void ATrainingDummy::OnPhaseTransition()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Training Dummy phase transition completed"));
+
+	// Resume attacking after phase transition if auto-attack is enabled
+	if (bAutoAttackPlayer && HealthComponent && HealthComponent->IsAlive())
+	{
+		GetWorldTimerManager().SetTimer(AttackTimerHandle, this, &ATrainingDummy::PerformTestAttack, AttackInterval, true, AttackInterval);
+	}
+}
+
 void ATrainingDummy::PerformTestAttack()
 {
-	if (!CombatComponent || !HealthComponent->IsAlive())
+	if (!CombatComponent || !HealthComponent->IsAlive() || HealthComponent->IsInFinisherState())
 	{
 		return;
 	}

@@ -32,7 +32,7 @@ public:
 
     int32 GetCurrentPhase() const { return CurrentPhase; }
     int32 GetMaxPhases() const { return MaxPhases; }
-    bool IsInFinisherState() const { return bInFinisherState; }
+    bool IsInFinisherState() const;
     bool IsDefeated() const;
 
     void ExecuteFinisher();
@@ -44,6 +44,7 @@ public:
 protected:
     void SetupPhases();
     void StartNextPhase();
+    UFUNCTION()
     void EnterFinisherState();
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
@@ -64,9 +65,6 @@ private:
 
     UPROPERTY()
     int32 MaxPhases = 1;
-
-    UPROPERTY()
-    bool bInFinisherState = false;
 
     FTimerHandle FinisherTimeoutHandle;
 

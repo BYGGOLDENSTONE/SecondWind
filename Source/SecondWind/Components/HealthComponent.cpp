@@ -50,7 +50,7 @@ void UHealthComponent::BeginPlay()
 void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType,
 	class AController* InstigatedBy, AActor* DamageCauser)
 {
-	if (Damage <= 0.0f || !IsAlive())
+	if (Damage <= 0.0f || !IsAlive() || bInFinisherState)
 	{
 		return;
 	}
@@ -150,8 +150,8 @@ void UHealthComponent::HandleHealthDepleted()
 
 	if (CurrentPhase < MaxPhases)
 	{
-		OnPhaseTransition.Broadcast();
-		TransitionToNextPhase();
+		// Enter finisher state instead of immediately transitioning
+		EnterFinisherState();
 	}
 	else
 	{
@@ -164,12 +164,33 @@ void UHealthComponent::TransitionToNextPhase()
 {
 	CurrentPhase++;
 	CurrentHealth = MaxHealth;
+	bInFinisherState = false;
 
 	OnPhaseChanged.Broadcast(CurrentPhase);
 	OnHealthChanged.Broadcast(CurrentHealth);
 
 	UE_LOG(LogTemp, Log, TEXT("%s entering phase %d/%d"),
 		*GetOwner()->GetName(), CurrentPhase, MaxPhases);
+
+	// Update HUD
+	if (UWorld* World = GetWorld())
+	{
+		if (APlayerController* PC = World->GetFirstPlayerController())
+		{
+			if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
+			{
+				// Check if this is the player
+				if (Cast<ASecondWindCharacter>(GetOwner()))
+				{
+					HUD->UpdatePlayerHealth(CurrentHealth, MaxHealth, CurrentPhase, MaxPhases);
+				}
+				else
+				{
+					HUD->UpdateEnemyHealth(CurrentHealth, MaxHealth, CurrentPhase, MaxPhases);
+				}
+			}
+		}
+	}
 }
 
 void UHealthComponent::ResetHealth()
@@ -196,4 +217,26 @@ void UHealthComponent::HealToFull()
 	CurrentHealth = MaxHealth;
 	OnHealthChanged.Broadcast(CurrentHealth);
 	UE_LOG(LogTemp, Log, TEXT("%s healed to full health (%f)"), *GetOwner()->GetName(), MaxHealth);
+}
+
+void UHealthComponent::EnterFinisherState()
+{
+	bInFinisherState = true;
+	OnEnterFinisherState.Broadcast();
+	UE_LOG(LogTemp, Warning, TEXT("%s entered finisher state - awaiting finisher!"), *GetOwner()->GetName());
+}
+
+void UHealthComponent::ExecuteFinisher()
+{
+	if (!bInFinisherState)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ExecuteFinisher called but not in finisher state!"));
+		return;
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Finisher executed on %s!"), *GetOwner()->GetName());
+
+	// Broadcast phase transition and then transition
+	OnPhaseTransition.Broadcast();
+	TransitionToNextPhase();
 }

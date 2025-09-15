@@ -279,14 +279,22 @@ void ASecondWindCharacter::Look(const FInputActionValue& Value)
 
 void ASecondWindCharacter::Attack()
 {
-	// Check if we can perform a leap attack during dash
+	// Priority 1: Check if we can execute a finisher
+	if (CombatComponent && CombatComponent->CanExecuteFinisher())
+	{
+		CombatComponent->ExecuteFinisher();
+		UE_LOG(LogTemplateCharacter, Warning, TEXT("Executing finisher!"));
+		return;
+	}
+
+	// Priority 2: Check if we can perform a leap attack during dash
 	if (DodgeComponent && DodgeComponent->CanPerformLeapAttack())
 	{
 		DodgeComponent->PerformLeapAttack();
 		return;
 	}
 
-	// Check if we're in a counter window
+	// Priority 3: Check if we're in a counter window
 	if (DodgeComponent && DodgeComponent->IsInCounterWindow() && CombatComponent)
 	{
 		// Perform counter-attack
@@ -295,7 +303,7 @@ void ASecondWindCharacter::Attack()
 		return;
 	}
 
-	// Normal attack
+	// Priority 4: Normal attack
 	if (CombatComponent)
 	{
 		CombatComponent->PerformAttack();
