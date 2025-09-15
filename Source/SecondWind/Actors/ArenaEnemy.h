@@ -5,6 +5,7 @@
 #include "ArenaEnemy.generated.h"
 
 class UHealthComponent;
+class UCombatComponent;
 
 UCLASS()
 class SECONDWIND_API AArenaEnemy : public ACharacter
@@ -50,10 +51,14 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     UHealthComponent* HealthComponent;
 
-    UPROPERTY(EditDefaultsOnly, Category = "Combat")
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    UCombatComponent* CombatComponent;
+
+    // Legacy attack values - kept for backward compatibility but use CombatComponent instead
+    UPROPERTY(EditDefaultsOnly, Category = "Combat (Deprecated - Use CombatComponent)")
     int32 BaseDamage = 10;
 
-    UPROPERTY(EditDefaultsOnly, Category = "Combat")
+    UPROPERTY(EditDefaultsOnly, Category = "Combat (Deprecated - Use CombatComponent)")
     float AttackRange = 150.0f;
 
 private:

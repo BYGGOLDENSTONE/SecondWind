@@ -1,5 +1,6 @@
 #include "ArenaEnemy.h"
 #include "../Components/HealthComponent.h"
+#include "../Components/CombatComponent.h"
 #include "../Systems/EnemyManager.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -12,6 +13,7 @@ AArenaEnemy::AArenaEnemy()
     PrimaryActorTick.bCanEverTick = true;
 
     HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
+    CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
 
     GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
     GetCharacterMovement()->MaxWalkSpeed = 400.f;
@@ -333,14 +335,17 @@ void AArenaEnemy::PerformAttack()
         AActor* Player = FindPlayer();
         if (Player)
         {
-            float Distance = FVector::Dist(GetActorLocation(), Player->GetActorLocation());
-
-            if (Distance <= AttackRange)
+            // Check if player is in finisher state first
+            if (UHealthComponent* PlayerHealth = Player->FindComponentByClass<UHealthComponent>())
             {
-                // Check if player is in finisher state
-                if (UHealthComponent* PlayerHealth = Player->FindComponentByClass<UHealthComponent>())
+                if (PlayerHealth->IsInFinisherState())
                 {
-                    if (PlayerHealth->IsInFinisherState())
+                    float Distance = FVector::Dist(GetActorLocation(), Player->GetActorLocation());
+
+                    // Use CombatComponent's attack range if available, otherwise use legacy value
+                    float FinisherRange = CombatComponent ? 150.0f * 1.5f : AttackRange;
+
+                    if (Distance <= FinisherRange)
                     {
                         // Execute finisher on player
                         PlayerHealth->ExecuteFinisher();
@@ -348,19 +353,36 @@ void AArenaEnemy::PerformAttack()
                         return;
                     }
                 }
+            }
 
-                // Normal attack
-                UGameplayStatics::ApplyPointDamage(
-                    Player,
-                    BaseDamage,
-                    Player->GetActorLocation(),
-                    FHitResult(),
-                    nullptr,
-                    this,
-                    UDamageType::StaticClass()
-                );
+            // Use CombatComponent for normal attack if available
+            if (CombatComponent && CombatComponent->CanAttack())
+            {
+                // Face the player before attacking
+                FVector DirectionToPlayer = (Player->GetActorLocation() - GetActorLocation()).GetSafeNormal();
+                SetActorRotation(DirectionToPlayer.Rotation());
 
-                UE_LOG(LogTemp, Warning, TEXT("ArenaEnemy attacking player for %d damage"), BaseDamage);
+                // Perform attack using CombatComponent
+                CombatComponent->PerformAttack();
+                UE_LOG(LogTemp, Warning, TEXT("ArenaEnemy attacking using CombatComponent"));
+            }
+            else if (!CombatComponent)
+            {
+                // Fallback to legacy attack system if no CombatComponent
+                float Distance = FVector::Dist(GetActorLocation(), Player->GetActorLocation());
+                if (Distance <= AttackRange)
+                {
+                    UGameplayStatics::ApplyPointDamage(
+                        Player,
+                        BaseDamage,
+                        Player->GetActorLocation(),
+                        FHitResult(),
+                        nullptr,
+                        this,
+                        UDamageType::StaticClass()
+                    );
+                    UE_LOG(LogTemp, Warning, TEXT("ArenaEnemy attacking with legacy system for %d damage"), BaseDamage);
+                }
             }
         }
     }
