@@ -33,12 +33,11 @@ public:
     void SetEnemyName(const FString& Name);
     void ShowEnemyHealthBar(bool bShow);
     void BindToEnemy();
+    void BindToPlayer();
 
 private:
     TSharedPtr<SCombatHUDWidget> CombatHUDWidget;
     TSharedPtr<SWidget> CombatHUDContainer;
-
-    void BindToPlayer();
 
     UPROPERTY()
     class ASecondWindCharacter* PlayerCharacter;
