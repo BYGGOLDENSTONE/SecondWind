@@ -65,6 +65,9 @@ public:
     bool IsZoneCleared(int32 ZoneNumber) const;
     int32 GetHighestClearedZone() const;
 
+    // Reset entire level for new run
+    void ResetLevelForNewRun();
+
 private:
     void DiscoverArenaZones();
     void DiscoverSpawnPoints();

@@ -59,6 +59,10 @@ public:
     void SpawnEnemies();
     void ClearEnemies();
 
+    // Reset functions for new run
+    void ResetZone();
+    void DespawnAllEnemies();
+
 private:
     ALevelLayoutManager* LayoutManager;
 

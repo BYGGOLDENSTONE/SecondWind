@@ -107,6 +107,18 @@ void URunManager::OnPlayerDeath()
 
 void URunManager::ResetPlayerToHub()
 {
+    // First, reset the entire level (zones, doors, enemies)
+    TArray<AActor*> FoundManagers;
+    UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALevelLayoutManager::StaticClass(), FoundManagers);
+    if (FoundManagers.Num() > 0)
+    {
+        if (ALevelLayoutManager* LevelManager = Cast<ALevelLayoutManager>(FoundManagers[0]))
+        {
+            LevelManager->ResetLevelForNewRun();
+            UE_LOG(LogTemp, Warning, TEXT("Level reset for new run"));
+        }
+    }
+
     // Reset player position to starting hub
     if (ASecondWindCharacter* Player = Cast<ASecondWindCharacter>(
         UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))

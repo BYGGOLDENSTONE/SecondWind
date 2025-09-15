@@ -310,3 +310,60 @@ int32 ALevelLayoutManager::GetHighestClearedZone() const
     }
     return HighestCleared;
 }
+
+void ALevelLayoutManager::ResetLevelForNewRun()
+{
+    UE_LOG(LogTemp, Warning, TEXT("=== RESETTING LEVEL FOR NEW RUN ==="));
+
+    // Reset all arena zones
+    for (auto& ZonePair : ArenaZones)
+    {
+        if (AArenaZone* Zone = ZonePair.Value)
+        {
+            // Despawn all enemies in the zone
+            Zone->DespawnAllEnemies();
+
+            // Reset zone state
+            Zone->ResetZone();
+
+            UE_LOG(LogTemp, Warning, TEXT("Reset Zone %d"), ZonePair.Key);
+        }
+    }
+
+    // Reset all doors to closed state
+    for (AArenaDoor* Door : AllDoors)
+    {
+        if (Door)
+        {
+            Door->CloseDoor();
+            Door->SetDoorLocked(true);
+            UE_LOG(LogTemp, Warning, TEXT("Closed and locked door: %s"), *Door->GetName());
+        }
+    }
+
+    // Reset all safe zone corridors
+    for (ASafeZoneCorridor* Corridor : AllCorridors)
+    {
+        if (Corridor)
+        {
+            // Reset corridor state if needed
+            UE_LOG(LogTemp, Warning, TEXT("Reset corridor: %s"), *Corridor->GetName());
+        }
+    }
+
+    // Reset game state
+    CurrentArenaNumber = 0;
+    bInCombat = false;
+    TotalArenasCleared = 0;
+
+    // Respawn training dummy if needed
+    if (TrainingDummySpawnPoint && !CurrentTrainingDummy)
+    {
+        SpawnTrainingDummy();
+    }
+
+    // Update door states based on reset
+    UpdateDoorStates();
+
+    UE_LOG(LogTemp, Warning, TEXT("=== LEVEL RESET COMPLETE ==="));
+}

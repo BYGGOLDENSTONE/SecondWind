@@ -255,3 +255,36 @@ void AArenaZone::CheckZoneClearStatus()
         UE_LOG(LogTemp, Warning, TEXT("Zone %d NOT cleared yet (enemies remaining or not active)"), ZoneNumber);
     }
 }
+
+void AArenaZone::ResetZone()
+{
+    // Reset zone state
+    bIsCleared = false;
+    bIsActive = false;
+
+    // Clear the active enemies list (they should already be despawned)
+    ActiveEnemies.Empty();
+
+    UE_LOG(LogTemp, Warning, TEXT("Zone %d reset - cleared status and enemy list"), ZoneNumber);
+}
+
+void AArenaZone::DespawnAllEnemies()
+{
+    UE_LOG(LogTemp, Warning, TEXT("Despawning all enemies in Zone %d (%d enemies)"), ZoneNumber, ActiveEnemies.Num());
+
+    // Destroy all active enemies
+    for (int32 i = ActiveEnemies.Num() - 1; i >= 0; i--)
+    {
+        if (AArenaEnemy* Enemy = ActiveEnemies[i])
+        {
+            if (IsValid(Enemy))
+            {
+                Enemy->Destroy();
+                UE_LOG(LogTemp, Warning, TEXT("Destroyed enemy in Zone %d"), ZoneNumber);
+            }
+        }
+    }
+
+    // Clear the array
+    ActiveEnemies.Empty();
+}
