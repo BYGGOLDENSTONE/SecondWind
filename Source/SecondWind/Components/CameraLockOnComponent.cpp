@@ -230,7 +230,8 @@ bool UCameraLockOnComponent::IsValidTarget(AActor* Target) const
     // Check if target is alive (has health component)
     if (UHealthComponent* HealthComp = Target->FindComponentByClass<UHealthComponent>())
     {
-        return HealthComp->IsAlive();
+        // Target is valid if alive (including finisher state) and not truly dead
+        return HealthComp->IsAlive() && !HealthComp->IsTrulyDead();
     }
 
     return true; // If no health component, assume valid (like training dummy)

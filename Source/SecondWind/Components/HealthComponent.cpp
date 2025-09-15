@@ -224,6 +224,27 @@ void UHealthComponent::EnterFinisherState()
 	bInFinisherState = true;
 	OnEnterFinisherState.Broadcast();
 	UE_LOG(LogTemp, Warning, TEXT("%s entered finisher state - awaiting finisher!"), *GetOwner()->GetName());
+
+	// Update HUD to show 0 health but keep health bar visible
+	if (UWorld* World = GetWorld())
+	{
+		if (APlayerController* PC = World->GetFirstPlayerController())
+		{
+			if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
+			{
+				// Check if this is the player
+				if (Cast<ASecondWindCharacter>(GetOwner()))
+				{
+					HUD->UpdatePlayerHealth(0, MaxHealth, CurrentPhase, MaxPhases);
+				}
+				else
+				{
+					// Keep enemy health bar visible showing 0 health
+					HUD->UpdateEnemyHealth(0, MaxHealth, CurrentPhase, MaxPhases);
+				}
+			}
+		}
+	}
 }
 
 void UHealthComponent::ExecuteFinisher()

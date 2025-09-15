@@ -61,10 +61,13 @@ public:
 	int32 GetMaxPhases() const { return MaxPhases; }
 
 	UFUNCTION()
-	bool IsAlive() const { return CurrentPhase <= MaxPhases && CurrentHealth > 0; }
+	bool IsAlive() const { return CurrentPhase <= MaxPhases && (CurrentHealth > 0 || bInFinisherState); }
 
 	UFUNCTION()
 	bool IsInFinisherState() const { return bInFinisherState; }
+
+	UFUNCTION()
+	bool IsTrulyDead() const { return CurrentPhase > MaxPhases; }
 
 	UFUNCTION()
 	void ExecuteFinisher();
