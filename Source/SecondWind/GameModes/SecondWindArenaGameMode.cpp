@@ -4,12 +4,14 @@
 #include "../Actors/TrainingDummy.h"
 #include "../SecondWindCharacter.h"
 #include "../Components/FragmentComponent.h"
+#include "../UI/SecondWindHUD.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
 
 ASecondWindArenaGameMode::ASecondWindArenaGameMode()
 {
     DefaultPawnClass = ASecondWindCharacter::StaticClass();
+    HUDClass = ASecondWindHUD::StaticClass();
 }
 
 void ASecondWindArenaGameMode::BeginPlay()

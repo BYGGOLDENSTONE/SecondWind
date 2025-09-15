@@ -10,6 +10,7 @@
 #include "SecondWind/Actors/ArenaEnemy.h"
 #include "SecondWind/Systems/EnemyManager.h"
 #include "HealthComponent.h"
+#include "SecondWind/UI/SecondWindHUD.h"
 
 UCameraLockOnComponent::UCameraLockOnComponent()
 {
@@ -119,6 +120,15 @@ void UCameraLockOnComponent::SetLockOnTarget(AActor* NewTarget)
         if (CurrentTarget)
         {
             UE_LOG(LogTemp, Warning, TEXT("Locked onto target: %s"), *CurrentTarget->GetName());
+
+            // Update HUD to show enemy health bar
+            if (PlayerController)
+            {
+                if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PlayerController->GetHUD()))
+                {
+                    HUD->BindToEnemy();
+                }
+            }
         }
     }
 }
@@ -129,6 +139,15 @@ void UCameraLockOnComponent::ClearLockOnTarget()
     {
         UE_LOG(LogTemp, Warning, TEXT("Lock-on cleared"));
         CurrentTarget = nullptr;
+
+        // Update HUD to hide enemy health bar
+        if (PlayerController)
+        {
+            if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PlayerController->GetHUD()))
+            {
+                HUD->ShowEnemyHealthBar(false);
+            }
+        }
     }
 }
 

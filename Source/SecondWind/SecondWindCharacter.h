@@ -86,10 +86,6 @@ class ASecondWindCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	class UHackComponent* HackComponent;
 
-	/** Hack UI Component */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-	class UHackUIComponent* HackUIComponent;
-
 	/** Fragment Component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UFragmentComponent* FragmentComponent;

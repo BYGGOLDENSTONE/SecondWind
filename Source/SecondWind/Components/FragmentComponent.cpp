@@ -2,6 +2,8 @@
 #include "SecondWind/Systems/FragmentSystem.h"
 #include "Engine/World.h"
 #include "Engine/GameInstance.h"
+#include "SecondWind/UI/SecondWindHUD.h"
+#include "GameFramework/PlayerController.h"
 
 UFragmentComponent::UFragmentComponent()
 {
@@ -34,6 +36,15 @@ void UFragmentComponent::AddFragments(int32 Amount)
             CurrentFragments = FragmentSystem->GetFragmentCount();
             OnFragmentsChanged.Broadcast(CurrentFragments);
             UE_LOG(LogTemp, Warning, TEXT("Fragments added via system: %d (Total: %d)"), Amount, CurrentFragments);
+
+            // Update HUD
+            if (APlayerController* PC = GetWorld()->GetFirstPlayerController())
+            {
+                if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
+                {
+                    HUD->UpdateFragmentCount(CurrentFragments);
+                }
+            }
         }
     }
 }

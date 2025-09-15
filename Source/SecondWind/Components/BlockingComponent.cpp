@@ -3,6 +3,7 @@
 #include "GameFramework/Character.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
+#include "SecondWind/UI/SecondWindHUD.h"
 
 UBlockingComponent::UBlockingComponent()
 {
@@ -161,6 +162,18 @@ void UBlockingComponent::TriggerCounterWindow(EBlockDirection IncomingAttackDire
 	CounterWindowTimer = CounterWindowDuration;
 	CounterDirection = IncomingAttackDirection;
 
+	// Update HUD
+	if (UWorld* World = GetWorld())
+	{
+		if (APlayerController* PC = World->GetFirstPlayerController())
+		{
+			if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
+			{
+				HUD->UpdateCounterIndicator(true, true);
+			}
+		}
+	}
+
 	// Don't add counter here - only when player actually attacks during the window
 	UE_LOG(LogTemp, Warning, TEXT("*** BLOCK COUNTER WINDOW OPEN for %.1f seconds! Press LMB to counter! ***"), CounterWindowDuration);
 }
@@ -174,6 +187,18 @@ void UBlockingComponent::UpdateCounterWindow(float DeltaTime)
 		bInCounterWindow = false;
 		CounterDirection = EBlockDirection::None;
 		UE_LOG(LogTemp, Log, TEXT("Counter window closed"));
+
+		// Update HUD
+		if (UWorld* World = GetWorld())
+		{
+			if (APlayerController* PC = World->GetFirstPlayerController())
+			{
+				if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
+				{
+					HUD->UpdateCounterIndicator(false, false);
+				}
+			}
+		}
 	}
 }
 

@@ -7,6 +7,8 @@
 #include "../Actors/ArenaEnemy.h"
 #include "HealthComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "SecondWind/UI/SecondWindHUD.h"
+#include "GameFramework/PlayerController.h"
 
 UHackComponent::UHackComponent()
 {
@@ -20,6 +22,18 @@ void UHackComponent::BeginPlay()
     CounterAttacks = 0;
     UnblockedHits = 0;
     bIsExecutingHack = false;
+
+    // Notify HUD of initial state
+    if (UWorld* World = GetWorld())
+    {
+        if (APlayerController* PC = World->GetFirstPlayerController())
+        {
+            if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
+            {
+                HUD->UpdateHackProgress(CounterAttacks, RequiredCounters);
+            }
+        }
+    }
 }
 
 void UHackComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -45,6 +59,18 @@ void UHackComponent::AddCounter()
     OnCounterProgressChanged.Broadcast(CounterAttacks);
 
     UE_LOG(LogTemp, Warning, TEXT("HackComponent: Counter added. Current: %d/%d"), CounterAttacks, RequiredCounters);
+
+    // Update HUD
+    if (UWorld* World = GetWorld())
+    {
+        if (APlayerController* PC = World->GetFirstPlayerController())
+        {
+            if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
+            {
+                HUD->UpdateHackProgress(CounterAttacks, RequiredCounters, UnblockedHits);
+            }
+        }
+    }
 
     // Check if hack is now available
     if (CounterAttacks == RequiredCounters)
@@ -78,6 +104,18 @@ void UHackComponent::ResetCounters()
     CounterAttacks = 0;
     UnblockedHits = 0;
     OnCountersReset.Broadcast();
+
+    // Update HUD
+    if (UWorld* World = GetWorld())
+    {
+        if (APlayerController* PC = World->GetFirstPlayerController())
+        {
+            if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
+            {
+                HUD->UpdateHackProgress(CounterAttacks, RequiredCounters, UnblockedHits);
+            }
+        }
+    }
     OnCounterProgressChanged.Broadcast(CounterAttacks);
 }
 
@@ -118,6 +156,18 @@ void UHackComponent::ExecuteHack()
 
     OnHackExecuted.Broadcast();
     OnCounterProgressChanged.Broadcast(CounterAttacks);
+
+    // Update HUD
+    if (UWorld* World = GetWorld())
+    {
+        if (APlayerController* PC = World->GetFirstPlayerController())
+        {
+            if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
+            {
+                HUD->UpdateHackProgress(CounterAttacks, RequiredCounters, UnblockedHits);
+            }
+        }
+    }
 
     UE_LOG(LogTemp, Warning, TEXT("HackComponent: HACK ATTACK EXECUTED!"));
 

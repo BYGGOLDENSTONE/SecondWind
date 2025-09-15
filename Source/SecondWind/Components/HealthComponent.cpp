@@ -3,6 +3,10 @@
 #include "HackComponent.h"
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
+#include "SecondWind/UI/SecondWindHUD.h"
+#include "GameFramework/PlayerController.h"
+#include "SecondWind/SecondWindCharacter.h"
+#include "TimerManager.h"
 
 UHealthComponent::UHealthComponent()
 {
@@ -21,6 +25,25 @@ void UHealthComponent::BeginPlay()
 	{
 		Owner->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::TakeDamage);
 		HackComponent = Owner->FindComponentByClass<UHackComponent>();
+
+		// Notify HUD of initial health for player characters
+		if (Cast<ASecondWindCharacter>(Owner))
+		{
+			if (UWorld* World = GetWorld())
+			{
+				// Small delay to ensure HUD is ready
+				World->GetTimerManager().SetTimerForNextTick([this, World]()
+				{
+					if (APlayerController* PC = World->GetFirstPlayerController())
+					{
+						if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
+						{
+							HUD->UpdatePlayerHealth(CurrentHealth, MaxHealth, CurrentPhase, MaxPhases);
+						}
+					}
+				});
+			}
+		}
 	}
 }
 
@@ -92,6 +115,28 @@ void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const clas
 
 	UE_LOG(LogTemp, Warning, TEXT("%s took %f damage. Health: %f/%f (Phase %d/%d)"),
 		*GetOwner()->GetName(), ActualDamage, CurrentHealth, MaxHealth, CurrentPhase, MaxPhases);
+
+	// Update HUD
+	if (UWorld* World = GetWorld())
+	{
+		if (APlayerController* PC = World->GetFirstPlayerController())
+		{
+			if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
+			{
+				// Check if this is the player
+				if (Cast<ASecondWindCharacter>(GetOwner()))
+				{
+					HUD->UpdatePlayerHealth(CurrentHealth, MaxHealth, CurrentPhase, MaxPhases);
+					HUD->ShowDamageNumber(ActualDamage, true);
+				}
+				else
+				{
+					HUD->UpdateEnemyHealth(CurrentHealth, MaxHealth, CurrentPhase, MaxPhases);
+					HUD->ShowDamageNumber(ActualDamage, false);
+				}
+			}
+		}
+	}
 
 	if (CurrentHealth <= 0.0f)
 	{

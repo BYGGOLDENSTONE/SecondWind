@@ -14,7 +14,6 @@
 #include "Components/HealthComponent.h"
 #include "Components/BlockingComponent.h"
 #include "Components/HackComponent.h"
-#include "Components/HackUIComponent.h"
 #include "Components/DodgeComponent.h"
 #include "Components/CameraLockOnComponent.h"
 #include "Components/FragmentComponent.h"
@@ -87,9 +86,6 @@ ASecondWindCharacter::ASecondWindCharacter()
 
 	// Create hack component
 	HackComponent = CreateDefaultSubobject<UHackComponent>(TEXT("HackComponent"));
-
-	// Create hack UI component
-	HackUIComponent = CreateDefaultSubobject<UHackUIComponent>(TEXT("HackUIComponent"));
 
 	// Create fragment component
 	FragmentComponent = CreateDefaultSubobject<UFragmentComponent>(TEXT("FragmentComponent"));

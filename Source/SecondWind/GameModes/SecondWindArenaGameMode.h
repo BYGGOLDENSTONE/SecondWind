@@ -7,6 +7,7 @@
 class ALevelLayoutManager;
 class ATrainingDummy;
 class ASecondWindCharacter;
+class ASecondWindHUD;
 
 UCLASS()
 class SECONDWIND_API ASecondWindArenaGameMode : public AGameModeBase
