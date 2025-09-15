@@ -115,10 +115,12 @@ void ASecondWindCharacter::BeginPlay()
 		}
 	}
 
-	// Bind to health component death event
+	// Bind to health component events
 	if (HealthComponent)
 	{
 		HealthComponent->OnDeath.AddDynamic(this, &ASecondWindCharacter::OnPlayerDeath);
+		HealthComponent->OnEnterFinisherState.AddDynamic(this, &ASecondWindCharacter::OnPlayerEnterFinisherState);
+		HealthComponent->OnPhaseTransition.AddDynamic(this, &ASecondWindCharacter::OnPlayerPhaseTransition);
 	}
 }
 
@@ -154,6 +156,41 @@ void ASecondWindCharacter::OnPlayerDeath()
 		{
 			RunManager->OnPlayerDeath();
 		}
+	}
+}
+
+void ASecondWindCharacter::OnPlayerEnterFinisherState()
+{
+	UE_LOG(LogTemplateCharacter, Warning, TEXT("Player entered finisher state - stunned and awaiting enemy finisher!"));
+
+	// Disable player input while in finisher state
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	{
+		DisableInput(PC);
+	}
+
+	// Stop any movement
+	if (GetCharacterMovement())
+	{
+		GetCharacterMovement()->StopMovementImmediately();
+		GetCharacterMovement()->DisableMovement();
+	}
+}
+
+void ASecondWindCharacter::OnPlayerPhaseTransition()
+{
+	UE_LOG(LogTemplateCharacter, Warning, TEXT("Player phase transition - resuming control!"));
+
+	// Re-enable player input after phase transition
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	{
+		EnableInput(PC);
+	}
+
+	// Re-enable movement
+	if (GetCharacterMovement())
+	{
+		GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 	}
 }
 

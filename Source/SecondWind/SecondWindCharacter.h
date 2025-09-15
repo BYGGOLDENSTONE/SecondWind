@@ -100,6 +100,12 @@ protected:
 	UFUNCTION()
 	void OnPlayerDeath();
 
+	UFUNCTION()
+	void OnPlayerEnterFinisherState();
+
+	UFUNCTION()
+	void OnPlayerPhaseTransition();
+
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
 

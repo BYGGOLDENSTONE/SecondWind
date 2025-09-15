@@ -337,7 +337,19 @@ void AArenaEnemy::PerformAttack()
 
             if (Distance <= AttackRange)
             {
-                // Apply damage to player
+                // Check if player is in finisher state
+                if (UHealthComponent* PlayerHealth = Player->FindComponentByClass<UHealthComponent>())
+                {
+                    if (PlayerHealth->IsInFinisherState())
+                    {
+                        // Execute finisher on player
+                        PlayerHealth->ExecuteFinisher();
+                        UE_LOG(LogTemp, Warning, TEXT("ArenaEnemy executed FINISHER on player!"));
+                        return;
+                    }
+                }
+
+                // Normal attack
                 UGameplayStatics::ApplyPointDamage(
                     Player,
                     BaseDamage,

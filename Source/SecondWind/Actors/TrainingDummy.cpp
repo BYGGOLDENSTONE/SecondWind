@@ -174,6 +174,19 @@ void ATrainingDummy::PerformTestAttack()
 	FVector DirectionToPlayer = (PlayerPawn->GetActorLocation() - GetActorLocation()).GetSafeNormal();
 	SetActorRotation(DirectionToPlayer.Rotation());
 
+	// Check if player is in finisher state
+	if (UHealthComponent* PlayerHealth = PlayerPawn->FindComponentByClass<UHealthComponent>())
+	{
+		if (PlayerHealth->IsInFinisherState())
+		{
+			// Execute finisher on player
+			PlayerHealth->ExecuteFinisher();
+			UE_LOG(LogTemp, Warning, TEXT("Training Dummy executed FINISHER on player!"));
+			return;
+		}
+	}
+
+	// Normal attack
 	if (CombatComponent)
 	{
 		CombatComponent->PerformAttack();
