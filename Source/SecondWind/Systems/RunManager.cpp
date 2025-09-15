@@ -161,8 +161,7 @@ void URunManager::ResetPlayerToHub()
         else
         {
             // PRIORITY 2: If no PlayerStart, try to find Zone 0 center as fallback
-            TArray<AActor*> FoundManagers;
-            UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALevelLayoutManager::StaticClass(), FoundManagers);
+            // Reuse the FoundManagers array from earlier
             if (FoundManagers.Num() > 0)
             {
                 if (ALevelLayoutManager* LevelManager = Cast<ALevelLayoutManager>(FoundManagers[0]))
