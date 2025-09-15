@@ -6,6 +6,10 @@
 #include "Kismet/GameplayStatics.h"
 #include "SecondWind/SecondWindCharacter.h"
 #include "SecondWind/Components/HealthComponent.h"
+#include "SecondWind/Actors/LevelLayoutManager.h"
+#include "SecondWind/Actors/ArenaZone.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/PlayerStart.h"
 
 void URunManager::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -106,23 +110,74 @@ void URunManager::ResetPlayerToHub()
     if (ASecondWindCharacter* Player = Cast<ASecondWindCharacter>(
         UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))
     {
-        // Reset player health
+        // First, reset health BEFORE teleporting
         if (UHealthComponent* HealthComp = Player->FindComponentByClass<UHealthComponent>())
         {
             HealthComp->ResetHealth();
             HealthComp->HealToFull();
+            UE_LOG(LogTemp, Warning, TEXT("Player health reset: %f/%f"),
+                HealthComp->GetCurrentHealth(), HealthComp->GetMaxHealth());
         }
 
-        // Teleport to starting position (0,0,0 or wherever the hub is)
-        Player->SetActorLocation(FVector(0, 0, 100));
-        Player->SetActorRotation(FRotator(0, 0, 0));
+        // Re-enable player input and movement
+        if (APlayerController* PC = Cast<APlayerController>(Player->GetController()))
+        {
+            Player->EnableInput(PC);
+        }
 
-        // Apply memory effects
+        if (UCharacterMovementComponent* Movement = Player->GetCharacterMovement())
+        {
+            Movement->SetMovementMode(MOVE_Walking);
+            UE_LOG(LogTemp, Warning, TEXT("Player movement re-enabled"));
+        }
+
+        // Find the proper spawn location
+        FVector SpawnLocation = FVector(0, 0, 100); // Default fallback
+        FRotator SpawnRotation = FRotator(0, 0, 0);
+
+        // Try to find Zone 0 (Starting Hub) using LevelLayoutManager
+        TArray<AActor*> FoundManagers;
+        UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALevelLayoutManager::StaticClass(), FoundManagers);
+        if (FoundManagers.Num() > 0)
+        {
+            if (ALevelLayoutManager* LevelManager = Cast<ALevelLayoutManager>(FoundManagers[0]))
+            {
+                if (AArenaZone* StartingHub = LevelManager->GetZone(0))
+                {
+                    SpawnLocation = StartingHub->GetActorLocation();
+                    SpawnRotation = StartingHub->GetActorRotation();
+                    UE_LOG(LogTemp, Warning, TEXT("Found Starting Hub (Zone 0) at %s"),
+                        *SpawnLocation.ToString());
+                }
+            }
+        }
+
+        // If no Zone 0, try to find a PlayerStart
+        if (SpawnLocation == FVector(0, 0, 100))
+        {
+            TArray<AActor*> PlayerStarts;
+            UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), PlayerStarts);
+            if (PlayerStarts.Num() > 0)
+            {
+                SpawnLocation = PlayerStarts[0]->GetActorLocation();
+                SpawnRotation = PlayerStarts[0]->GetActorRotation();
+                UE_LOG(LogTemp, Warning, TEXT("Using PlayerStart at %s"),
+                    *SpawnLocation.ToString());
+            }
+        }
+
+        // Teleport player to spawn location
+        Player->SetActorLocation(SpawnLocation);
+        Player->SetActorRotation(SpawnRotation);
+
+        // Apply memory effects after respawn
         if (UMemorySystem* MemorySystem = GetGameInstance()->GetSubsystem<UMemorySystem>())
         {
             MemorySystem->ApplyMemoryEffects(Player);
         }
 
-        UE_LOG(LogTemp, Warning, TEXT("Player reset to Starting Hub for new run"));
+        UE_LOG(LogTemp, Warning, TEXT("Player reset to Starting Hub for new run at %s with %f health"),
+            *SpawnLocation.ToString(),
+            Player->FindComponentByClass<UHealthComponent>()->GetCurrentHealth());
     }
 }

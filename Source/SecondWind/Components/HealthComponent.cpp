@@ -255,9 +255,21 @@ void UHealthComponent::ExecuteFinisher()
 		return;
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Finisher executed on %s!"), *GetOwner()->GetName());
+	UE_LOG(LogTemp, Warning, TEXT("Finisher executed on %s! Current phase: %d/%d"),
+		*GetOwner()->GetName(), CurrentPhase, MaxPhases);
 
-	// Broadcast phase transition and then transition
-	OnPhaseTransition.Broadcast();
-	TransitionToNextPhase();
+	// Check if this is the final phase
+	if (CurrentPhase >= MaxPhases)
+	{
+		// This is the killing blow
+		bInFinisherState = false;
+		UE_LOG(LogTemp, Warning, TEXT("%s has been defeated by finisher!"), *GetOwner()->GetName());
+		OnDeath.Broadcast();
+	}
+	else
+	{
+		// Transition to next phase
+		OnPhaseTransition.Broadcast();
+		TransitionToNextPhase();
+	}
 }
