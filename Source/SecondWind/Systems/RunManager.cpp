@@ -8,6 +8,7 @@
 #include "SecondWind/Components/HealthComponent.h"
 #include "SecondWind/Actors/LevelLayoutManager.h"
 #include "SecondWind/Actors/ArenaZone.h"
+#include "SecondWind/UI/SecondWindHUD.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerStart.h"
 
@@ -180,6 +181,16 @@ void URunManager::ResetPlayerToHub()
         if (UMemorySystem* MemorySystem = GetGameInstance()->GetSubsystem<UMemorySystem>())
         {
             MemorySystem->ApplyMemoryEffects(Player);
+        }
+
+        // Force HUD to rebind and update after respawn
+        if (APlayerController* PC = Cast<APlayerController>(Player->GetController()))
+        {
+            if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
+            {
+                HUD->BindToPlayer();
+                UE_LOG(LogTemp, Warning, TEXT("Forced HUD rebind after respawn"));
+            }
         }
 
         UE_LOG(LogTemp, Warning, TEXT("Player reset to Starting Hub for new run at %s with %f health"),

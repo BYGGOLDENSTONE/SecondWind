@@ -197,9 +197,31 @@ void UHealthComponent::ResetHealth()
 {
 	CurrentHealth = MaxHealth;
 	CurrentPhase = 1;
+	bInFinisherState = false;  // Clear finisher state on reset
 
 	OnHealthChanged.Broadcast(CurrentHealth);
 	OnPhaseChanged.Broadcast(CurrentPhase);
+
+	// Explicitly update HUD
+	if (UWorld* World = GetWorld())
+	{
+		if (APlayerController* PC = World->GetFirstPlayerController())
+		{
+			if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
+			{
+				// Check if this is the player
+				if (Cast<ASecondWindCharacter>(GetOwner()))
+				{
+					HUD->UpdatePlayerHealth(CurrentHealth, MaxHealth, CurrentPhase, MaxPhases);
+					UE_LOG(LogTemp, Warning, TEXT("ResetHealth: Updated player HUD to %f/%f"), CurrentHealth, MaxHealth);
+				}
+				else
+				{
+					HUD->UpdateEnemyHealth(CurrentHealth, MaxHealth, CurrentPhase, MaxPhases);
+				}
+			}
+		}
+	}
 }
 
 void UHealthComponent::SetMaxPhases(int32 NewMaxPhases)
@@ -217,6 +239,27 @@ void UHealthComponent::HealToFull()
 	CurrentHealth = MaxHealth;
 	OnHealthChanged.Broadcast(CurrentHealth);
 	UE_LOG(LogTemp, Log, TEXT("%s healed to full health (%f)"), *GetOwner()->GetName(), MaxHealth);
+
+	// Explicitly update HUD
+	if (UWorld* World = GetWorld())
+	{
+		if (APlayerController* PC = World->GetFirstPlayerController())
+		{
+			if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
+			{
+				// Check if this is the player
+				if (Cast<ASecondWindCharacter>(GetOwner()))
+				{
+					HUD->UpdatePlayerHealth(CurrentHealth, MaxHealth, CurrentPhase, MaxPhases);
+					UE_LOG(LogTemp, Warning, TEXT("HealToFull: Updated player HUD to %f/%f"), CurrentHealth, MaxHealth);
+				}
+				else
+				{
+					HUD->UpdateEnemyHealth(CurrentHealth, MaxHealth, CurrentPhase, MaxPhases);
+				}
+			}
+		}
+	}
 }
 
 void UHealthComponent::EnterFinisherState()
