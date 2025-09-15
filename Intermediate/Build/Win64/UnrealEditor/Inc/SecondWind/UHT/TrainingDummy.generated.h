@@ -15,6 +15,8 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #define SECONDWIND_TrainingDummy_generated_h
 
 #define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_15_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execOnPhaseTransition); \
+	DECLARE_FUNCTION(execOnEnterFinisherState); \
 	DECLARE_FUNCTION(execOnPhaseChanged); \
 	DECLARE_FUNCTION(execOnHealthDepleted);
 

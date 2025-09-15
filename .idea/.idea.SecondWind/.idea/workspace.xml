@@ -13,33 +13,48 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6e0aa9d7-f52a-4761-83cb-9a7dc0ed2b75" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.claude/settings.local.json" beforeDir="false" afterPath="$PROJECT_DIR$/.claude/settings.local.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SecondWind/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SecondWind/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Binaries/Win64/UnrealEditor-SecondWind-Win64-DebugGame.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Binaries/Win64/UnrealEditor-SecondWind-Win64-DebugGame.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Binaries/Win64/UnrealEditor-SecondWind-Win64-DebugGame.exp" beforeDir="false" afterPath="$PROJECT_DIR$/Binaries/Win64/UnrealEditor-SecondWind-Win64-DebugGame.exp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/2/XB/4KQ3TMIO8AHP99HN0K4CZ3.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ThirdPerson/Maps/ThirdPersonMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ThirdPerson/Maps/ThirdPersonMap.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/A/7K/1N1O6PXBVNSYZMC4WR0W9W.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/A/7K/1N1O6PXBVNSYZMC4WR0W9W.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/blueprints/arenas/BP_ArenaEnemy.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/blueprints/arenas/BP_ArenaEnemy.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/blueprints/arenas/BP_Arenagamemode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/blueprints/arenas/BP_Arenagamemode.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/blueprints/arenas/BP_EnemySpawnpoint.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/blueprints/arenas/BP_EnemySpawnpoint.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/blueprints/arenas/BP_Levellayoutmanager.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/blueprints/arenas/BP_Levellayoutmanager.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/blueprints/arenas/BP_Traniningdummy.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/blueprints/arenas/BP_Traniningdummy.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Intermediate/Build/SourceFileCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/SourceFileCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/ActionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/ActionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/SecondWindEditor/DebugGame/SecondWindEditor.uhtmanifest" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/SecondWindEditor/DebugGame/SecondWindEditor.uhtmanifest" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/ArenaDoor.gen.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/ArenaDoor.gen.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/ArenaEnemy.gen.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/ArenaEnemy.gen.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/ArenaEnemy.generated.h" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/ArenaEnemy.generated.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/ArenaZone.gen.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/ArenaZone.gen.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/CombatComponent.gen.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/CombatComponent.gen.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/CombatComponent.generated.h" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/CombatComponent.generated.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/HealthComponent.gen.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/HealthComponent.gen.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/HealthComponent.generated.h" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/HealthComponent.generated.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/SecondWind.init.gen.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/SecondWind.init.gen.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/SecondWindArenaGameMode.gen.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/SecondWindArenaGameMode.gen.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/SecondWindArenaGameMode.generated.h" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/SecondWindArenaGameMode.generated.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/SimplifiedArenaSystem.gen.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/SimplifiedArenaSystem.generated.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/SecondWindCharacter.gen.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/SecondWindCharacter.gen.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/SecondWindCharacter.generated.h" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/SecondWindCharacter.generated.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/Timestamp" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/Timestamp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/TrainingDummy.gen.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/TrainingDummy.gen.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/TrainingDummy.generated.h" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/TrainingDummy.generated.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Intermediate/CachedAssetRegistry_0.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/CachedAssetRegistry_0.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Intermediate/ProjectFiles/SecondWind.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/ProjectFiles/SecondWind.vcxproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Intermediate/ProjectFiles/SecondWind.vcxproj.filters" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/ProjectFiles/SecondWind.vcxproj.filters" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Phase9_Plan.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Saved/AutoScreenshot.png" beforeDir="false" afterPath="$PROJECT_DIR$/Saved/AutoScreenshot.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Saved/Config/WindowsEditor/EditorPerProjectUserSettings.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Saved/Config/WindowsEditor/EditorPerProjectUserSettings.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Saved/Config/WorldState/2959576711.json" beforeDir="false" afterPath="$PROJECT_DIR$/Saved/Config/WorldState/2959576711.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SecondWind/Actors/ArenaDoor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Actors/ArenaDoor.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Saved/SourceControl/UncontrolledChangelists.json" beforeDir="false" afterPath="$PROJECT_DIR$/Saved/SourceControl/UncontrolledChangelists.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SecondWind/Actors/ArenaEnemy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Actors/ArenaEnemy.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SecondWind/Actors/ArenaEnemy.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Actors/ArenaEnemy.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SecondWind/Actors/ArenaZone.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Actors/ArenaZone.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SecondWind/Actors/EnemySpawnPoint.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Actors/EnemySpawnPoint.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SecondWind/Components/HackComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Components/HackComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SecondWind/Systems/MemorySystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Systems/MemorySystem.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/todo.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SecondWind/Actors/LevelLayoutManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Actors/LevelLayoutManager.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +68,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="cidr-memory-view://3" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://4" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -200,7 +215,9 @@
       <workItem from="1757868542484" duration="762000" />
       <workItem from="1757869585526" duration="8762000" />
       <workItem from="1757879570476" duration="7335000" />
-      <workItem from="1757894005094" duration="1777000" />
+      <workItem from="1757894005094" duration="2047000" />
+      <workItem from="1757923119725" duration="22044000" />
+      <workItem from="1757948583255" duration="1858000" />
     </task>
     <servers />
   </component>

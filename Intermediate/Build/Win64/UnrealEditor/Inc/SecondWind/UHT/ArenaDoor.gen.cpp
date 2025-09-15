@@ -333,13 +333,29 @@ struct Z_Construct_UClass_AArenaDoor_Statics
 		{ "Category", "Door Settings" },
 		{ "ModuleRelativePath", "Actors/ArenaDoor.h" },
 	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_DoorOpenAngle_MetaData[] = {
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_DoorOpenHeight_MetaData[] = {
 		{ "Category", "Door Settings" },
 		{ "ModuleRelativePath", "Actors/ArenaDoor.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ProximityBoxExtent_MetaData[] = {
 		{ "Category", "Door Settings" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// How high the door slides up\n" },
+#endif
 		{ "ModuleRelativePath", "Actors/ArenaDoor.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "How high the door slides up" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_AutoCloseDelay_MetaData[] = {
+		{ "Category", "Door Settings" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// Smaller to avoid overlap\n" },
+#endif
+		{ "ModuleRelativePath", "Actors/ArenaDoor.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Smaller to avoid overlap" },
+#endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_PlayerCharacter_MetaData[] = {
 		{ "ModuleRelativePath", "Actors/ArenaDoor.h" },
@@ -350,8 +366,9 @@ struct Z_Construct_UClass_AArenaDoor_Statics
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_ProximityTrigger;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_ProximityRequiredTime;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_DoorOpenSpeed;
-	static const UECodeGen_Private::FFloatPropertyParams NewProp_DoorOpenAngle;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_DoorOpenHeight;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_ProximityBoxExtent;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_AutoCloseDelay;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_PlayerCharacter;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
@@ -370,8 +387,9 @@ const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AArenaDoor_Sta
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AArenaDoor_Statics::NewProp_ProximityTrigger = { "ProximityTrigger", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaDoor, ProximityTrigger), Z_Construct_UClass_UBoxComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ProximityTrigger_MetaData), NewProp_ProximityTrigger_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AArenaDoor_Statics::NewProp_ProximityRequiredTime = { "ProximityRequiredTime", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaDoor, ProximityRequiredTime), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ProximityRequiredTime_MetaData), NewProp_ProximityRequiredTime_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AArenaDoor_Statics::NewProp_DoorOpenSpeed = { "DoorOpenSpeed", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaDoor, DoorOpenSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DoorOpenSpeed_MetaData), NewProp_DoorOpenSpeed_MetaData) };
-const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AArenaDoor_Statics::NewProp_DoorOpenAngle = { "DoorOpenAngle", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaDoor, DoorOpenAngle), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DoorOpenAngle_MetaData), NewProp_DoorOpenAngle_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AArenaDoor_Statics::NewProp_DoorOpenHeight = { "DoorOpenHeight", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaDoor, DoorOpenHeight), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DoorOpenHeight_MetaData), NewProp_DoorOpenHeight_MetaData) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AArenaDoor_Statics::NewProp_ProximityBoxExtent = { "ProximityBoxExtent", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaDoor, ProximityBoxExtent), Z_Construct_UScriptStruct_FVector, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ProximityBoxExtent_MetaData), NewProp_ProximityBoxExtent_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AArenaDoor_Statics::NewProp_AutoCloseDelay = { "AutoCloseDelay", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaDoor, AutoCloseDelay), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AutoCloseDelay_MetaData), NewProp_AutoCloseDelay_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AArenaDoor_Statics::NewProp_PlayerCharacter = { "PlayerCharacter", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaDoor, PlayerCharacter), Z_Construct_UClass_ASecondWindCharacter_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PlayerCharacter_MetaData), NewProp_PlayerCharacter_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AArenaDoor_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaDoor_Statics::NewProp_DoorMesh,
@@ -379,8 +397,9 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AArenaDoo
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaDoor_Statics::NewProp_ProximityTrigger,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaDoor_Statics::NewProp_ProximityRequiredTime,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaDoor_Statics::NewProp_DoorOpenSpeed,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaDoor_Statics::NewProp_DoorOpenAngle,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaDoor_Statics::NewProp_DoorOpenHeight,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaDoor_Statics::NewProp_ProximityBoxExtent,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaDoor_Statics::NewProp_AutoCloseDelay,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaDoor_Statics::NewProp_PlayerCharacter,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AArenaDoor_Statics::PropPointers) < 2048);
@@ -428,10 +447,10 @@ struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Ac
 		{ EDoorType_StaticEnum, TEXT("EDoorType"), &Z_Registration_Info_UEnum_EDoorType, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 2825614154U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AArenaDoor, AArenaDoor::StaticClass, TEXT("AArenaDoor"), &Z_Registration_Info_UClass_AArenaDoor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AArenaDoor), 3768205744U) },
+		{ Z_Construct_UClass_AArenaDoor, AArenaDoor::StaticClass, TEXT("AArenaDoor"), &Z_Registration_Info_UClass_AArenaDoor, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AArenaDoor), 426083833U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaDoor_h_1034488774(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaDoor_h_564295672(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaDoor_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaDoor_h_Statics::ClassInfo),
 	nullptr, 0,
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaDoor_h_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaDoor_h_Statics::EnumInfo));

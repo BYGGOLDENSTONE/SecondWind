@@ -16,7 +16,6 @@ ENGINE_API UClass* Z_Construct_UClass_AActor_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_UBoxComponent_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_UPrimitiveComponent_NoRegister();
 ENGINE_API UScriptStruct* Z_Construct_UScriptStruct_FHitResult();
-SECONDWIND_API UClass* Z_Construct_UClass_AArenaDoor_NoRegister();
 SECONDWIND_API UClass* Z_Construct_UClass_AArenaEnemy_NoRegister();
 SECONDWIND_API UClass* Z_Construct_UClass_AArenaZone();
 SECONDWIND_API UClass* Z_Construct_UClass_AArenaZone_NoRegister();
@@ -134,14 +133,6 @@ struct Z_Construct_UClass_AArenaZone_Statics
 		{ "Category", "Arena" },
 		{ "ModuleRelativePath", "Actors/ArenaZone.h" },
 	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_EntryDoor_MetaData[] = {
-		{ "Category", "Arena" },
-		{ "ModuleRelativePath", "Actors/ArenaZone.h" },
-	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ExitDoor_MetaData[] = {
-		{ "Category", "Arena" },
-		{ "ModuleRelativePath", "Actors/ArenaZone.h" },
-	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ZoneBounds_MetaData[] = {
 		{ "Category", "Components" },
 		{ "EditInline", "true" },
@@ -166,8 +157,6 @@ struct Z_Construct_UClass_AArenaZone_Statics
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FIntPropertyParams NewProp_ZoneNumber;
 	static const UECodeGen_Private::FNamePropertyParams NewProp_ZoneName;
-	static const UECodeGen_Private::FObjectPropertyParams NewProp_EntryDoor;
-	static const UECodeGen_Private::FObjectPropertyParams NewProp_ExitDoor;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_ZoneBounds;
 	static void NewProp_bIsCleared_SetBit(void* Obj);
 	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsCleared;
@@ -190,8 +179,6 @@ struct Z_Construct_UClass_AArenaZone_Statics
 };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_AArenaZone_Statics::NewProp_ZoneNumber = { "ZoneNumber", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaZone, ZoneNumber), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ZoneNumber_MetaData), NewProp_ZoneNumber_MetaData) };
 const UECodeGen_Private::FNamePropertyParams Z_Construct_UClass_AArenaZone_Statics::NewProp_ZoneName = { "ZoneName", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Name, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaZone, ZoneName), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ZoneName_MetaData), NewProp_ZoneName_MetaData) };
-const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AArenaZone_Statics::NewProp_EntryDoor = { "EntryDoor", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaZone, EntryDoor), Z_Construct_UClass_AArenaDoor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_EntryDoor_MetaData), NewProp_EntryDoor_MetaData) };
-const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AArenaZone_Statics::NewProp_ExitDoor = { "ExitDoor", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaZone, ExitDoor), Z_Construct_UClass_AArenaDoor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ExitDoor_MetaData), NewProp_ExitDoor_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AArenaZone_Statics::NewProp_ZoneBounds = { "ZoneBounds", nullptr, (EPropertyFlags)0x00100000000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaZone, ZoneBounds), Z_Construct_UClass_UBoxComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ZoneBounds_MetaData), NewProp_ZoneBounds_MetaData) };
 void Z_Construct_UClass_AArenaZone_Statics::NewProp_bIsCleared_SetBit(void* Obj)
 {
@@ -210,8 +197,6 @@ const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_AArenaZone_Stat
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AArenaZone_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaZone_Statics::NewProp_ZoneNumber,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaZone_Statics::NewProp_ZoneName,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaZone_Statics::NewProp_EntryDoor,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaZone_Statics::NewProp_ExitDoor,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaZone_Statics::NewProp_ZoneBounds,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaZone_Statics::NewProp_bIsCleared,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaZone_Statics::NewProp_bIsActive,
@@ -261,10 +246,10 @@ AArenaZone::~AArenaZone() {}
 struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaZone_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AArenaZone, AArenaZone::StaticClass, TEXT("AArenaZone"), &Z_Registration_Info_UClass_AArenaZone, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AArenaZone), 3598874664U) },
+		{ Z_Construct_UClass_AArenaZone, AArenaZone::StaticClass, TEXT("AArenaZone"), &Z_Registration_Info_UClass_AArenaZone, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AArenaZone), 4267530119U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaZone_h_3631991466(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaZone_h_202075350(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaZone_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaZone_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

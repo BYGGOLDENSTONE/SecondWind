@@ -38,11 +38,18 @@ SECONDWIND_API void FOnPhaseTransition_DelegateWrapper(const FMulticastScriptDel
 SECONDWIND_API void FOnDeath_DelegateWrapper(const FMulticastScriptDelegate& OnDeath);
 
 
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HealthComponent_h_43_DELEGATE \
+static void FOnEnterFinisherState_DelegateWrapper(const FMulticastScriptDelegate& OnEnterFinisherState);
+
+
 #define FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HealthComponent_h_19_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execHealToFull); \
 	DECLARE_FUNCTION(execSetBlockingComponent); \
 	DECLARE_FUNCTION(execSetMaxPhases); \
 	DECLARE_FUNCTION(execResetHealth); \
+	DECLARE_FUNCTION(execExecuteFinisher); \
+	DECLARE_FUNCTION(execIsTrulyDead); \
+	DECLARE_FUNCTION(execIsInFinisherState); \
 	DECLARE_FUNCTION(execIsAlive); \
 	DECLARE_FUNCTION(execGetMaxPhases); \
 	DECLARE_FUNCTION(execGetCurrentPhase); \

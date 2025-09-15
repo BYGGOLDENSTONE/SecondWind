@@ -240,19 +240,33 @@ void ALevelLayoutManager::RespawnTrainingDummies()
 
 void ALevelLayoutManager::OnPlayerEnterZone(int32 ZoneNumber)
 {
+    // Zone 0 is the Starting Hub - never trigger combat there
+    if (ZoneNumber == 0)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Player in Starting Hub (Zone 0) - no combat needed"));
+        return;
+    }
+
+    // SIMPLE: Don't allow multiple combats at once
     if (bInCombat)
     {
+        UE_LOG(LogTemp, Warning, TEXT("Already in combat, ignoring zone %d entry"), ZoneNumber);
         return;
     }
 
     AArenaZone* Zone = GetZone(ZoneNumber);
-    if (Zone && !Zone->IsZoneCleared())
+    if (Zone)
     {
+        // SIMPLE: Just activate the zone, it will handle spawning
         CurrentArenaNumber = ZoneNumber;
         bInCombat = true;
         Zone->ActivateZone();
 
-        UE_LOG(LogTemp, Warning, TEXT("Player entered Arena %d - Combat started"), ZoneNumber);
+        UE_LOG(LogTemp, Warning, TEXT("Player entered Arena %d - Activating zone"), ZoneNumber);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("ERROR: Zone %d not found!"), ZoneNumber);
     }
 }
 
@@ -322,22 +336,22 @@ int32 ALevelLayoutManager::GetHighestClearedZone() const
 
 void ALevelLayoutManager::ResetLevelForNewRun()
 {
-    UE_LOG(LogTemp, Warning, TEXT("=== RESETTING LEVEL FOR NEW RUN ==="));
-    UE_LOG(LogTemp, Warning, TEXT("Found %d zones and %d doors to reset"), ArenaZones.Num(), AllDoors.Num());
+    UE_LOG(LogTemp, Warning, TEXT("=== RESETTING LEVEL FOR NEW RUN (SIMPLE RESET) ==="));
 
-    // Reset all arena zones FIRST (before touching doors)
+    // CRITICAL: Reset combat flag FIRST before anything else
+    bInCombat = false;
+    UE_LOG(LogTemp, Warning, TEXT("Reset bInCombat to FALSE"));
+
+    UE_LOG(LogTemp, Warning, TEXT("Found %d zones to reset"), ArenaZones.Num());
+
+    // SIMPLE: Just reset every zone to initial state
     for (auto& ZonePair : ArenaZones)
     {
         if (AArenaZone* Zone = ZonePair.Value)
         {
-            // Despawn all enemies in the zone
-            Zone->DespawnAllEnemies();
-
-            // Reset zone state
+            // Simple reset - clear everything and reset state
             Zone->ResetZone();
-
-            UE_LOG(LogTemp, Warning, TEXT("Reset Zone %d - Cleared: %s"),
-                ZonePair.Key, Zone->IsZoneCleared() ? TEXT("TRUE") : TEXT("FALSE"));
+            UE_LOG(LogTemp, Warning, TEXT("Reset Zone %d to initial state"), ZonePair.Key);
         }
     }
 

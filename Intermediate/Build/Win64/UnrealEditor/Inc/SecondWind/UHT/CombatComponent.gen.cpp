@@ -63,6 +63,81 @@ DEFINE_FUNCTION(UCombatComponent::execCanAttack)
 }
 // End Class UCombatComponent Function CanAttack
 
+// Begin Class UCombatComponent Function CanExecuteFinisher
+struct Z_Construct_UFunction_UCombatComponent_CanExecuteFinisher_Statics
+{
+	struct CombatComponent_eventCanExecuteFinisher_Parms
+	{
+		bool ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Components/CombatComponent.h" },
+	};
+#endif // WITH_METADATA
+	static void NewProp_ReturnValue_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+void Z_Construct_UFunction_UCombatComponent_CanExecuteFinisher_Statics::NewProp_ReturnValue_SetBit(void* Obj)
+{
+	((CombatComponent_eventCanExecuteFinisher_Parms*)Obj)->ReturnValue = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UCombatComponent_CanExecuteFinisher_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(CombatComponent_eventCanExecuteFinisher_Parms), &Z_Construct_UFunction_UCombatComponent_CanExecuteFinisher_Statics::NewProp_ReturnValue_SetBit, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UCombatComponent_CanExecuteFinisher_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCombatComponent_CanExecuteFinisher_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UCombatComponent_CanExecuteFinisher_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UCombatComponent_CanExecuteFinisher_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UCombatComponent, nullptr, "CanExecuteFinisher", nullptr, nullptr, Z_Construct_UFunction_UCombatComponent_CanExecuteFinisher_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UCombatComponent_CanExecuteFinisher_Statics::PropPointers), sizeof(Z_Construct_UFunction_UCombatComponent_CanExecuteFinisher_Statics::CombatComponent_eventCanExecuteFinisher_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x40020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UCombatComponent_CanExecuteFinisher_Statics::Function_MetaDataParams), Z_Construct_UFunction_UCombatComponent_CanExecuteFinisher_Statics::Function_MetaDataParams) };
+static_assert(sizeof(Z_Construct_UFunction_UCombatComponent_CanExecuteFinisher_Statics::CombatComponent_eventCanExecuteFinisher_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UCombatComponent_CanExecuteFinisher()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UCombatComponent_CanExecuteFinisher_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UCombatComponent::execCanExecuteFinisher)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(bool*)Z_Param__Result=P_THIS->CanExecuteFinisher();
+	P_NATIVE_END;
+}
+// End Class UCombatComponent Function CanExecuteFinisher
+
+// Begin Class UCombatComponent Function ExecuteFinisher
+struct Z_Construct_UFunction_UCombatComponent_ExecuteFinisher_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Components/CombatComponent.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UCombatComponent_ExecuteFinisher_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UCombatComponent, nullptr, "ExecuteFinisher", nullptr, nullptr, nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UCombatComponent_ExecuteFinisher_Statics::Function_MetaDataParams), Z_Construct_UFunction_UCombatComponent_ExecuteFinisher_Statics::Function_MetaDataParams) };
+UFunction* Z_Construct_UFunction_UCombatComponent_ExecuteFinisher()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UCombatComponent_ExecuteFinisher_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UCombatComponent::execExecuteFinisher)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->ExecuteFinisher();
+	P_NATIVE_END;
+}
+// End Class UCombatComponent Function ExecuteFinisher
+
 // Begin Class UCombatComponent Function PerformAttack
 struct Z_Construct_UFunction_UCombatComponent_PerformAttack_Statics
 {
@@ -143,6 +218,8 @@ void UCombatComponent::StaticRegisterNativesUCombatComponent()
 	UClass* Class = UCombatComponent::StaticClass();
 	static const FNameNativePtrPair Funcs[] = {
 		{ "CanAttack", &UCombatComponent::execCanAttack },
+		{ "CanExecuteFinisher", &UCombatComponent::execCanExecuteFinisher },
+		{ "ExecuteFinisher", &UCombatComponent::execExecuteFinisher },
 		{ "PerformAttack", &UCombatComponent::execPerformAttack },
 		{ "SetBlockingComponent", &UCombatComponent::execSetBlockingComponent },
 	};
@@ -182,6 +259,8 @@ struct Z_Construct_UClass_UCombatComponent_Statics
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_UCombatComponent_CanAttack, "CanAttack" }, // 3592439846
+		{ &Z_Construct_UFunction_UCombatComponent_CanExecuteFinisher, "CanExecuteFinisher" }, // 3506946947
+		{ &Z_Construct_UFunction_UCombatComponent_ExecuteFinisher, "ExecuteFinisher" }, // 1181414928
 		{ &Z_Construct_UFunction_UCombatComponent_PerformAttack, "PerformAttack" }, // 1117210523
 		{ &Z_Construct_UFunction_UCombatComponent_SetBlockingComponent, "SetBlockingComponent" }, // 3541554973
 	};
@@ -240,10 +319,10 @@ UCombatComponent::~UCombatComponent() {}
 struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_CombatComponent_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UCombatComponent, UCombatComponent::StaticClass, TEXT("UCombatComponent"), &Z_Registration_Info_UClass_UCombatComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCombatComponent), 815898214U) },
+		{ Z_Construct_UClass_UCombatComponent, UCombatComponent::StaticClass, TEXT("UCombatComponent"), &Z_Registration_Info_UClass_UCombatComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCombatComponent), 639755623U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_CombatComponent_h_3364794053(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_CombatComponent_h_2429972331(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_CombatComponent_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_CombatComponent_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

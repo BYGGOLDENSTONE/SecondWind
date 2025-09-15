@@ -67,20 +67,16 @@ void AEnemySpawnPoint::RegisterWithZone()
 
 AArenaEnemy* AEnemySpawnPoint::SpawnEnemy()
 {
+    UE_LOG(LogTemp, Warning, TEXT("=== SPAWN POINT SPAWNING ENEMY FOR ARENA %d ==="), ArenaNumber);
+
     if (bIsTrainingDummy)
     {
+        UE_LOG(LogTemp, Warning, TEXT("This is a training dummy spawn point, skipping enemy spawn"));
         return nullptr;
     }
 
-    // Always clear any existing reference first
-    ClearSpawnPoint();
-
-    // Extra safety: Make absolutely sure we don't have a spawned actor
-    if (SpawnedActor)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("SpawnPoint still had SpawnedActor reference after ClearSpawnPoint! Force clearing."));
-        SpawnedActor = nullptr;
-    }
+    // SIMPLE: Always clear any old reference and spawn fresh
+    SpawnedActor = nullptr;
 
     if (EnemyClass)
     {
@@ -127,6 +123,14 @@ AArenaEnemy* AEnemySpawnPoint::SpawnEnemy()
 
             return SpawnedEnemy;
         }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("ERROR: Failed to spawn enemy at spawn point for Arena %d"), ArenaNumber);
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("ERROR: Spawn point for Arena %d has no EnemyClass set!"), ArenaNumber);
     }
 
     return nullptr;
@@ -177,9 +181,9 @@ void AEnemySpawnPoint::ClearSpawnPoint()
         {
             UE_LOG(LogTemp, Warning, TEXT("Spawn point had invalid/destroyed actor reference - clearing"));
         }
-        // Always clear the reference, whether the actor was valid or not
-        SpawnedActor = nullptr;
     }
+    // Always clear the reference, even if it was null
+    SpawnedActor = nullptr;
 }
 
 void AEnemySpawnPoint::ResetSpawnPoint()

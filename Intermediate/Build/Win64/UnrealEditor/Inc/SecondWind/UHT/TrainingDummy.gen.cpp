@@ -18,6 +18,35 @@ SECONDWIND_API UClass* Z_Construct_UClass_UHealthComponent_NoRegister();
 UPackage* Z_Construct_UPackage__Script_SecondWind();
 // End Cross Module References
 
+// Begin Class ATrainingDummy Function OnEnterFinisherState
+struct Z_Construct_UFunction_ATrainingDummy_OnEnterFinisherState_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Actors/TrainingDummy.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ATrainingDummy_OnEnterFinisherState_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_ATrainingDummy, nullptr, "OnEnterFinisherState", nullptr, nullptr, nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00040401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ATrainingDummy_OnEnterFinisherState_Statics::Function_MetaDataParams), Z_Construct_UFunction_ATrainingDummy_OnEnterFinisherState_Statics::Function_MetaDataParams) };
+UFunction* Z_Construct_UFunction_ATrainingDummy_OnEnterFinisherState()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ATrainingDummy_OnEnterFinisherState_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ATrainingDummy::execOnEnterFinisherState)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnEnterFinisherState();
+	P_NATIVE_END;
+}
+// End Class ATrainingDummy Function OnEnterFinisherState
+
 // Begin Class ATrainingDummy Function OnHealthDepleted
 struct Z_Construct_UFunction_ATrainingDummy_OnHealthDepleted_Statics
 {
@@ -89,13 +118,44 @@ DEFINE_FUNCTION(ATrainingDummy::execOnPhaseChanged)
 }
 // End Class ATrainingDummy Function OnPhaseChanged
 
+// Begin Class ATrainingDummy Function OnPhaseTransition
+struct Z_Construct_UFunction_ATrainingDummy_OnPhaseTransition_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Actors/TrainingDummy.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ATrainingDummy_OnPhaseTransition_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_ATrainingDummy, nullptr, "OnPhaseTransition", nullptr, nullptr, nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00040401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ATrainingDummy_OnPhaseTransition_Statics::Function_MetaDataParams), Z_Construct_UFunction_ATrainingDummy_OnPhaseTransition_Statics::Function_MetaDataParams) };
+UFunction* Z_Construct_UFunction_ATrainingDummy_OnPhaseTransition()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ATrainingDummy_OnPhaseTransition_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ATrainingDummy::execOnPhaseTransition)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnPhaseTransition();
+	P_NATIVE_END;
+}
+// End Class ATrainingDummy Function OnPhaseTransition
+
 // Begin Class ATrainingDummy
 void ATrainingDummy::StaticRegisterNativesATrainingDummy()
 {
 	UClass* Class = ATrainingDummy::StaticClass();
 	static const FNameNativePtrPair Funcs[] = {
+		{ "OnEnterFinisherState", &ATrainingDummy::execOnEnterFinisherState },
 		{ "OnHealthDepleted", &ATrainingDummy::execOnHealthDepleted },
 		{ "OnPhaseChanged", &ATrainingDummy::execOnPhaseChanged },
+		{ "OnPhaseTransition", &ATrainingDummy::execOnPhaseTransition },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
@@ -144,8 +204,10 @@ struct Z_Construct_UClass_ATrainingDummy_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
+		{ &Z_Construct_UFunction_ATrainingDummy_OnEnterFinisherState, "OnEnterFinisherState" }, // 3356234870
 		{ &Z_Construct_UFunction_ATrainingDummy_OnHealthDepleted, "OnHealthDepleted" }, // 3439798476
 		{ &Z_Construct_UFunction_ATrainingDummy_OnPhaseChanged, "OnPhaseChanged" }, // 2303368213
+		{ &Z_Construct_UFunction_ATrainingDummy_OnPhaseTransition, "OnPhaseTransition" }, // 1284530539
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -210,10 +272,10 @@ ATrainingDummy::~ATrainingDummy() {}
 struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_ATrainingDummy, ATrainingDummy::StaticClass, TEXT("ATrainingDummy"), &Z_Registration_Info_UClass_ATrainingDummy, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ATrainingDummy), 2145407420U) },
+		{ Z_Construct_UClass_ATrainingDummy, ATrainingDummy::StaticClass, TEXT("ATrainingDummy"), &Z_Registration_Info_UClass_ATrainingDummy, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ATrainingDummy), 3088664845U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_3145116805(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_2061763109(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

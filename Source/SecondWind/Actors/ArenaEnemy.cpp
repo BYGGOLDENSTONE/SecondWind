@@ -227,6 +227,16 @@ void AArenaEnemy::OnEnemyDeath()
                 EnemyManager->UnregisterEnemy(this);
             }
         }
+
+        // Hide and disable collision like TrainingDummy, but schedule destruction instead of respawn
+        SetActorEnableCollision(false);
+        GetMesh()->SetVisibility(false);
+
+        // Schedule despawn/destruction after a short delay (2 seconds)
+        FTimerHandle DespawnTimerHandle;
+        GetWorldTimerManager().SetTimer(DespawnTimerHandle, this, &AArenaEnemy::DespawnEnemy, 2.0f, false);
+
+        UE_LOG(LogTemp, Warning, TEXT("Enemy will despawn in 2 seconds..."));
     }
     else
     {
@@ -415,4 +425,15 @@ AActor* AArenaEnemy::FindPlayer() const
 bool AArenaEnemy::IsInFinisherState() const
 {
     return HealthComponent && HealthComponent->IsInFinisherState();
+}
+
+void AArenaEnemy::DespawnEnemy()
+{
+    UE_LOG(LogTemp, Warning, TEXT("ArenaEnemy despawning - destroying actor"));
+
+    // Final cleanup before destruction
+    GetWorldTimerManager().ClearAllTimersForObject(this);
+
+    // Destroy the actor
+    Destroy();
 }

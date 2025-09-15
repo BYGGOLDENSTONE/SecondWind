@@ -61,25 +61,20 @@ void AArenaZone::ActivateZone()
 {
     UE_LOG(LogTemp, Warning, TEXT("=== ACTIVATING ZONE %d ==="), ZoneNumber);
 
+    // Simple check - don't activate if already active
     if (bIsActive)
     {
         UE_LOG(LogTemp, Warning, TEXT("Zone %d already active, skipping activation"), ZoneNumber);
         return;
     }
 
-    // If zone was previously cleared, reset it first
-    if (bIsCleared)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Zone %d was cleared from previous run - resetting before activation"), ZoneNumber);
-        ResetZone();
-        // After reset, bIsCleared should be false
-    }
-
-    // Now activate the zone
+    // SIMPLE ACTIVATION - just set active and spawn enemies
     bIsActive = true;
+    bIsCleared = false;  // Ensure zone is not marked as cleared
+
     UE_LOG(LogTemp, Warning, TEXT("Zone %d activated - spawning enemies"), ZoneNumber);
 
-    // Spawn enemies (zone is now active and not cleared)
+    // Always spawn fresh enemies when activating
     SpawnEnemies();
 
     // SIMPLE APPROACH: Find and lock ALL nearby doors
@@ -190,26 +185,12 @@ void AArenaZone::AddSpawnPoint(AEnemySpawnPoint* SpawnPoint)
 void AArenaZone::SpawnEnemies()
 {
     UE_LOG(LogTemp, Warning, TEXT("=== SPAWNING ENEMIES FOR ZONE %d ==="), ZoneNumber);
-    UE_LOG(LogTemp, Warning, TEXT("Zone state - Cleared: %s, Active: %s"),
-        bIsCleared ? TEXT("TRUE") : TEXT("FALSE"),
-        bIsActive ? TEXT("TRUE") : TEXT("FALSE"));
     UE_LOG(LogTemp, Warning, TEXT("Number of spawn points: %d"), SpawnPoints.Num());
 
-    // Don't spawn if zone is cleared AND we're not being activated
-    // (Activation should have reset the zone if it was cleared)
-    if (bIsCleared && !bIsActive)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Zone %d is cleared and not being activated - not spawning enemies"), ZoneNumber);
-        return;
-    }
+    // SIMPLE: Clear any existing enemies first
+    DespawnAllEnemies();
 
-    // Clear any existing enemies first (in case of reset)
-    if (ActiveEnemies.Num() > 0)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Clearing %d existing enemies before spawning new ones"), ActiveEnemies.Num());
-        DespawnAllEnemies();
-    }
-
+    UE_LOG(LogTemp, Warning, TEXT("Iterating through %d spawn points..."), SpawnPoints.Num());
     for (AEnemySpawnPoint* SpawnPoint : SpawnPoints)
     {
         if (SpawnPoint)
@@ -266,8 +247,10 @@ void AArenaZone::OnZoneBoundsBeginOverlap(UPrimitiveComponent* OverlappedCompone
 {
     if (ASecondWindCharacter* Player = Cast<ASecondWindCharacter>(OtherActor))
     {
-        if (!bIsActive && !bIsCleared && LayoutManager)
+        // SIMPLE: If zone is not active, activate it
+        if (!bIsActive && LayoutManager)
         {
+            UE_LOG(LogTemp, Warning, TEXT("Player entered Zone %d - triggering activation"), ZoneNumber);
             LayoutManager->OnPlayerEnterZone(ZoneNumber);
         }
     }

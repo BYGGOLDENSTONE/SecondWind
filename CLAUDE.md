@@ -6,11 +6,20 @@
 **Core Focus:** 1v1 close-quarters combat with deep mechanics from simple abilities
 
 ## 📍 Current Status
-**Phase:** 8 of 11 ⏳ NEXT
+**Phase:** 8 of 11 ⏳ IN PROGRESS
 **Previous:** Phase 7 - UI & Polish ✅ COMPLETED
-**Current:** Phase 8 - Animation System ⏳ NEXT
+**Current:** Phase 8 - Critical Fixes & Improvements ⏳ IN PROGRESS
 **Next:** Phase 9 - Blessing System
 **Timeline:** 11 phases over 12 weeks
+
+### Phase 8 Critical Fixes (Roguelike System)
+- ✅ Fixed zone reset system after player death
+- ✅ Fixed enemy respawn in cleared zones on new runs
+- ✅ Added proper enemy despawn/cleanup (2s delay after death)
+- ✅ Fixed Zone 0 (Starting Hub) incorrectly triggering combat
+- ✅ Simplified zone activation logic for reliability
+- ✅ Fixed bInCombat flag persistence across runs
+- ✅ Ensured proper roguelike behavior (full reset on death, keep fragments/memories)
 
 ### Phase 7 Completed Features (UI & Polish)
 - ✅ Complete Combat HUD implemented in pure C++ Slate

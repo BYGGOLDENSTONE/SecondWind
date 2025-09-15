@@ -21,6 +21,7 @@ void EmptyLinkFunctionForGeneratedCodeSecondWind_init() {}
 	SECONDWIND_API UFunction* Z_Construct_UDelegateFunction_SecondWind_OnPhaseTransition__DelegateSignature();
 	SECONDWIND_API UFunction* Z_Construct_UDelegateFunction_SecondWind_OnRunEnded__DelegateSignature();
 	SECONDWIND_API UFunction* Z_Construct_UDelegateFunction_SecondWind_OnRunStarted__DelegateSignature();
+	SECONDWIND_API UFunction* Z_Construct_UDelegateFunction_UHealthComponent_OnEnterFinisherState__DelegateSignature();
 	static FPackageRegistrationInfo Z_Registration_Info_UPackage__Script_SecondWind;
 	FORCENOINLINE UPackage* Z_Construct_UPackage__Script_SecondWind()
 	{
@@ -41,19 +42,20 @@ void EmptyLinkFunctionForGeneratedCodeSecondWind_init() {}
 				(UObject* (*)())Z_Construct_UDelegateFunction_SecondWind_OnPhaseTransition__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_SecondWind_OnRunEnded__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_SecondWind_OnRunStarted__DelegateSignature,
+				(UObject* (*)())Z_Construct_UDelegateFunction_UHealthComponent_OnEnterFinisherState__DelegateSignature,
 			};
 			static const UECodeGen_Private::FPackageParams PackageParams = {
 				"/Script/SecondWind",
 				SingletonFuncArray,
 				UE_ARRAY_COUNT(SingletonFuncArray),
 				PKG_CompiledIn | 0x00000000,
-				0xBADF7115,
-				0xAC9968B6,
+				0x8DC05CDB,
+				0xC4D68669,
 				METADATA_PARAMS(0, nullptr)
 			};
 			UECodeGen_Private::ConstructUPackage(Z_Registration_Info_UPackage__Script_SecondWind.OuterSingleton, PackageParams);
 		}
 		return Z_Registration_Info_UPackage__Script_SecondWind.OuterSingleton;
 	}
-	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_SecondWind(Z_Construct_UPackage__Script_SecondWind, TEXT("/Script/SecondWind"), Z_Registration_Info_UPackage__Script_SecondWind, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0xBADF7115, 0xAC9968B6));
+	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_SecondWind(Z_Construct_UPackage__Script_SecondWind, TEXT("/Script/SecondWind"), Z_Registration_Info_UPackage__Script_SecondWind, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x8DC05CDB, 0xC4D68669));
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

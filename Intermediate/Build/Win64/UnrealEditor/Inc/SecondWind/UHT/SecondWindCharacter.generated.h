@@ -15,6 +15,8 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #define SECONDWIND_SecondWindCharacter_generated_h
 
 #define FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_27_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execOnPlayerPhaseTransition); \
+	DECLARE_FUNCTION(execOnPlayerEnterFinisherState); \
 	DECLARE_FUNCTION(execOnPlayerDeath);
 
 

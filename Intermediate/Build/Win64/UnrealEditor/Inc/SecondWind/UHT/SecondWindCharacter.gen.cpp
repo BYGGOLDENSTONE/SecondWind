@@ -23,7 +23,6 @@ SECONDWIND_API UClass* Z_Construct_UClass_UCombatComponent_NoRegister();
 SECONDWIND_API UClass* Z_Construct_UClass_UDodgeComponent_NoRegister();
 SECONDWIND_API UClass* Z_Construct_UClass_UFragmentComponent_NoRegister();
 SECONDWIND_API UClass* Z_Construct_UClass_UHackComponent_NoRegister();
-SECONDWIND_API UClass* Z_Construct_UClass_UHackUIComponent_NoRegister();
 SECONDWIND_API UClass* Z_Construct_UClass_UHealthComponent_NoRegister();
 UPackage* Z_Construct_UPackage__Script_SecondWind();
 // End Cross Module References
@@ -57,12 +56,72 @@ DEFINE_FUNCTION(ASecondWindCharacter::execOnPlayerDeath)
 }
 // End Class ASecondWindCharacter Function OnPlayerDeath
 
+// Begin Class ASecondWindCharacter Function OnPlayerEnterFinisherState
+struct Z_Construct_UFunction_ASecondWindCharacter_OnPlayerEnterFinisherState_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "SecondWindCharacter.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ASecondWindCharacter_OnPlayerEnterFinisherState_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_ASecondWindCharacter, nullptr, "OnPlayerEnterFinisherState", nullptr, nullptr, nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00080401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ASecondWindCharacter_OnPlayerEnterFinisherState_Statics::Function_MetaDataParams), Z_Construct_UFunction_ASecondWindCharacter_OnPlayerEnterFinisherState_Statics::Function_MetaDataParams) };
+UFunction* Z_Construct_UFunction_ASecondWindCharacter_OnPlayerEnterFinisherState()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ASecondWindCharacter_OnPlayerEnterFinisherState_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ASecondWindCharacter::execOnPlayerEnterFinisherState)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnPlayerEnterFinisherState();
+	P_NATIVE_END;
+}
+// End Class ASecondWindCharacter Function OnPlayerEnterFinisherState
+
+// Begin Class ASecondWindCharacter Function OnPlayerPhaseTransition
+struct Z_Construct_UFunction_ASecondWindCharacter_OnPlayerPhaseTransition_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "SecondWindCharacter.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_ASecondWindCharacter_OnPlayerPhaseTransition_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_ASecondWindCharacter, nullptr, "OnPlayerPhaseTransition", nullptr, nullptr, nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00080401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_ASecondWindCharacter_OnPlayerPhaseTransition_Statics::Function_MetaDataParams), Z_Construct_UFunction_ASecondWindCharacter_OnPlayerPhaseTransition_Statics::Function_MetaDataParams) };
+UFunction* Z_Construct_UFunction_ASecondWindCharacter_OnPlayerPhaseTransition()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_ASecondWindCharacter_OnPlayerPhaseTransition_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(ASecondWindCharacter::execOnPlayerPhaseTransition)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnPlayerPhaseTransition();
+	P_NATIVE_END;
+}
+// End Class ASecondWindCharacter Function OnPlayerPhaseTransition
+
 // Begin Class ASecondWindCharacter
 void ASecondWindCharacter::StaticRegisterNativesASecondWindCharacter()
 {
 	UClass* Class = ASecondWindCharacter::StaticClass();
 	static const FNameNativePtrPair Funcs[] = {
 		{ "OnPlayerDeath", &ASecondWindCharacter::execOnPlayerDeath },
+		{ "OnPlayerEnterFinisherState", &ASecondWindCharacter::execOnPlayerEnterFinisherState },
+		{ "OnPlayerPhaseTransition", &ASecondWindCharacter::execOnPlayerPhaseTransition },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
@@ -252,18 +311,6 @@ struct Z_Construct_UClass_ASecondWindCharacter_Statics
 		{ "ToolTip", "Hack Component" },
 #endif
 	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HackUIComponent_MetaData[] = {
-		{ "AllowPrivateAccess", "true" },
-		{ "Category", "Components" },
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "/** Hack UI Component */" },
-#endif
-		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "SecondWindCharacter.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Hack UI Component" },
-#endif
-	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_FragmentComponent_MetaData[] = {
 		{ "AllowPrivateAccess", "true" },
 		{ "Category", "Components" },
@@ -292,12 +339,13 @@ struct Z_Construct_UClass_ASecondWindCharacter_Statics
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_DodgeComponent;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_CameraLockOnComponent;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_HackComponent;
-	static const UECodeGen_Private::FObjectPropertyParams NewProp_HackUIComponent;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_FragmentComponent;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_ASecondWindCharacter_OnPlayerDeath, "OnPlayerDeath" }, // 707703416
+		{ &Z_Construct_UFunction_ASecondWindCharacter_OnPlayerEnterFinisherState, "OnPlayerEnterFinisherState" }, // 3866246304
+		{ &Z_Construct_UFunction_ASecondWindCharacter_OnPlayerPhaseTransition, "OnPlayerPhaseTransition" }, // 352464129
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -320,7 +368,6 @@ const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ASecondWindCha
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ASecondWindCharacter_Statics::NewProp_DodgeComponent = { "DodgeComponent", nullptr, (EPropertyFlags)0x00400000000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASecondWindCharacter, DodgeComponent), Z_Construct_UClass_UDodgeComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DodgeComponent_MetaData), NewProp_DodgeComponent_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ASecondWindCharacter_Statics::NewProp_CameraLockOnComponent = { "CameraLockOnComponent", nullptr, (EPropertyFlags)0x00400000000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASecondWindCharacter, CameraLockOnComponent), Z_Construct_UClass_UCameraLockOnComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CameraLockOnComponent_MetaData), NewProp_CameraLockOnComponent_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ASecondWindCharacter_Statics::NewProp_HackComponent = { "HackComponent", nullptr, (EPropertyFlags)0x00400000000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASecondWindCharacter, HackComponent), Z_Construct_UClass_UHackComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HackComponent_MetaData), NewProp_HackComponent_MetaData) };
-const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ASecondWindCharacter_Statics::NewProp_HackUIComponent = { "HackUIComponent", nullptr, (EPropertyFlags)0x00400000000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASecondWindCharacter, HackUIComponent), Z_Construct_UClass_UHackUIComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HackUIComponent_MetaData), NewProp_HackUIComponent_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ASecondWindCharacter_Statics::NewProp_FragmentComponent = { "FragmentComponent", nullptr, (EPropertyFlags)0x00400000000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASecondWindCharacter, FragmentComponent), Z_Construct_UClass_UFragmentComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_FragmentComponent_MetaData), NewProp_FragmentComponent_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_ASecondWindCharacter_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASecondWindCharacter_Statics::NewProp_CameraBoom,
@@ -338,7 +385,6 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_ASecondWi
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASecondWindCharacter_Statics::NewProp_DodgeComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASecondWindCharacter_Statics::NewProp_CameraLockOnComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASecondWindCharacter_Statics::NewProp_HackComponent,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASecondWindCharacter_Statics::NewProp_HackUIComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASecondWindCharacter_Statics::NewProp_FragmentComponent,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_ASecondWindCharacter_Statics::PropPointers) < 2048);
@@ -382,10 +428,10 @@ ASecondWindCharacter::~ASecondWindCharacter() {}
 struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_ASecondWindCharacter, ASecondWindCharacter::StaticClass, TEXT("ASecondWindCharacter"), &Z_Registration_Info_UClass_ASecondWindCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ASecondWindCharacter), 859018122U) },
+		{ Z_Construct_UClass_ASecondWindCharacter, ASecondWindCharacter::StaticClass, TEXT("ASecondWindCharacter"), &Z_Registration_Info_UClass_ASecondWindCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ASecondWindCharacter), 2430155672U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_3717530484(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_3720167818(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

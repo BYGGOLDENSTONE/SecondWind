@@ -84,4 +84,5 @@ private:
     FTimerHandle AttackTimerHandle;
     void PerformAttack();
     AActor* FindPlayer() const;
+    void DespawnEnemy();
 };
