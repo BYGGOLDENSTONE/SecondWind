@@ -29,7 +29,7 @@ void UMemorySystem::InitializeMemoryDatabase()
     HackReduction.MemoryID = TEXT("MEMORY_HACK_REDUCTION");
     HackReduction.DisplayName = TEXT("Quick Hack");
     HackReduction.Description = TEXT("Reduces hack attack requirement from 6 to 4 counter-attacks");
-    HackReduction.FragmentCost = 15;
+    HackReduction.FragmentCost = 1;  // Reduced from 15 for testing
     HackReduction.MemoryType = EMemoryType::HackReduction;
     HackReduction.EffectValue = 2.0f;
     AllMemories.Add(HackReduction.MemoryID, HackReduction);
@@ -38,7 +38,7 @@ void UMemorySystem::InitializeMemoryDatabase()
     AttackBoost.MemoryID = TEXT("MEMORY_ATTACK_BOOST");
     AttackBoost.DisplayName = TEXT("Sharpened Blade");
     AttackBoost.Description = TEXT("Increases attack damage by 25%");
-    AttackBoost.FragmentCost = 20;
+    AttackBoost.FragmentCost = 2;  // Reduced from 20 for testing
     AttackBoost.MemoryType = EMemoryType::AttackBoost;
     AttackBoost.EffectValue = 1.25f;
     AllMemories.Add(AttackBoost.MemoryID, AttackBoost);
@@ -47,7 +47,7 @@ void UMemorySystem::InitializeMemoryDatabase()
     DefenseBoost.MemoryID = TEXT("MEMORY_DEFENSE_BOOST");
     DefenseBoost.DisplayName = TEXT("Hardened Resolve");
     DefenseBoost.Description = TEXT("Increases block damage reduction from 40% to 60%");
-    DefenseBoost.FragmentCost = 25;
+    DefenseBoost.FragmentCost = 3;  // Reduced from 25 for testing
     DefenseBoost.MemoryType = EMemoryType::DefenseBoost;
     DefenseBoost.EffectValue = 0.6f;
     AllMemories.Add(DefenseBoost.MemoryID, DefenseBoost);

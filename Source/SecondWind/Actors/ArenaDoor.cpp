@@ -2,7 +2,6 @@
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "../SecondWindCharacter.h"
-#include "SimplifiedArenaSystem.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 
@@ -211,18 +210,9 @@ bool AArenaDoor::CanOpen() const
     // Arena exit doors require combat to be cleared
     if (DoorType == EDoorType::ArenaExit && bRequiresCombatClear)
     {
-        // Check if the arena system says combat is clear
-        TArray<AActor*> FoundActors;
-        UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASimplifiedArenaSystem::StaticClass(), FoundActors);
-
-        if (FoundActors.Num() > 0)
-        {
-            ASimplifiedArenaSystem* ArenaSystem = Cast<ASimplifiedArenaSystem>(FoundActors[0]);
-            if (ArenaSystem)
-            {
-                return !ArenaSystem->IsInCombat();
-            }
-        }
+        // Combat clear is now handled by the ArenaZone system
+        // The zone will unlock doors when combat is cleared
+        return DoorState != EDoorState::Locked;
     }
 
     return !bRequiresCombatClear;

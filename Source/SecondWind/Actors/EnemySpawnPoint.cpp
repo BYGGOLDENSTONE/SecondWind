@@ -76,8 +76,10 @@ AArenaEnemy* AEnemySpawnPoint::SpawnEnemy()
 
     if (EnemyClass)
     {
+        // Use deferred spawning to properly initialize the enemy
         FActorSpawnParameters SpawnParams;
         SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+        SpawnParams.bDeferConstruction = true;  // Defer construction so we can set properties first
 
         AArenaEnemy* SpawnedEnemy = GetWorld()->SpawnActor<AArenaEnemy>(
             EnemyClass,
@@ -88,16 +90,29 @@ AArenaEnemy* AEnemySpawnPoint::SpawnEnemy()
 
         if (SpawnedEnemy)
         {
+            // Set properties BEFORE finishing spawn
             SpawnedActor = SpawnedEnemy;
 
+            // Finish spawning the actor - this will call BeginPlay
+            SpawnedEnemy->FinishSpawning(GetActorTransform());
+
+            // Initialize the enemy AFTER BeginPlay has been called
+            SpawnedEnemy->InitializeEnemy(ArenaNumber);
+
+            // Override phases if needed
             int32 PhasesToSet = GetEffectivePhases();
-            if (PhasesToSet > 0)
+            if (PhaseOverride > 0 && PhasesToSet != ArenaNumber)
             {
                 SpawnedEnemy->SetPhaseCount(PhasesToSet);
             }
 
+            // Force the enemy to possess its AI controller and start moving
+            SpawnedEnemy->SpawnDefaultController();
+
             UE_LOG(LogTemp, Warning, TEXT("Spawned enemy at spawn point for Arena %d with %d phases"),
                 ArenaNumber, PhasesToSet);
+            UE_LOG(LogTemp, Warning, TEXT("Enemy controller: %s"),
+                SpawnedEnemy->GetController() ? TEXT("SET") : TEXT("NULL"));
 
             return SpawnedEnemy;
         }

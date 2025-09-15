@@ -23,6 +23,22 @@ void AArenaEnemy::BeginPlay()
 {
     Super::BeginPlay();
 
+    // Ensure AI controller is spawned if not already present
+    if (!GetController())
+    {
+        SpawnDefaultController();
+        UE_LOG(LogTemp, Warning, TEXT("ArenaEnemy: Spawned default controller in BeginPlay"));
+    }
+
+    // Ensure movement component is properly initialized
+    if (GetCharacterMovement())
+    {
+        GetCharacterMovement()->MaxWalkSpeed = 400.0f;
+        GetCharacterMovement()->bOrientRotationToMovement = true;
+        GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f);
+        UE_LOG(LogTemp, Warning, TEXT("ArenaEnemy: Movement component initialized"));
+    }
+
     // Register with enemy manager
     if (UGameInstance* GameInstance = GetGameInstance())
     {
@@ -36,6 +52,11 @@ void AArenaEnemy::BeginPlay()
     {
         HealthComponent->OnPhaseTransition.AddDynamic(this, &AArenaEnemy::OnPhaseTransition);
         HealthComponent->OnDeath.AddDynamic(this, &AArenaEnemy::OnEnemyDeath);
+        UE_LOG(LogTemp, Warning, TEXT("ArenaEnemy: Health delegates bound successfully"));
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("ERROR: ArenaEnemy has no HealthComponent!"));
     }
 
     // Start attacking every 2-3 seconds
@@ -82,7 +103,28 @@ void AArenaEnemy::Tick(float DeltaTime)
                 // Use character movement for smoother motion
                 if (GetCharacterMovement())
                 {
+                    // Clear any existing movement input first
+                    GetCharacterMovement()->StopMovementImmediately();
+
+                    // Add fresh movement input toward player
                     GetCharacterMovement()->AddInputVector(DirectionToPlayer);
+
+                    // Force movement update if not moving
+                    if (GetVelocity().Size() < 10.0f)
+                    {
+                        // Try alternative movement approach
+                        FVector NewLocation = GetActorLocation() + (DirectionToPlayer * GetCharacterMovement()->MaxWalkSpeed * DeltaTime);
+                        SetActorLocation(NewLocation, true);
+                        UE_LOG(LogTemp, VeryVerbose, TEXT("Enemy forcing movement toward player"));
+                    }
+                }
+            }
+            else if (Distance <= AttackRange)
+            {
+                // Stop when in attack range
+                if (GetCharacterMovement())
+                {
+                    GetCharacterMovement()->StopMovementImmediately();
                 }
             }
         }
@@ -96,29 +138,56 @@ void AArenaEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 void AArenaEnemy::InitializeEnemy(int32 ArenaNumber)
 {
+    UE_LOG(LogTemp, Warning, TEXT("=== INITIALIZING ENEMY FOR ARENA %d ==="), ArenaNumber);
+
     ArenaLevel = ArenaNumber;
     MaxPhases = ArenaNumber;
     CurrentPhase = 1;
 
     SetupPhases();
 
-    UE_LOG(LogTemp, Warning, TEXT("ArenaEnemy: Initialized for Arena %d with %d phases"), ArenaLevel, MaxPhases);
+    // Verify initialization
+    UE_LOG(LogTemp, Warning, TEXT("ArenaEnemy Initialized:"));
+    UE_LOG(LogTemp, Warning, TEXT("  - ArenaLevel: %d"), ArenaLevel);
+    UE_LOG(LogTemp, Warning, TEXT("  - MaxPhases: %d"), MaxPhases);
+    UE_LOG(LogTemp, Warning, TEXT("  - CurrentPhase: %d"), CurrentPhase);
+    UE_LOG(LogTemp, Warning, TEXT("  - Has HealthComponent: %s"), HealthComponent ? TEXT("YES") : TEXT("NO"));
+    UE_LOG(LogTemp, Warning, TEXT("  - Has Controller: %s"), GetController() ? TEXT("YES") : TEXT("NO"));
 }
 
 void AArenaEnemy::OnPhaseTransition()
 {
-    if (CurrentPhase < MaxPhases)
+    UE_LOG(LogTemp, Warning, TEXT("=== PHASE TRANSITION: Old phase %d/%d ==="), CurrentPhase, MaxPhases);
+
+    // Update our phase counter to match the HealthComponent's phase
+    // The HealthComponent has already incremented its phase
+    if (HealthComponent)
     {
-        EnterFinisherState();
+        CurrentPhase = HealthComponent->GetCurrentPhase();
+        UE_LOG(LogTemp, Warning, TEXT("Updated to new phase %d/%d from HealthComponent"), CurrentPhase, MaxPhases);
     }
+
+    // Start the next phase (re-enable movement, adjust stats, etc.)
+    StartNextPhase();
 }
 
 void AArenaEnemy::OnEnemyDeath()
 {
+    // Sync phase with HealthComponent before checking
+    if (HealthComponent)
+    {
+        CurrentPhase = HealthComponent->GetCurrentPhase();
+    }
+
+    UE_LOG(LogTemp, Warning, TEXT("=== OnEnemyDeath Called: Phase %d/%d ==="), CurrentPhase, MaxPhases);
+
     if (CurrentPhase >= MaxPhases)
     {
         int32 Fragments = CalculateFragmentReward();
-        UE_LOG(LogTemp, Warning, TEXT("Enemy defeated! Awarding %d fragments"), Fragments);
+        UE_LOG(LogTemp, Warning, TEXT("=== ENEMY DEATH ==="));
+        UE_LOG(LogTemp, Warning, TEXT("Enemy defeated in Arena %d! MaxPhases: %d, Fragments: %d"),
+            ArenaLevel, MaxPhases, Fragments);
+        UE_LOG(LogTemp, Warning, TEXT("OwnerZone is %s"), OwnerZone ? TEXT("SET") : TEXT("NULL"));
 
         // Stop attacking when dead
         GetWorldTimerManager().ClearTimer(AttackTimerHandle);
@@ -126,7 +195,12 @@ void AArenaEnemy::OnEnemyDeath()
         // Notify the zone if using LevelLayoutManager system
         if (OwnerZone)
         {
+            UE_LOG(LogTemp, Warning, TEXT("Notifying OwnerZone of enemy defeat"));
             OwnerZone->OnEnemyDefeated(this);
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("ERROR: OwnerZone is NULL - cannot notify zone of enemy defeat!"));
         }
 
         // Unregister from enemy manager on death
@@ -137,6 +211,10 @@ void AArenaEnemy::OnEnemyDeath()
                 EnemyManager->UnregisterEnemy(this);
             }
         }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Enemy not fully defeated yet (Phase %d/%d)"), CurrentPhase, MaxPhases);
     }
 }
 
@@ -157,10 +235,14 @@ void AArenaEnemy::ExecuteFinisher()
 
 int32 AArenaEnemy::CalculateFragmentReward() const
 {
+    // New formula: 3 base fragments + phase number for each phase
+    // Phase 1: 3 + 1 = 4 fragments
+    // Phase 2: 3 + 2 = 5 fragments
+    // Phase 3: 3 + 3 = 6 fragments, etc.
     int32 TotalFragments = 0;
     for (int32 i = 1; i <= MaxPhases; i++)
     {
-        TotalFragments += i;
+        TotalFragments += (3 + i);
     }
     return TotalFragments;
 }
@@ -171,20 +253,41 @@ void AArenaEnemy::SetupPhases()
     {
         HealthComponent->SetMaxPhases(MaxPhases);
         HealthComponent->ResetHealth();
+
+        // Make sure our phase counter is synchronized with HealthComponent
+        CurrentPhase = HealthComponent->GetCurrentPhase();
+
+        UE_LOG(LogTemp, Warning, TEXT("ArenaEnemy: Set up %d phases for health component, current phase: %d"),
+            MaxPhases, CurrentPhase);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("ERROR: Cannot setup phases - no HealthComponent!"));
     }
 }
 
 void AArenaEnemy::StartNextPhase()
 {
+    // Exit finisher state if we were in one
+    bInFinisherState = false;
+
+    // Re-enable movement
+    if (GetCharacterMovement())
+    {
+        GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+        GetCharacterMovement()->MaxWalkSpeed = 400.f + (CurrentPhase - 1) * 50.f;
+    }
+
+    // Reset health for new phase
     if (HealthComponent)
     {
         HealthComponent->ResetHealth();
     }
 
-    GetCharacterMovement()->MaxWalkSpeed = 400.f + (CurrentPhase - 1) * 50.f;
+    // Scale up damage for new phase
     BaseDamage = 10 + (CurrentPhase - 1) * 5;
 
-    UE_LOG(LogTemp, Warning, TEXT("Phase %d started: Speed=%f, Damage=%d"),
+    UE_LOG(LogTemp, Warning, TEXT("Phase %d started: Speed=%f, Damage=%d, Movement re-enabled"),
         CurrentPhase, GetCharacterMovement()->MaxWalkSpeed, BaseDamage);
 }
 
@@ -214,6 +317,14 @@ void AArenaEnemy::SetPhaseCount(int32 PhaseCount)
 void AArenaEnemy::SetOwnerZone(AArenaZone* Zone)
 {
     OwnerZone = Zone;
+    if (Zone)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Enemy OwnerZone set to Zone (ptr: %p)"), Zone);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("ERROR: SetOwnerZone called with NULL zone!"));
+    }
 }
 
 void AArenaEnemy::PerformAttack()

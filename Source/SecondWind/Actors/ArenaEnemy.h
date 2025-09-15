@@ -39,6 +39,7 @@ public:
     int32 CalculateFragmentReward() const;
     void SetPhaseCount(int32 PhaseCount);
     void SetOwnerZone(class AArenaZone* Zone);
+    class AArenaZone* GetOwnerZone() const { return OwnerZone; }
 
 protected:
     void SetupPhases();

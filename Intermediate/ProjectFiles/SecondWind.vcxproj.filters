@@ -17,6 +17,7 @@
     <None Include="..\..\CLAUDE.md" />
     <None Include="..\..\GDD.txt" />
     <None Include="..\..\ImplementationPlan.txt" />
+    <None Include="..\..\todo.txt" />
     <Filter Include="Config">
       <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
     </Filter>
@@ -62,10 +63,10 @@
     <Filter Include="Source\SecondWind\Actors">
       <UniqueIdentifier>{0761A560-D4D6-3D32-A153-D5377D6B61F9}</UniqueIdentifier>
     </Filter>
-    <ClCompile Include="..\..\Source\SecondWind\Actors\Arena.cpp">
+    <ClCompile Include="..\..\Source\SecondWind\Actors\ArenaDoor.cpp">
       <Filter>Source\SecondWind\Actors</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\SecondWind\Actors\Arena.h">
+    <ClCompile Include="..\..\Source\SecondWind\Actors\ArenaDoor.h">
       <Filter>Source\SecondWind\Actors</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\SecondWind\Actors\ArenaEnemy.cpp">
@@ -74,10 +75,28 @@
     <ClCompile Include="..\..\Source\SecondWind\Actors\ArenaEnemy.h">
       <Filter>Source\SecondWind\Actors</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\SecondWind\Actors\ArenaManager.cpp">
+    <ClCompile Include="..\..\Source\SecondWind\Actors\ArenaZone.cpp">
       <Filter>Source\SecondWind\Actors</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\SecondWind\Actors\ArenaManager.h">
+    <ClCompile Include="..\..\Source\SecondWind\Actors\ArenaZone.h">
+      <Filter>Source\SecondWind\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Actors\EnemySpawnPoint.cpp">
+      <Filter>Source\SecondWind\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Actors\EnemySpawnPoint.h">
+      <Filter>Source\SecondWind\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Actors\LevelLayoutManager.cpp">
+      <Filter>Source\SecondWind\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Actors\LevelLayoutManager.h">
+      <Filter>Source\SecondWind\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Actors\SafeZoneCorridor.cpp">
+      <Filter>Source\SecondWind\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Actors\SafeZoneCorridor.h">
       <Filter>Source\SecondWind\Actors</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\SecondWind\Actors\TrainingDummy.cpp">
@@ -137,6 +156,12 @@
     <ClCompile Include="..\..\Source\SecondWind\Components\HealthComponent.h">
       <Filter>Source\SecondWind\Components</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Components\MemoryShopComponent.cpp">
+      <Filter>Source\SecondWind\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Components\MemoryShopComponent.h">
+      <Filter>Source\SecondWind\Components</Filter>
+    </ClCompile>
     <Filter Include="Source\SecondWind\GameModes">
       <UniqueIdentifier>{DF834EAD-24FB-3387-8B45-3B23EBCDB155}</UniqueIdentifier>
     </Filter>
@@ -145,6 +170,51 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\SecondWind\GameModes\SecondWindArenaGameMode.h">
       <Filter>Source\SecondWind\GameModes</Filter>
+    </ClCompile>
+    <Filter Include="Source\SecondWind\SaveGame">
+      <UniqueIdentifier>{64BDDDC1-7A2D-316A-A21C-418F80E51029}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\SecondWind\SaveGame\SecondWindSaveGame.cpp">
+      <Filter>Source\SecondWind\SaveGame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\SaveGame\SecondWindSaveGame.h">
+      <Filter>Source\SecondWind\SaveGame</Filter>
+    </ClCompile>
+    <Filter Include="Source\SecondWind\Systems">
+      <UniqueIdentifier>{DC2209A8-D1CE-3906-AEAA-D27338CC225C}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\SecondWind\Systems\EnemyManager.cpp">
+      <Filter>Source\SecondWind\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Systems\EnemyManager.h">
+      <Filter>Source\SecondWind\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Systems\FragmentSystem.cpp">
+      <Filter>Source\SecondWind\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Systems\FragmentSystem.h">
+      <Filter>Source\SecondWind\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Systems\MemorySystem.cpp">
+      <Filter>Source\SecondWind\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Systems\MemorySystem.h">
+      <Filter>Source\SecondWind\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Systems\RunManager.cpp">
+      <Filter>Source\SecondWind\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Systems\RunManager.h">
+      <Filter>Source\SecondWind\Systems</Filter>
+    </ClCompile>
+    <Filter Include="Source\SecondWind\UI">
+      <UniqueIdentifier>{719DB605-041C-33D9-9DC9-3F0A59976D6D}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\SecondWind\UI\MemoryShopWidget.cpp">
+      <Filter>Source\SecondWind\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\UI\MemoryShopWidget.h">
+      <Filter>Source\SecondWind\UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

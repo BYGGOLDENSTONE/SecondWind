@@ -6,16 +6,18 @@
 **Core Focus:** 1v1 close-quarters combat with deep mechanics from simple abilities
 
 ## 📍 Current Status
-**Phase:** 7 of 10 - UI & Polish (Ready to start)
-**Previous:** Phase 6 - Memory System ✅ COMPLETED
-**Next:** Phase 8 - Animation System (Week 9)
+**Phase:** 6 of 10 ✅ COMPLETED
+**Previous:** Phase 5C - Pre-Placed Level Design ✅ COMPLETED
+**Next:** Phase 7 - UI & Polish (Ready to start)
 **Timeline:** 10 phases over 11 weeks
 
-### Recent Improvements
+### Recent Improvements (Phase 6)
 - ✅ Roguelike run system (session-based, no persistent saves)
-- ✅ Fragment rewards fixed for all arena systems
-- ✅ Training dummy auto-spawn removed (manual placement only)
-- ✅ Smooth camera lock-on transitions (0.5s ease-in)
+- ✅ Memory shop system with 3 purchasable upgrades
+- ✅ Fragment economy balanced for testing (1-3 fragments per memory)
+- ✅ Fixed spawned enemy AI movement and phase transitions
+- ✅ Fixed multi-phase enemy rewards and zone clearing
+- ✅ HackComponent now properly targets all enemy types
 
 ### Phase 1 Completed Components
 - ✅ `UCombatComponent` - Basic attack (5 damage) - Functional
@@ -181,11 +183,18 @@ Basic attack, health system, training dummy - All tested and working
 - ✅ NO disk saves - all progress lost on game close (by design)
 - ✅ `SMemoryShopWidget` - Slate UI for memory purchases
 - ✅ `UMemoryShopComponent` - Shop interaction component
-- ✅ First memory: Hack Attack Reduction (6→4 counters, 15 fragments)
+- ✅ Three memories implemented:
+  - Quick Hack: 1 fragment (reduces hack counters 6→4)
+  - Sharpened Blade: 2 fragments (+25% attack damage)
+  - Hardened Resolve: 3 fragments (block reduction 40%→60%)
 - ✅ Safe zone auto-opens memory shop
 - ✅ Memory effects reapply on run reset
 - ✅ Player death → 3s delay → new run at hub
 - ✅ Fragments/memories persist between runs (same session only)
+- ✅ Fragment rewards: 3 + phase number per phase (e.g., 1-phase = 4, 2-phase = 9)
+- ✅ Fixed spawned enemy movement and phase transitions
+- ✅ Fixed multi-phase enemy fragment rewards and door unlocking
+- ✅ HackComponent now targets both training dummies and arena enemies
 
 ### Phase 7: UI & Polish
 - Slate UI implementation

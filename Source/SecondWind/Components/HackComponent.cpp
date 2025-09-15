@@ -4,6 +4,7 @@
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
 #include "../Actors/TrainingDummy.h"
+#include "../Actors/ArenaEnemy.h"
 #include "HealthComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -148,6 +149,11 @@ AActor* UHackComponent::FindHackTarget() const
     // Find all potential targets in range
     TArray<AActor*> FoundActors;
     UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATrainingDummy::StaticClass(), FoundActors);
+
+    // Also search for arena enemies
+    TArray<AActor*> ArenaEnemies;
+    UGameplayStatics::GetAllActorsOfClass(GetWorld(), AArenaEnemy::StaticClass(), ArenaEnemies);
+    FoundActors.Append(ArenaEnemies);
 
     AActor* ClosestTarget = nullptr;
     float ClosestDistance = HackRange;
