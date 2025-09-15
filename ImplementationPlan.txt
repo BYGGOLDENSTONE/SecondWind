@@ -1,7 +1,7 @@
 ### Second Wind - Implementation Plan
 
 **Development Overview:**
-- 8 phases over 11 weeks
+- 11 phases over 12 weeks
 - Phase-by-phase tracking for session continuity
 - Each phase builds on the previous to ensure stable progression
 - **Pure C++ Implementation:** No visual scripting/Blueprints for gameplay
@@ -10,9 +10,9 @@
 - **UI System:** All UI implemented in C++ using Slate framework
 - **Blueprints:** Only for asset references and minimal configuration
 
-**Current Status:** Phase 5C - Pre-Placed Level Design System 📋 PLANNED
-**Previous:** Phase 5B - Physical Room System ✅ COMPLETED
-**Next Session:** Implement Phase 5C - Pre-Placed Level Design
+**Current Status:** Phase 7 - UI & Polish ✅ IN PROGRESS
+**Previous:** Phase 6 - Memory System ✅ COMPLETED
+**Next Session:** Complete Phase 7 - UI & Polish
 
 =============================================================================
 
@@ -334,7 +334,7 @@
 
 ### PHASE 6: MEMORY SYSTEM (Week 8)
 **Priority:** MEDIUM - Meta Progression
-**Status:** PENDING
+**Status:** ✅ COMPLETED
 
 **Goals:**
 - Save/load system working
@@ -366,7 +366,7 @@
 
 ### PHASE 7: UI & POLISH (Week 8)
 **Priority:** MEDIUM - User Experience
-**Status:** PENDING
+**Status:** ✅ IN PROGRESS
 
 **Goals:**
 - Combat UI implemented
@@ -429,7 +429,59 @@
 
 =============================================================================
 
-### PHASE 9: SFX & VFX (Week 10)
+### PHASE 9: BLESSING SYSTEM (TEMPORARY UPGRADES) (Week 10)
+**Priority:** HIGH - Core Roguelike Mechanic
+**Status:** PENDING
+
+**Goals:**
+- Temporary upgrade system (lost on death)
+- Post-combat blessing selections
+- Blessing categories and rarities
+- Integration with existing systems
+
+**Tasks:**
+1. [ ] Blessing System Infrastructure
+   - Create UBlessingSystem (UGameInstanceSubsystem)
+   - Create UBlessingData (data asset structure)
+   - Create UBlessingComponent (player component)
+   - Clear blessings on death/run reset
+
+2. [ ] Blessing Categories Implementation
+   - Offensive blessings (damage, attack speed, crit)
+   - Defensive blessings (block, dodge, recovery)
+   - Utility blessings (fragments, movement, synergy)
+   - Rarity system (Common 60%, Rare 30%, Epic 10%)
+
+3. [ ] Blessing Selection UI (Pure Slate)
+   - Post-combat selection screen
+   - Choose 1 of 3 random blessings
+   - Skip option available
+   - Current blessing display
+   - Stack indicators (max 3 per type)
+
+4. [ ] Integration Points
+   - ArenaZone: Trigger selection after combat
+   - CombatComponent: Apply damage modifiers
+   - BlockingComponent: Apply block modifiers
+   - DodgeComponent: Apply dodge modifiers
+   - HackComponent: Apply hack modifiers
+   - FragmentComponent: Apply reward modifiers
+
+**Blessing Examples:**
+- Razor Edge: +10% attack damage
+- Iron Guard: +10% block reduction
+- Fragment Finder: +20% fragment rewards
+- Hack Charge: Start with 2 hack counters
+- Counter Master: +50% counter damage
+
+**Deliverable:** Complete blessing system with 15+ unique blessings
+**Testing:** Blessings apply correctly, clear on death, stack properly
+
+**See Phase9_Plan.md for detailed implementation guide**
+
+=============================================================================
+
+### PHASE 10: SFX & VFX (Week 11)
 **Priority:** MEDIUM - Audio/Visual Polish
 **Status:** PENDING
 
@@ -467,7 +519,7 @@
 
 =============================================================================
 
-### PHASE 10: ENEMY AI (Week 11)
+### PHASE 11: ENEMY AI (Week 12)
 **Priority:** HIGH - Core Gameplay
 **Status:** PENDING
 
@@ -510,20 +562,17 @@
 =============================================================================
 
 ### SESSION TRACKING:
-**Current Phase:** 5B
-**Next Tasks:** Implement physical room system with collision-based transitions
-**Completion Status:** 5A/10 phases complete (5B pending)
+**Current Phase:** 7
+**Next Tasks:** Complete UI & Polish implementation
+**Completion Status:** 6/11 phases complete (Phase 7 in progress)
 
 ### NOTES FOR NEXT SESSION:
-- Phase 1-5A complete: Combat, Blocking, Dodge/Movement, Special Abilities, Basic Arena System
-- Phase 5B planned: Physical room progression with doors and marketplaces
-- Need to implement:
-  * ARoomTrigger for collision-based transitions
-  * AArenaDoor for enemy spawning interactions
-  * ASafeZoneRoom for marketplace areas
-  * Physical level layout with connected rooms
-- Room progression: Starting Hub → Arena 1 → Safe Zone 1 → Arena 2 → etc.
-- Safe zones will serve as marketplaces for memory purchases
-- Enemies respawn when revisiting defeated arenas
-- Phase order: 5B Physical Rooms → Memory → UI → Animation → SFX/VFX → Enemy AI
-- Training dummy remains in starting hub
+- Phase 1-6 complete: Combat, Blocking, Dodge/Movement, Special Abilities, Arena System, Memory System
+- Phase 7 in progress: UI & Polish (Combat HUD implemented)
+- Phase 8 planned: Animation System
+- Phase 9 planned: Blessing System (temporary upgrades)
+- Phase 10 planned: SFX & VFX
+- Phase 11 planned: Enemy AI
+- Key distinction: Memories are permanent upgrades (purchased with fragments)
+- Blessings are temporary upgrades (lost on death, earned after combat)
+- Total phases increased from 10 to 11 to accommodate blessing system
