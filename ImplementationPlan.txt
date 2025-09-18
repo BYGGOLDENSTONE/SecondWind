@@ -10,9 +10,9 @@
 - **UI System:** All UI implemented in C++ using Slate framework
 - **Blueprints:** Only for asset references and minimal configuration
 
-**Current Status:** Phase 8 - Blessing System (Temporary Upgrades) ⏳ IN PROGRESS
+**Current Status:** Phase 8 - Gamestyle System (Automatic Run Upgrades) ⏳ IN PROGRESS
 **Previous:** Phase 7 - UI & Polish ✅ COMPLETED (Critical fixes also completed)
-**Next Session:** Begin Phase 8 - Blessing System implementation
+**Next Session:** Begin Phase 8 - Gamestyle System implementation
 
 =============================================================================
 
@@ -398,53 +398,70 @@
 
 =============================================================================
 
-### PHASE 8: BLESSING SYSTEM (TEMPORARY UPGRADES) (Week 9)
+### PHASE 8: GAMESTYLE SYSTEM (AUTOMATIC RUN UPGRADES) (Week 9)
 **Priority:** HIGH - Core Roguelike Mechanic
 **Status:** ⏳ IN PROGRESS
 
 **Goals:**
-- Temporary upgrade system (lost on death)
-- Post-combat blessing selections (after defeating each enemy)
-- Blessing categories and rarities
-- Integration with existing combat systems
+- Random gamestyle assigned at start of each run (no player choice)
+- Automatic progression with each arena enemy defeat
+- 5 distinct gamestyles with unique progression paths
+- All bonuses lost on death (roguelike)
+- Clear UI feedback showing current style and progression
 
 **Tasks:**
-1. [ ] Blessing System Infrastructure
-   - Create UBlessingSystem (UGameInstanceSubsystem)
-   - Create UBlessingData (data asset structure)
-   - Create UBlessingComponent (player component)
-   - Clear blessings on death/run reset
+1. [ ] Create Gamestyle Infrastructure
+   - Create UGamestyleComponent (player component)
+   - Random gamestyle selection at Starting Hub spawn
+   - Track stack count (number of upgrades earned)
+   - Reset all bonuses on death/run reset
+   - Hook into arena enemy death events (exclude training dummies)
 
-2. [ ] Blessing Categories Implementation
-   - Offensive blessings (damage, attack speed, crit)
-   - Defensive blessings (block, dodge, recovery)
-   - Utility blessings (fragments, movement, synergy)
-   - Rarity system (Common 60%, Rare 30%, Epic 10%)
+2. [ ] Implement Defense Gamestyle
+   - +20 max HP per arena completion
+   - Smart healing (proportional HP increase: 60/100 → 80/120)
+   - Modify HealthComponent for dynamic max HP
+   - Test progression: 100 → 120 → 140 → 160 → 180+ HP
 
-3. [ ] Blessing Selection UI (Pure Slate)
-   - Post-combat selection screen (appears after each enemy defeat)
-   - Choose 1 of 3 random blessings
-   - Skip option available
-   - Current blessing display
-   - Stack indicators (max 3 per type)
+3. [ ] Implement Offense Gamestyle
+   - +10 attack damage per arena completion
+   - Modify CombatComponent damage calculation
+   - Test progression: 5 → 15 → 25 → 35 → 45+ damage
 
-4. [ ] Integration Points
-   - ArenaZone: Trigger selection after combat
-   - CombatComponent: Apply damage modifiers
-   - BlockingComponent: Apply block modifiers
-   - DodgeComponent: Apply dodge modifiers
-   - HackComponent: Apply hack modifiers
-   - FragmentComponent: Apply reward modifiers
+4. [ ] Implement Mobility Gamestyle
+   - -0.1s ability casting/recovery time per arena completion
+   - Reduce attack recovery time
+   - Reduce block activation delay
+   - Reduce dodge execution time
+   - Note: Full animation speed increases in Phase 10
 
-**Blessing Examples:**
-- Razor Edge: +10% attack damage
-- Iron Guard: +10% block reduction
-- Fragment Finder: +20% fragment rewards
-- Hack Charge: Start with 2 hack counters
-- Counter Master: +50% counter damage
+5. [ ] Implement Utility Gamestyle
+   - +0.1s counter window duration per arena completion
+   - Modify BlockingComponent counter windows
+   - Test progression: 0.5s → 0.6s → 0.7s → 0.8s → 0.9s+ windows
 
-**Deliverable:** Complete blessing system with 15+ unique blessings
-**Testing:** Blessings appear after each enemy defeat, apply correctly, clear on death, stack properly
+6. [ ] Implement Technomancer Gamestyle
+   - -1 hack counter requirement per arena completion
+   - Modify HackComponent counter tracking
+   - Test progression: 6 → 5 → 4 → 3 → 2 → 1 counters needed
+
+7. [ ] Create Gamestyle UI (Pure Slate)
+   - Display current gamestyle name (e.g., "DEFENSE RUN")
+   - Show stack count (e.g., "+3 UPGRADES")
+   - Position: Top-left below fragment counter
+   - Real-time updates on upgrade
+   - Match existing combat HUD aesthetic
+
+8. [ ] Integration & Testing
+   - Connect to ArenaZone OnEnemyDefeated events
+   - Ensure training dummies don't trigger upgrades
+   - Test all gamestyles through multiple arenas
+   - Verify proper reset on death
+   - Balance upgrade values through playtesting
+   - Test memory + gamestyle interactions
+
+**Deliverable:** Complete gamestyle system with 5 distinct progression paths
+**Testing:** Random assignment works, upgrades stack properly, training dummies excluded, full reset on death
 
 =============================================================================
 
@@ -615,7 +632,7 @@
 
 ### SESSION TRACKING:
 **Current Phase:** 8
-**Next Tasks:** Begin Phase 8 - Blessing System implementation
+**Next Tasks:** Begin Phase 8 - Gamestyle System implementation
 **Completion Status:** 7/12 phases complete
 
 ### NOTES FOR NEXT SESSION:

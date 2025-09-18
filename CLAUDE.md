@@ -280,10 +280,9 @@ Basic attack, health system, training dummy - All tested and working
 
 ## 📚 Key Documents
 - `GDD.txt` - Full game design details
-- `ImplementationPlan.txt` - Phase-by-phase breakdown
+- `ImplementationPlan.txt` - Phase-by-phase breakdown (includes Phase 8 gamestyle details)
 - `CLAUDE.md` - This quick reference
 - `Phase5C_Plan.md` - Pre-placed level design system plan
-- `Phase8_Plan.md` - Gamestyle system (automatic run upgrades) plan
 
 ## 🔧 Development Commands
 ```bash
