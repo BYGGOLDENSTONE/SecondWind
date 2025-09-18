@@ -6,13 +6,13 @@
 **Core Focus:** 1v1 close-quarters combat with deep mechanics from simple abilities
 
 ## 📍 Current Status
-**Phase:** 8 of 11 ⏳ IN PROGRESS
+**Phase:** 8 of 12 ⏳ IN PROGRESS
 **Previous:** Phase 7 - UI & Polish ✅ COMPLETED
-**Current:** Phase 8 - Critical Fixes & Improvements ⏳ IN PROGRESS
-**Next:** Phase 9 - Blessing System
-**Timeline:** 11 phases over 12 weeks
+**Current:** Phase 8 - Blessing System (Temporary Upgrades) ⏳ IN PROGRESS
+**Next:** Phase 9 - Memory System Revisit & Economy
+**Timeline:** 12 phases over 13 weeks
 
-### Phase 8 Critical Fixes (Roguelike System)
+### Critical Fixes ✅ COMPLETED (During Phase 7)
 - ✅ Fixed zone reset system after player death
 - ✅ Fixed enemy respawn in cleared zones on new runs
 - ✅ Added proper enemy despawn/cleanup (2s delay after death)
@@ -229,26 +229,33 @@ Basic attack, health system, training dummy - All tested and working
 - ✅ Real-time UI updates during combat
 - ✅ All UI elements functional and tested
 
-### Phase 8: Animation System
-- Combat animations
-- Animation notifies
-- Smooth transitions
-
-### Phase 9: Blessing System (Temporary Upgrades)
+### Phase 8: Blessing System (Temporary Upgrades)
 - Roguelike blessing system (lost on death)
-- Post-combat upgrade selections (choose 1 of 3)
+- Post-combat upgrade selections (choose 1 of 3 after each enemy defeat)
 - Offensive, Defensive, and Utility blessing categories
-- Rarity tiers (Common, Rare, Epic)
+- Rarity tiers (Common 60%, Rare 30%, Epic 10%)
 - Stack mechanics (up to 3 of same type, max 10 total)
 - Integration with existing combat systems
 - Slate-based selection UI
 
-### Phase 10: SFX & VFX
+### Phase 9: Memory System Revisit & Economy
+- Expand memory options (8-10 total)
+- Balance fragment economy and rewards
+- Implement proper fragment distribution
+- Enhanced memory shop UI
+- Fragment reward bonuses (no-damage, combos, etc.)
+
+### Phase 10: Animation System
+- Combat animations
+- Animation notifies
+- Smooth transitions
+
+### Phase 11: SFX & VFX
 - Sound effects
 - Visual effects
 - Game feel enhancements
 
-### Phase 11: Enemy AI
+### Phase 12: Enemy AI
 - Attack patterns
 - Feints and combos
 - Phase-based behaviors
@@ -272,7 +279,7 @@ Basic attack, health system, training dummy - All tested and working
 - `ImplementationPlan.txt` - Phase-by-phase breakdown
 - `CLAUDE.md` - This quick reference
 - `Phase5C_Plan.md` - Pre-placed level design system plan
-- `Phase9_Plan.md` - Blessing system (temporary upgrades) plan
+- `Phase8_Plan.md` - Blessing system (temporary upgrades) plan
 
 ## 🔧 Development Commands
 ```bash

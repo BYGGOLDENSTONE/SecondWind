@@ -1,7 +1,7 @@
 ### Second Wind - Implementation Plan
 
 **Development Overview:**
-- 11 phases over 12 weeks
+- 12 phases over 13 weeks
 - Phase-by-phase tracking for session continuity
 - Each phase builds on the previous to ensure stable progression
 - **Pure C++ Implementation:** No visual scripting/Blueprints for gameplay
@@ -10,9 +10,9 @@
 - **UI System:** All UI implemented in C++ using Slate framework
 - **Blueprints:** Only for asset references and minimal configuration
 
-**Current Status:** Phase 8 - Animation System ⏳ NEXT
-**Previous:** Phase 7 - UI & Polish ✅ COMPLETED
-**Next Session:** Begin Phase 8 - Animation System
+**Current Status:** Phase 8 - Blessing System (Temporary Upgrades) ⏳ IN PROGRESS
+**Previous:** Phase 7 - UI & Polish ✅ COMPLETED (Critical fixes also completed)
+**Next Session:** Begin Phase 8 - Blessing System implementation
 
 =============================================================================
 
@@ -95,7 +95,7 @@
 
 ### PHASE 3: DODGE & MOVEMENT (Week 4)
 **Priority:** HIGH - Core Combat Mechanic
-**Status:** PENDING
+**Status:** ✅ COMPLETED
 
 **Goals:**
 - Strategic dodge system complete
@@ -104,14 +104,14 @@
 - Complete combat triangle (Attack/Block/Dodge)
 
 **Tasks:**
-1. [ ] Strategic Dodge Implementation
+1. [✅] Strategic Dodge Implementation
    - A/S/D hold (0.1s) + Space input combinations
    - Dodge direction logic (left/back/right)
    - Animation-driven movement (no code distance)
    - Counter-attack windows after successful dodges
    - Weak side bonus damage for proper positioning
 
-2. [ ] Camera Lock-On Foundation
+2. [✅] Camera Lock-On Foundation
    - Create UCameraLockOnComponent
    - Auto-targeting logic within 1500 unit range (1v1 only)
    - No manual toggle or lock break (arena combat design)
@@ -119,7 +119,7 @@
    - Character auto-facing enemy with animation exceptions
    - Camera lag for smooth dodge following
 
-3. [ ] Movement System Integration
+3. [✅] Movement System Integration
    - Modify WASD behavior during lock-on
    - A/D becomes strafe/circle movement
    - Seamless transition between free/locked movement
@@ -131,7 +131,7 @@
 
 ### PHASE 4: ADVANCED COMBAT (Week 5)
 **Priority:** MEDIUM - Enhanced Combat
-**Status:** COMPLETED ✓
+**Status:** ✅ COMPLETED
 
 **Goals:**
 - Dash attack system functional ✓
@@ -140,22 +140,22 @@
 - Complete combat moveset ✓
 
 **Tasks:**
-1. [x] Dash Attack System
-   - W + Space dash input detection ✓
-   - Forward dash movement (using DodgeComponent) ✓
-   - Optional LMB leap attack during dash window ✓
-   - Basic implementation without animations ✓
+1. [✅] Dash Attack System
+   - W + Space dash input detection
+   - Forward dash movement (using DodgeComponent)
+   - Optional LMB leap attack during dash window
+   - Basic implementation without animations
 
-2. [x] Hack Attack Implementation
-   - Counter-attack tracking system (6-count) ✓
-   - Reset logic on 2 unblocked hits (blocked don't count) ✓
-   - Massive damage (50) + stun placeholder ✓
-   - Visual/audio feedback for hack availability ✓
-   - UI debug display (cyan progress indicators) ✓
-   - Counter-attacks require LMB during counter windows ✓
+2. [✅] Hack Attack Implementation
+   - Counter-attack tracking system (6-count)
+   - Reset logic on 2 unblocked hits (blocked don't count)
+   - Massive damage (50) + stun placeholder
+   - Visual/audio feedback for hack availability
+   - UI debug display (cyan progress indicators)
+   - Counter-attacks require LMB during counter windows
 
-**Deliverable:** Full combat moveset with all special abilities ✓
-**Testing:** Hack attack becomes available after 6 counters, resets properly ✓
+**Deliverable:** Full combat moveset with all special abilities
+**Testing:** Hack attack becomes available after 6 counters, resets properly
 
 =============================================================================
 
@@ -257,7 +257,7 @@
 
 ### PHASE 5C: PRE-PLACED LEVEL DESIGN SYSTEM (Week 7)
 **Priority:** HIGH - Professional Level Design
-**Status:** 📋 PLANNED
+**Status:** ✅ COMPLETED
 
 **Goals:**
 - Transform runtime-spawned system to editor-placed geometry
@@ -267,21 +267,21 @@
 - Maintain all Phase 5B functionality
 
 **New Classes to Create:**
-1. [ ] AArenaZone
+1. [✅] AArenaZone
    - Defines combat area boundaries
    - Zone number and name properties
    - References to entry/exit doors
    - Enemy spawn point management
    - Combat state tracking
 
-2. [ ] AEnemySpawnPoint
+2. [✅] AEnemySpawnPoint
    - Visual spawn location markers
    - Enemy type selection
    - Phase count override option
    - Training dummy flag
    - Rotation control
 
-3. [ ] ALevelLayoutManager (Replaces SimplifiedArenaSystem)
+3. [✅] ALevelLayoutManager (Replaces SimplifiedArenaSystem)
    - Discovers all pre-placed actors on BeginPlay
    - Manages enemy spawning only (no geometry spawning)
    - Tracks arena progression
@@ -289,20 +289,20 @@
    - Validates level setup
 
 **Implementation Tasks:**
-1. [ ] Discovery System
+1. [✅] Discovery System
    - Find all ArenaZones in level
    - Find all EnemySpawnPoints
    - Find all Doors and Corridors
    - Link components together
    - Validate connections
 
-2. [ ] Zone Management
+2. [✅] Zone Management
    - Player overlap detection
    - Zone activation/deactivation
    - Combat state per zone
    - Door state updates
 
-3. [ ] Spawn Point System
+3. [✅] Spawn Point System
    - Spawn enemies at designated points
    - Clear spawn points on zone change
    - Support multiple enemy types
@@ -343,24 +343,28 @@
 - Persistence between sessions
 
 **Tasks:**
-1. [ ] Save/Load Infrastructure
+1. [✅] Save/Load Infrastructure
    - Create UFragmentSystem (UGameInstanceSubsystem)
    - Create UMemorySystem (UGameInstanceSubsystem)
-   - UE5 save game system integration
-   - Persistent fragment and memory data
+   - Session-based persistence only (NO disk saves by design)
+   - Roguelike run system (all progress lost on game close)
 
-2. [ ] Memory System Implementation
+2. [✅] Memory System Implementation
    - Memory unlock validation system
    - Gameplay effect application framework
    - Safe zone memory spending interface
+   - Three memories implemented:
+     • Quick Hack: 1 fragment (reduces hack counters 6→4)
+     • Sharpened Blade: 2 fragments (+25% attack damage)
+     • Hardened Resolve: 3 fragments (block reduction 40%→60%)
 
-3. [ ] First Memory: Hack Attack Reduction
-   - Reduce hack requirement from 6 to 4 counter-attacks
-   - Memory purchase and effect application
-   - Save/load memory unlock state
+3. [✅] Roguelike Session System
+   - Run resets on player death (3s delay → respawn at hub)
+   - Fragments and memories persist between runs (same session)
+   - All progress lost when game closes (intentional design)
 
-**Deliverable:** Working memory system with hack attack upgrade
-**Testing:** Can spend fragments to unlock memory, effect persists between sessions
+**Deliverable:** Working memory system with three memories implemented
+**Testing:** Can spend fragments to unlock memories, effects persist between runs (same session only)
 
 =============================================================================
 
@@ -394,7 +398,107 @@
 
 =============================================================================
 
-### PHASE 8: ANIMATION SYSTEM (Week 9)
+### PHASE 8: BLESSING SYSTEM (TEMPORARY UPGRADES) (Week 9)
+**Priority:** HIGH - Core Roguelike Mechanic
+**Status:** ⏳ IN PROGRESS
+
+**Goals:**
+- Temporary upgrade system (lost on death)
+- Post-combat blessing selections (after defeating each enemy)
+- Blessing categories and rarities
+- Integration with existing combat systems
+
+**Tasks:**
+1. [ ] Blessing System Infrastructure
+   - Create UBlessingSystem (UGameInstanceSubsystem)
+   - Create UBlessingData (data asset structure)
+   - Create UBlessingComponent (player component)
+   - Clear blessings on death/run reset
+
+2. [ ] Blessing Categories Implementation
+   - Offensive blessings (damage, attack speed, crit)
+   - Defensive blessings (block, dodge, recovery)
+   - Utility blessings (fragments, movement, synergy)
+   - Rarity system (Common 60%, Rare 30%, Epic 10%)
+
+3. [ ] Blessing Selection UI (Pure Slate)
+   - Post-combat selection screen (appears after each enemy defeat)
+   - Choose 1 of 3 random blessings
+   - Skip option available
+   - Current blessing display
+   - Stack indicators (max 3 per type)
+
+4. [ ] Integration Points
+   - ArenaZone: Trigger selection after combat
+   - CombatComponent: Apply damage modifiers
+   - BlockingComponent: Apply block modifiers
+   - DodgeComponent: Apply dodge modifiers
+   - HackComponent: Apply hack modifiers
+   - FragmentComponent: Apply reward modifiers
+
+**Blessing Examples:**
+- Razor Edge: +10% attack damage
+- Iron Guard: +10% block reduction
+- Fragment Finder: +20% fragment rewards
+- Hack Charge: Start with 2 hack counters
+- Counter Master: +50% counter damage
+
+**Deliverable:** Complete blessing system with 15+ unique blessings
+**Testing:** Blessings appear after each enemy defeat, apply correctly, clear on death, stack properly
+
+=============================================================================
+
+### PHASE 9: MEMORY SYSTEM REVISIT & ECONOMY (Week 10)
+**Priority:** HIGH - Meta Progression Balance
+**Status:** PENDING
+
+**Goals:**
+- Revisit and expand memory system
+- Balance fragment economy and rewards
+- Implement proper fragment distribution
+- Add more memory options
+- Polish shop experience
+
+**Tasks:**
+1. [ ] Fragment Economy Balancing
+   - Review and adjust fragment rewards per enemy phase
+   - Test economy flow through full runs
+   - Ensure meaningful progression choices
+   - Balance memory costs vs. fragment availability
+   - Implement actual fragment rewards (currently placeholder)
+
+2. [ ] Expand Memory Options
+   - Add 3-5 additional memories beyond current 3
+   - Create memory tiers (basic/advanced)
+   - Implement memory prerequisites/unlocks
+   - Design synergies between memories
+
+3. [ ] Memory Shop Improvements
+   - Enhanced UI with memory descriptions
+   - Show memory effects clearly
+   - Add purchase confirmation
+   - Display current active memories
+   - Memory refund system (if needed)
+
+4. [ ] Fragment Reward System
+   - Bonus fragments for no-damage kills
+   - Combo multipliers for quick kills
+   - Special rewards for counter-kill finishers
+   - First-time boss defeat bonuses
+
+**New Memory Examples:**
+- Swift Recovery: Reduce dodge cooldown by 20%
+- Vampire Strike: Heal 2 HP per counter-attack
+- Fragment Magnet: +1 base fragment per phase
+- Resilient Spirit: Start each run with 120 HP
+- Master Deflector: Perfect blocks deal 5 damage back
+
+**Deliverable:** Polished memory system with 8-10 memories and balanced economy
+**Testing:** Full run economics feel rewarding, meaningful progression choices
+
+=============================================================================
+
+### PHASE 10: ANIMATION SYSTEM (Week 11)
 **Priority:** HIGH - Visual Polish
 **Status:** PENDING
 
@@ -429,59 +533,7 @@
 
 =============================================================================
 
-### PHASE 9: BLESSING SYSTEM (TEMPORARY UPGRADES) (Week 10)
-**Priority:** HIGH - Core Roguelike Mechanic
-**Status:** PENDING
-
-**Goals:**
-- Temporary upgrade system (lost on death)
-- Post-combat blessing selections
-- Blessing categories and rarities
-- Integration with existing systems
-
-**Tasks:**
-1. [ ] Blessing System Infrastructure
-   - Create UBlessingSystem (UGameInstanceSubsystem)
-   - Create UBlessingData (data asset structure)
-   - Create UBlessingComponent (player component)
-   - Clear blessings on death/run reset
-
-2. [ ] Blessing Categories Implementation
-   - Offensive blessings (damage, attack speed, crit)
-   - Defensive blessings (block, dodge, recovery)
-   - Utility blessings (fragments, movement, synergy)
-   - Rarity system (Common 60%, Rare 30%, Epic 10%)
-
-3. [ ] Blessing Selection UI (Pure Slate)
-   - Post-combat selection screen
-   - Choose 1 of 3 random blessings
-   - Skip option available
-   - Current blessing display
-   - Stack indicators (max 3 per type)
-
-4. [ ] Integration Points
-   - ArenaZone: Trigger selection after combat
-   - CombatComponent: Apply damage modifiers
-   - BlockingComponent: Apply block modifiers
-   - DodgeComponent: Apply dodge modifiers
-   - HackComponent: Apply hack modifiers
-   - FragmentComponent: Apply reward modifiers
-
-**Blessing Examples:**
-- Razor Edge: +10% attack damage
-- Iron Guard: +10% block reduction
-- Fragment Finder: +20% fragment rewards
-- Hack Charge: Start with 2 hack counters
-- Counter Master: +50% counter damage
-
-**Deliverable:** Complete blessing system with 15+ unique blessings
-**Testing:** Blessings apply correctly, clear on death, stack properly
-
-**See Phase9_Plan.md for detailed implementation guide**
-
-=============================================================================
-
-### PHASE 10: SFX & VFX (Week 11)
+### PHASE 11: SFX & VFX (Week 12)
 **Priority:** MEDIUM - Audio/Visual Polish
 **Status:** PENDING
 
@@ -519,7 +571,7 @@
 
 =============================================================================
 
-### PHASE 11: ENEMY AI (Week 12)
+### PHASE 12: ENEMY AI (Week 13)
 **Priority:** HIGH - Core Gameplay
 **Status:** PENDING
 
@@ -562,17 +614,27 @@
 =============================================================================
 
 ### SESSION TRACKING:
-**Current Phase:** 7
-**Next Tasks:** Complete UI & Polish implementation
-**Completion Status:** 6/11 phases complete (Phase 7 in progress)
+**Current Phase:** 8
+**Next Tasks:** Begin Phase 8 - Blessing System implementation
+**Completion Status:** 7/12 phases complete
 
 ### NOTES FOR NEXT SESSION:
-- Phase 1-6 complete: Combat, Blocking, Dodge/Movement, Special Abilities, Arena System, Memory System
-- Phase 7 in progress: UI & Polish (Combat HUD implemented)
-- Phase 8 planned: Animation System
-- Phase 9 planned: Blessing System (temporary upgrades)
-- Phase 10 planned: SFX & VFX
-- Phase 11 planned: Enemy AI
-- Key distinction: Memories are permanent upgrades (purchased with fragments)
-- Blessings are temporary upgrades (lost on death, earned after combat)
-- Total phases increased from 10 to 11 to accommodate blessing system
+- Phase 1-7 complete: Combat, Blocking, Dodge/Movement, Special Abilities, Arena System (5A/5B/5C), Memory System, UI & Polish
+- Critical fixes completed during Phase 7 (all roguelike reset issues resolved)
+- Phase 8 starting: Blessing System (temporary upgrades after defeating each enemy)
+- Phase 9 planned: Memory System Revisit & Economy
+- Phase 10 planned: Animation System
+- Phase 11 planned: SFX & VFX
+- Phase 12 planned: Enemy AI
+- Key distinction: Memories are permanent upgrades (purchased with fragments, session-based only)
+- Blessings are temporary upgrades (lost on death, earned after each enemy defeat)
+- Total of 12 phases with reorganized priorities
+
+### CRITICAL FIXES COMPLETED (During Phase 7):
+- Fixed zone reset after player death
+- Fixed enemy respawn in cleared zones
+- Added enemy despawn/cleanup (2s delay)
+- Fixed Zone 0 hub combat triggering
+- Simplified zone activation logic
+- Fixed combat flag persistence
+- Ensured proper roguelike behavior
