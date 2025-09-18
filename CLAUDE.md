@@ -8,7 +8,7 @@
 ## 📍 Current Status
 **Phase:** 8 of 12 ⏳ IN PROGRESS
 **Previous:** Phase 7 - UI & Polish ✅ COMPLETED
-**Current:** Phase 8 - Blessing System (Temporary Upgrades) ⏳ IN PROGRESS
+**Current:** Phase 8 - Gamestyle System (Automatic Run Upgrades) ⏳ IN PROGRESS
 **Next:** Phase 9 - Memory System Revisit & Economy
 **Timeline:** 12 phases over 13 weeks
 
@@ -229,14 +229,18 @@ Basic attack, health system, training dummy - All tested and working
 - ✅ Real-time UI updates during combat
 - ✅ All UI elements functional and tested
 
-### Phase 8: Blessing System (Temporary Upgrades)
-- Roguelike blessing system (lost on death)
-- Post-combat upgrade selections (choose 1 of 3 after each enemy defeat)
-- Offensive, Defensive, and Utility blessing categories
-- Rarity tiers (Common 60%, Rare 30%, Epic 10%)
-- Stack mechanics (up to 3 of same type, max 10 total)
-- Integration with existing combat systems
-- Slate-based selection UI
+### Phase 8: Gamestyle System (Automatic Run Upgrades) ⏳ IN PROGRESS
+- Random gamestyle assigned at start of each run (no player choice)
+- 5 gamestyles with automatic progression per arena completion:
+  - **Defense:** +20 max HP with smart healing (60/100 → 80/120)
+  - **Offense:** +10 attack damage per kill
+  - **Mobility:** -0.1s ability casting time per kill
+  - **Utility:** +0.1s counter window duration per kill
+  - **Technomancer:** -1 hack counter requirement per kill
+- Upgrades stack with each arena enemy defeated (not training dummies)
+- All bonuses lost on death (true roguelike)
+- UI displays current gamestyle and stack count
+- No caps on progression (balance via testing)
 
 ### Phase 9: Memory System Revisit & Economy
 - Expand memory options (8-10 total)
@@ -279,7 +283,7 @@ Basic attack, health system, training dummy - All tested and working
 - `ImplementationPlan.txt` - Phase-by-phase breakdown
 - `CLAUDE.md` - This quick reference
 - `Phase5C_Plan.md` - Pre-placed level design system plan
-- `Phase8_Plan.md` - Blessing system (temporary upgrades) plan
+- `Phase8_Plan.md` - Gamestyle system (automatic run upgrades) plan
 
 ## 🔧 Development Commands
 ```bash
