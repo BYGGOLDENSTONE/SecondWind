@@ -290,6 +290,32 @@ void UHealthComponent::EnterFinisherState()
 	}
 }
 
+void UHealthComponent::SetCurrentHealth(float NewHealth)
+{
+	CurrentHealth = FMath::Clamp(NewHealth, 0.0f, MaxHealth);
+	OnHealthChanged.Broadcast(CurrentHealth);
+
+	// Update HUD
+	if (UWorld* World = GetWorld())
+	{
+		if (APlayerController* PC = World->GetFirstPlayerController())
+		{
+			if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
+			{
+				// Check if this is the player
+				if (Cast<ASecondWindCharacter>(GetOwner()))
+				{
+					HUD->UpdatePlayerHealth(CurrentHealth, MaxHealth, CurrentPhase, MaxPhases);
+				}
+				else
+				{
+					HUD->UpdateEnemyHealth(CurrentHealth, MaxHealth, CurrentPhase, MaxPhases);
+				}
+			}
+		}
+	}
+}
+
 void UHealthComponent::ExecuteFinisher()
 {
 	if (!bInFinisherState)

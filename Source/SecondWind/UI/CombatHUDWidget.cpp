@@ -28,6 +28,8 @@ void SCombatHUDWidget::Construct(const FArguments& InArgs)
     bCanCounter = false;
     bShowRedWarning = false;
     RedPulseTime = 0.0f;
+    CurrentGamestyle = "None";
+    CurrentStacks = 0;
 
     ChildSlot
     [
@@ -251,6 +253,36 @@ void SCombatHUDWidget::Construct(const FArguments& InArgs)
                     .ColorAndOpacity(FSlateColor(FLinearColor(0.8f, 0.6f, 0.2f, 1.0f)))
                 ]
             ]
+
+            // Gamestyle display
+            + SVerticalBox::Slot()
+            .AutoHeight()
+            [
+                SNew(SBorder)
+                .BorderImage(FCoreStyle::Get().GetBrush("ToolPanel.GroupBorder"))
+                .BorderBackgroundColor(FSlateColor(FLinearColor(0.0f, 0.0f, 0.0f, 0.7f)))
+                .Padding(10)
+                [
+                    SNew(SVerticalBox)
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    [
+                        SAssignNew(GamestyleNameText, STextBlock)
+                        .Text(FText::FromString("Gamestyle: None"))
+                        .Font(FCoreStyle::GetDefaultFontStyle("Bold", 14))
+                        .ColorAndOpacity(FSlateColor(FLinearColor(0.4f, 0.8f, 1.0f, 1.0f)))
+                    ]
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(0, 5, 0, 0)
+                    [
+                        SAssignNew(GamestyleStackText, STextBlock)
+                        .Text(FText::FromString("Stacks: 0"))
+                        .Font(FCoreStyle::GetDefaultFontStyle("Regular", 12))
+                        .ColorAndOpacity(FSlateColor(FLinearColor(0.7f, 0.7f, 0.7f, 1.0f)))
+                    ]
+                ]
+            ]
         ]
 
     ];
@@ -387,9 +419,41 @@ void SCombatHUDWidget::UpdateFragmentCount(int32 Fragments)
 void SCombatHUDWidget::UpdateHackProgress(int32 CurrentCounters, int32 RequiredCounters, int32 UnblockedHitCount)
 {
     int32 PrevUnblockedHits = UnblockedHits;
+    int32 PrevRequiredCounters = RequiredHackCounters;
     CurrentHackCounters = CurrentCounters;
     RequiredHackCounters = RequiredCounters;
     UnblockedHits = UnblockedHitCount;
+
+    // Rebuild counter symbols if required count changed (for Technomancer bonus)
+    if (RequiredCounters != PrevRequiredCounters && CounterSymbolContainer.IsValid())
+    {
+        // Clear existing symbols
+        CounterSymbols.Empty();
+        CounterSymbolContainer->ClearChildren();
+
+        // Create new symbols based on new requirement
+        for (int32 i = 0; i < RequiredCounters; ++i)
+        {
+            TSharedPtr<SBorder> Symbol;
+            CounterSymbolContainer->AddSlot()
+            .AutoHeight()
+            .Padding(0, 6)  // 6px spacing between symbols
+            [
+                SAssignNew(Symbol, SBorder)
+                .BorderImage(FCoreStyle::Get().GetBrush("WhiteTexture"))
+                .BorderBackgroundColor(FSlateColor(FLinearColor(0.0f, 0.0f, 0.0f, 0.7f)))
+                .Padding(FMargin(0, 0))
+                [
+                    SNew(SBox)
+                    .WidthOverride(50)   // Much narrower width
+                    .HeightOverride(12)  // Keep the same height
+                ]
+            ];
+            CounterSymbols.Add(Symbol);
+        }
+
+        UE_LOG(LogTemp, Warning, TEXT("HUD: Rebuilt counter symbols for new requirement: %d"), RequiredCounters);
+    }
 
     // Check if player took damage (unblocked hit increased)
     if (UnblockedHitCount > PrevUnblockedHits && UnblockedHitCount > 0)
@@ -554,5 +618,23 @@ FSlateColor SCombatHUDWidget::GetCounterSymbolColor(int32 SymbolIndex) const
 
     // Empty symbol - dark background like health bar background
     return FSlateColor(FLinearColor(0.0f, 0.0f, 0.0f, 0.7f)); // Dark black with transparency
+}
+
+void SCombatHUDWidget::UpdateGamestyleDisplay(const FString& GamestyleName, int32 StackCount)
+{
+    CurrentGamestyle = GamestyleName;
+    CurrentStacks = StackCount;
+
+    if (GamestyleNameText.IsValid())
+    {
+        FString DisplayText = FString::Printf(TEXT("Style: %s"), *GamestyleName);
+        GamestyleNameText->SetText(FText::FromString(DisplayText));
+    }
+
+    if (GamestyleStackText.IsValid())
+    {
+        FString StackText = FString::Printf(TEXT("Stacks: %d"), StackCount);
+        GamestyleStackText->SetText(FText::FromString(StackText));
+    }
 }
 

@@ -9,6 +9,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "SecondWind/UI/SecondWindHUD.h"
 #include "GameFramework/PlayerController.h"
+#include "SecondWind/Systems/GamestyleSystem.h"
+#include "Engine/GameInstance.h"
 
 UHackComponent::UHackComponent()
 {
@@ -30,7 +32,7 @@ void UHackComponent::BeginPlay()
         {
             if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
             {
-                HUD->UpdateHackProgress(CounterAttacks, RequiredCounters);
+                HUD->UpdateHackProgress(CounterAttacks, GetRequiredCounters());
             }
         }
     }
@@ -58,7 +60,7 @@ void UHackComponent::AddCounter()
     CounterAttacks++;
     OnCounterProgressChanged.Broadcast(CounterAttacks);
 
-    UE_LOG(LogTemp, Warning, TEXT("HackComponent: Counter added. Current: %d/%d"), CounterAttacks, RequiredCounters);
+    UE_LOG(LogTemp, Warning, TEXT("HackComponent: Counter added. Current: %d/%d"), CounterAttacks, GetRequiredCounters());
 
     // Update HUD
     if (UWorld* World = GetWorld())
@@ -67,16 +69,27 @@ void UHackComponent::AddCounter()
         {
             if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
             {
-                HUD->UpdateHackProgress(CounterAttacks, RequiredCounters, UnblockedHits);
+                HUD->UpdateHackProgress(CounterAttacks, GetRequiredCounters(), UnblockedHits);
             }
         }
     }
 
     // Check if hack is now available
-    if (CounterAttacks == RequiredCounters)
+    if (IsHackAvailable())
     {
         OnHackAvailable.Broadcast();
-        UE_LOG(LogTemp, Warning, TEXT("HackComponent: HACK ATTACK AVAILABLE!"));
+
+        // Log Technomancer bonus if active
+        int32 EffectiveReq = GetRequiredCounters();
+        if (EffectiveReq < RequiredCounters)
+        {
+            UE_LOG(LogTemp, Warning, TEXT(">>> TECHNOMANCER BONUS: HACK READY with only %d counters (normally %d)! <<<"),
+                EffectiveReq, RequiredCounters);
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("HackComponent: HACK ATTACK AVAILABLE!"));
+        }
     }
 }
 
@@ -94,7 +107,7 @@ void UHackComponent::RegisterUnblockedHit()
         {
             if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
             {
-                HUD->UpdateHackProgress(CounterAttacks, RequiredCounters, UnblockedHits);
+                HUD->UpdateHackProgress(CounterAttacks, GetRequiredCounters(), UnblockedHits);
             }
         }
     }
@@ -124,7 +137,7 @@ void UHackComponent::ResetCounters()
         {
             if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
             {
-                HUD->UpdateHackProgress(CounterAttacks, RequiredCounters, UnblockedHits);
+                HUD->UpdateHackProgress(CounterAttacks, GetRequiredCounters(), UnblockedHits);
             }
         }
     }
@@ -176,7 +189,7 @@ void UHackComponent::ExecuteHack()
         {
             if (ASecondWindHUD* HUD = Cast<ASecondWindHUD>(PC->GetHUD()))
             {
-                HUD->UpdateHackProgress(CounterAttacks, RequiredCounters, UnblockedHits);
+                HUD->UpdateHackProgress(CounterAttacks, GetRequiredCounters(), UnblockedHits);
             }
         }
     }
@@ -285,4 +298,29 @@ void UHackComponent::ApplyHackEffects(AActor* Target)
             5.0f
         );
     }
+}
+
+bool UHackComponent::IsHackAvailable() const
+{
+    return CounterAttacks >= GetRequiredCounters();
+}
+
+int32 UHackComponent::GetRequiredCounters() const
+{
+    int32 EffectiveRequirement = RequiredCounters;
+
+    // Apply Technomancer gamestyle reduction
+    if (UWorld* World = GetWorld())
+    {
+        if (UGameInstance* GameInstance = World->GetGameInstance())
+        {
+            if (UGamestyleSystem* GamestyleSystem = GameInstance->GetSubsystem<UGamestyleSystem>())
+            {
+                int32 TechnomancerReduction = GamestyleSystem->GetTechnomancerHackReduction();
+                EffectiveRequirement = FMath::Max(1, RequiredCounters - TechnomancerReduction);
+            }
+        }
+    }
+
+    return EffectiveRequirement;
 }

@@ -4,6 +4,8 @@
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
 #include "SecondWind/UI/SecondWindHUD.h"
+#include "SecondWind/Systems/GamestyleSystem.h"
+#include "Engine/GameInstance.h"
 
 UBlockingComponent::UBlockingComponent()
 {
@@ -159,7 +161,25 @@ void UBlockingComponent::TriggerCounterWindow(EBlockDirection IncomingAttackDire
 	}
 
 	bInCounterWindow = true;
-	CounterWindowTimer = CounterWindowDuration;
+
+	// Apply gamestyle utility bonus to counter window duration
+	float FinalCounterDuration = CounterWindowDuration;
+	if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+	{
+		if (UGamestyleSystem* GamestyleSystem = GameInstance->GetSubsystem<UGamestyleSystem>())
+		{
+			float UtilityBonus = GamestyleSystem->GetUtilityCounterBonus();
+			FinalCounterDuration += UtilityBonus;
+
+			if (UtilityBonus > 0)
+			{
+				UE_LOG(LogTemp, Warning, TEXT(">>> UTILITY GAMESTYLE: Counter window extended from %.1fs to %.1fs (+%.1fs) <<<"),
+					CounterWindowDuration, FinalCounterDuration, UtilityBonus);
+			}
+		}
+	}
+
+	CounterWindowTimer = FinalCounterDuration;
 	CounterDirection = IncomingAttackDirection;
 
 	// Update HUD

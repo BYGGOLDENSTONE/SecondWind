@@ -38,13 +38,16 @@ public:
     bool TryExecuteHack();
 
     UFUNCTION()
-    bool IsHackAvailable() const { return CounterAttacks >= RequiredCounters; }
+    bool IsHackAvailable() const;
 
     UFUNCTION()
     int32 GetCurrentCounters() const { return CounterAttacks; }
 
     UFUNCTION()
-    int32 GetRequiredCounters() const { return RequiredCounters; }
+    int32 GetRequiredCounters() const;
+
+    // Get the base requirement without gamestyle bonuses
+    int32 GetBaseRequiredCounters() const { return RequiredCounters; }
 
     UFUNCTION()
     int32 GetUnblockedHits() const { return UnblockedHits; }

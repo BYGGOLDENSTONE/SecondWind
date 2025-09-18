@@ -4,6 +4,8 @@
 #include "CombatComponent.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
+#include "SecondWind/Systems/GamestyleSystem.h"
+#include "Engine/GameInstance.h"
 
 UDodgeComponent::UDodgeComponent()
 {
@@ -43,8 +45,19 @@ void UDodgeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
     {
         MovementHoldTime += DeltaTime;
 
+        // Apply mobility gamestyle bonus to reduce hold threshold
+        float EffectiveThreshold = DirectionHoldThreshold;
+        if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+        {
+            if (UGamestyleSystem* GamestyleSystem = GameInstance->GetSubsystem<UGamestyleSystem>())
+            {
+                float MobilityBonus = GamestyleSystem->GetMobilitySpeedBonus();
+                EffectiveThreshold = FMath::Max(0.01f, DirectionHoldThreshold - MobilityBonus);
+            }
+        }
+
         // Update pending dodge direction if threshold met
-        if (MovementHoldTime >= DirectionHoldThreshold)
+        if (MovementHoldTime >= EffectiveThreshold)
         {
             PendingDodgeDirection = GetDodgeDirectionFromInput();
         }
@@ -138,6 +151,21 @@ void UDodgeComponent::PerformDodge(EDodgeDirection Direction)
     if (!OwnerCharacter)
         return;
 
+    // Log mobility bonus if active
+    if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+    {
+        if (UGamestyleSystem* GamestyleSystem = GameInstance->GetSubsystem<UGamestyleSystem>())
+        {
+            float MobilityBonus = GamestyleSystem->GetMobilitySpeedBonus();
+            if (MobilityBonus > 0)
+            {
+                float EffectiveThreshold = FMath::Max(0.01f, DirectionHoldThreshold - MobilityBonus);
+                UE_LOG(LogTemp, Warning, TEXT(">>> MOBILITY BONUS: Dodge activated faster! %.2fs -> %.2fs (-%.2fs) <<<"),
+                    DirectionHoldThreshold, EffectiveThreshold, MobilityBonus);
+            }
+        }
+    }
+
     LastDodgeTime = GetWorld()->GetTimeSeconds();
 
     // Calculate dodge direction in world space
@@ -189,6 +217,20 @@ void UDodgeComponent::PerformDash()
 {
     if (!OwnerCharacter)
         return;
+
+    // Log mobility bonus if active
+    if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+    {
+        if (UGamestyleSystem* GamestyleSystem = GameInstance->GetSubsystem<UGamestyleSystem>())
+        {
+            float MobilityBonus = GamestyleSystem->GetMobilitySpeedBonus();
+            if (MobilityBonus > 0)
+            {
+                UE_LOG(LogTemp, Warning, TEXT(">>> MOBILITY BONUS: Dash activated faster! Reduced cast time by %.2fs <<<"),
+                    MobilityBonus);
+            }
+        }
+    }
 
     bIsInDash = true;
     DashTimer = DashDuration;

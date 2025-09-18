@@ -28,6 +28,7 @@ public:
     void ShowDamageNumber(float Damage, bool bIsPlayer);
     void SetEnemyName(const FString& Name);
     void ShowEnemyHealthBar(bool bShow);
+    void UpdateGamestyleDisplay(const FString& GamestyleName, int32 StackCount);
 
     virtual void Tick(const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime) override;
 
@@ -83,4 +84,10 @@ private:
     TSharedPtr<STextBlock> HackReadyText;
     void UpdateCounterSymbols();
     FSlateColor GetCounterSymbolColor(int32 SymbolIndex) const;
+
+    // Gamestyle UI
+    TSharedPtr<STextBlock> GamestyleNameText;
+    TSharedPtr<STextBlock> GamestyleStackText;
+    FString CurrentGamestyle;
+    int32 CurrentStacks;
 };

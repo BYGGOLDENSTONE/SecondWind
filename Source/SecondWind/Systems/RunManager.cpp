@@ -1,6 +1,7 @@
 #include "RunManager.h"
 #include "FragmentSystem.h"
 #include "MemorySystem.h"
+#include "GamestyleSystem.h"
 #include "Engine/World.h"
 #include "Engine/GameInstance.h"
 #include "Kismet/GameplayStatics.h"
@@ -61,6 +62,13 @@ void URunManager::StartNewRun()
     {
         MemorySystem->ResetForNewRun();
         UE_LOG(LogTemp, Warning, TEXT("Memory system reset for new run"));
+    }
+
+    // Assign new gamestyle for this run
+    if (UGamestyleSystem* GamestyleSystem = GetGameInstance()->GetSubsystem<UGamestyleSystem>())
+    {
+        GamestyleSystem->ResetForNewRun();
+        UE_LOG(LogTemp, Warning, TEXT("Gamestyle system assigned new gamestyle for run"));
     }
 
     ResetPlayerToHub();

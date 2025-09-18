@@ -9,8 +9,10 @@
 #include "SecondWind/Components/HackComponent.h"
 #include "SecondWind/Components/BlockingComponent.h"
 #include "SecondWind/Components/CameraLockOnComponent.h"
+#include "SecondWind/Systems/GamestyleSystem.h"
 #include "Widgets/SWeakWidget.h"
 #include "Engine/Engine.h"
+#include "Engine/GameInstance.h"
 #include "TimerManager.h"
 
 ASecondWindHUD::ASecondWindHUD()
@@ -38,6 +40,24 @@ void ASecondWindHUD::BeginPlay()
 
     // Try to bind immediately
     BindToPlayer();
+
+    // Bind to gamestyle system
+    if (UGameInstance* GameInstance = GetGameInstance())
+    {
+        if (UGamestyleSystem* GamestyleSystem = GameInstance->GetSubsystem<UGamestyleSystem>())
+        {
+            // Update initial gamestyle display
+            FGamestyleData CurrentData = GamestyleSystem->GetCurrentGamestyleData();
+            if (CombatHUDWidget.IsValid())
+            {
+                CombatHUDWidget->UpdateGamestyleDisplay(CurrentData.DisplayName, CurrentData.StackCount);
+            }
+
+            // Bind to gamestyle events
+            GamestyleSystem->OnGamestyleAssigned.AddDynamic(this, &ASecondWindHUD::OnGamestyleAssigned);
+            GamestyleSystem->OnGamestyleStackAdded.AddDynamic(this, &ASecondWindHUD::OnGamestyleStackAdded);
+        }
+    }
 
     // If binding failed, try again in next tick
     if (!PlayerCharacter && GetWorld())
@@ -224,5 +244,29 @@ void ASecondWindHUD::ShowEnemyHealthBar(bool bShow)
     if (CombatHUDWidget.IsValid())
     {
         CombatHUDWidget->ShowEnemyHealthBar(bShow);
+    }
+}
+
+void ASecondWindHUD::OnGamestyleAssigned(EGamestyleType Gamestyle, const FString& DisplayName)
+{
+    if (CombatHUDWidget.IsValid())
+    {
+        CombatHUDWidget->UpdateGamestyleDisplay(DisplayName, 0);
+    }
+}
+
+void ASecondWindHUD::OnGamestyleStackAdded(int32 NewStackCount)
+{
+    if (CombatHUDWidget.IsValid())
+    {
+        // Get current gamestyle name from the system
+        if (UGameInstance* GameInstance = GetGameInstance())
+        {
+            if (UGamestyleSystem* GamestyleSystem = GameInstance->GetSubsystem<UGamestyleSystem>())
+            {
+                FGamestyleData CurrentData = GamestyleSystem->GetCurrentGamestyleData();
+                CombatHUDWidget->UpdateGamestyleDisplay(CurrentData.DisplayName, NewStackCount);
+            }
+        }
     }
 }

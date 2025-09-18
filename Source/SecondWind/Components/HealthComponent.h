@@ -84,6 +84,12 @@ public:
 	UFUNCTION()
 	void HealToFull();
 
+	UFUNCTION()
+	void SetMaxHealth(float NewMaxHealth) { MaxHealth = NewMaxHealth; }
+
+	UFUNCTION()
+	void SetCurrentHealth(float NewHealth);
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	float MaxHealth = 100.0f;

@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
+#include "SecondWind/Systems/GamestyleSystem.h"
 #include "SecondWindHUD.generated.h"
 
 class SCombatHUDWidget;
@@ -34,6 +35,13 @@ public:
     void ShowEnemyHealthBar(bool bShow);
     void BindToEnemy();
     void BindToPlayer();
+
+    // Gamestyle event handlers
+    UFUNCTION()
+    void OnGamestyleAssigned(EGamestyleType Gamestyle, const FString& DisplayName);
+
+    UFUNCTION()
+    void OnGamestyleStackAdded(int32 NewStackCount);
 
 private:
     TSharedPtr<SCombatHUDWidget> CombatHUDWidget;

@@ -3,6 +3,7 @@
 #include "DodgeComponent.h"
 #include "HackComponent.h"
 #include "HealthComponent.h"
+#include "../Systems/GamestyleSystem.h"
 #include "GameFramework/Character.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/World.h"
@@ -213,9 +214,28 @@ void UCombatComponent::ApplyDamageToTarget(AActor* Target)
 		return;
 	}
 
+	// Calculate damage with gamestyle bonus
+	float FinalDamage = BaseDamage;
+
+	// Apply gamestyle offense bonus if available
+	if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+	{
+		if (UGamestyleSystem* GamestyleSystem = GameInstance->GetSubsystem<UGamestyleSystem>())
+		{
+			float OffenseBonus = GamestyleSystem->GetOffenseDamageBonus();
+			FinalDamage += OffenseBonus;
+
+			if (OffenseBonus > 0)
+			{
+				UE_LOG(LogTemp, Warning, TEXT(">>> OFFENSE GAMESTYLE: Attack damage increased from %.0f to %.0f (+%.0f) <<<"),
+					BaseDamage, FinalDamage, OffenseBonus);
+			}
+		}
+	}
+
 	UGameplayStatics::ApplyPointDamage(
 		Target,
-		BaseDamage,
+		FinalDamage,
 		Target->GetActorLocation(),
 		FHitResult(),
 		nullptr,

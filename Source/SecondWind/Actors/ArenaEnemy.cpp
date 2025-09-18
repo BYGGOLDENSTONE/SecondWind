@@ -2,6 +2,7 @@
 #include "../Components/HealthComponent.h"
 #include "../Components/CombatComponent.h"
 #include "../Systems/EnemyManager.h"
+#include "../Systems/GamestyleSystem.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "ArenaZone.h"
@@ -217,6 +218,16 @@ void AArenaEnemy::OnEnemyDeath()
         else
         {
             UE_LOG(LogTemp, Error, TEXT("ERROR: OwnerZone is NULL - cannot notify zone of enemy defeat!"));
+        }
+
+        // Add gamestyle stack for this enemy kill
+        if (UGameInstance* GameInstance = GetGameInstance())
+        {
+            if (UGamestyleSystem* GamestyleSystem = GameInstance->GetSubsystem<UGamestyleSystem>())
+            {
+                GamestyleSystem->AddGamestyleStack();
+                UE_LOG(LogTemp, Warning, TEXT("Added gamestyle stack for enemy kill"));
+            }
         }
 
         // Unregister from enemy manager on death
