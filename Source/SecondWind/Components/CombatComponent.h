@@ -35,6 +35,9 @@ public:
 	bool CanExecuteFinisher() const;
 
 	UFUNCTION()
+	bool IsInAttackAnimation() const { return bIsInAttackAnimation; }
+
+	UFUNCTION()
 	void SetBlockingComponent(UBlockingComponent* InBlockingComponent) { BlockingComponent = InBlockingComponent; }
 
 private:
@@ -48,7 +51,9 @@ private:
 	float AttackCooldown = 1.0f;
 
 	bool bIsAttacking = false;
+	bool bIsInAttackAnimation = false;  // True only during the actual attack animation
 	float AttackTimer = 0.0f;
+	float AttackAnimationDuration = 0.3f;  // Duration of the actual attack animation
 
 	void ExecuteAttack();
 	void ResetAttack();

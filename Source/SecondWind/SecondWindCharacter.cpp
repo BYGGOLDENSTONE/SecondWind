@@ -350,7 +350,9 @@ void ASecondWindCharacter::Attack()
 
 void ASecondWindCharacter::StartBlocking()
 {
-	if (BlockingComponent && !CombatComponent->CanAttack())
+	// Only prevent blocking if we're actively in an attack animation
+	// Allow blocking during attack cooldown for responsive combat
+	if (CombatComponent && CombatComponent->IsInAttackAnimation())
 	{
 		return;
 	}

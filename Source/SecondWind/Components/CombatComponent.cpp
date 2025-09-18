@@ -31,6 +31,19 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	// Handle attack animation timing
+	if (bIsInAttackAnimation)
+	{
+		AttackTimer -= DeltaTime;
+
+		// End the animation phase after its duration
+		if (AttackTimer <= (AttackCooldown - AttackAnimationDuration))
+		{
+			bIsInAttackAnimation = false;
+		}
+	}
+
+	// Handle overall attack cooldown
 	if (bIsAttacking)
 	{
 		AttackTimer -= DeltaTime;
@@ -58,6 +71,7 @@ void UCombatComponent::PerformAttack()
 	}
 
 	bIsAttacking = true;
+	bIsInAttackAnimation = true;  // Mark that we're in the actual attack animation
 	AttackTimer = AttackCooldown;
 
 	ExecuteAttack();
@@ -148,6 +162,7 @@ void UCombatComponent::ExecuteAttack()
 void UCombatComponent::ResetAttack()
 {
 	bIsAttacking = false;
+	bIsInAttackAnimation = false;  // Ensure animation flag is also reset
 	AttackTimer = 0.0f;
 }
 

@@ -284,8 +284,11 @@ void AArenaDoor::OpenDoor()
 
 void AArenaDoor::CloseDoor()
 {
-    // Force close the door regardless of current state
-    DoorState = EDoorState::Closed;
+    // Only change state to Closed if not locked
+    if (DoorState != EDoorState::Locked)
+    {
+        DoorState = EDoorState::Closed;
+    }
     ProximityTime = 0.0f;  // Reset proximity timer
     // Don't immediately set angle to 0 - let it animate closed
 
