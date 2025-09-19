@@ -1,6 +1,8 @@
 #include "BlockingComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/Character.h"
+#include "AnimationComponent.h"
+#include "PhysicsHitReactionComponent.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
 #include "SecondWind/UI/SecondWindHUD.h"
@@ -15,6 +17,11 @@ UBlockingComponent::UBlockingComponent()
 void UBlockingComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (AActor* Owner = GetOwner())
+	{
+		AnimationComponent = Owner->FindComponentByClass<UAnimationComponent>();
+	}
 }
 
 void UBlockingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -82,6 +89,12 @@ void UBlockingComponent::StartBlocking()
 		CurrentMouseX = 0.0f;     // Reset current position
 		CurrentBlockDirection = EBlockDirection::Center;
 
+		// Play center block animation by default
+		if (AnimationComponent)
+		{
+			AnimationComponent->PlayAnimation(EAnimationType::BlockCenter, EAnimationPriority::Medium);
+		}
+
 		UE_LOG(LogTemp, Log, TEXT("Started blocking"));
 	}
 }
@@ -94,6 +107,12 @@ void UBlockingComponent::StopBlocking()
 		CurrentBlockDirection = EBlockDirection::Center;
 		ReferenceMouseX = 0.0f;
 		CurrentMouseX = 0.0f;
+
+		// Stop block animation
+		if (AnimationComponent)
+		{
+			AnimationComponent->StopAllAnimations();
+		}
 
 		bInCounterWindow = false;
 		CounterWindowTimer = 0.0f;

@@ -2,6 +2,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "CombatComponent.h"
+#include "AnimationComponent.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
 #include "SecondWind/Systems/GamestyleSystem.h"
@@ -33,6 +34,7 @@ void UDodgeComponent::BeginPlay()
     if (OwnerCharacter)
     {
         CombatComponent = OwnerCharacter->FindComponentByClass<UCombatComponent>();
+        AnimationComponent = OwnerCharacter->FindComponentByClass<UAnimationComponent>();
     }
 }
 
@@ -190,6 +192,25 @@ void UDodgeComponent::PerformDodge(EDodgeDirection Direction)
             return;
     }
 
+    // Play dodge animation based on direction
+    if (AnimationComponent)
+    {
+        EAnimationType DodgeAnim = EAnimationType::DodgeBack;
+        switch (Direction)
+        {
+            case EDodgeDirection::Left:
+                DodgeAnim = EAnimationType::DodgeLeft;
+                break;
+            case EDodgeDirection::Right:
+                DodgeAnim = EAnimationType::DodgeRight;
+                break;
+            case EDodgeDirection::Back:
+                DodgeAnim = EAnimationType::DodgeBack;
+                break;
+        }
+        AnimationComponent->PlayAnimation(DodgeAnim, EAnimationPriority::High);
+    }
+
     // Apply dodge impulse (animation will handle actual movement)
     if (UCharacterMovementComponent* MovementComp = OwnerCharacter->GetCharacterMovement())
     {
@@ -217,6 +238,12 @@ void UDodgeComponent::PerformDash()
 {
     if (!OwnerCharacter)
         return;
+
+    // Play dash animation
+    if (AnimationComponent)
+    {
+        AnimationComponent->PlayAnimation(EAnimationType::Dash, EAnimationPriority::High);
+    }
 
     // Log mobility bonus if active
     if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())

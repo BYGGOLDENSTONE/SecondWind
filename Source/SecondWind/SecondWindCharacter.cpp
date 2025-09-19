@@ -17,9 +17,12 @@
 #include "Components/DodgeComponent.h"
 #include "Components/CameraLockOnComponent.h"
 #include "Components/FragmentComponent.h"
+#include "Components/AnimationComponent.h"
+#include "Components/PhysicsHitReactionComponent.h"
 #include "GameModes/SecondWindArenaGameMode.h"
 #include "Systems/MemorySystem.h"
 #include "Systems/RunManager.h"
+#include "Systems/GamestyleSystem.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -90,6 +93,12 @@ ASecondWindCharacter::ASecondWindCharacter()
 	// Create fragment component
 	FragmentComponent = CreateDefaultSubobject<UFragmentComponent>(TEXT("FragmentComponent"));
 
+	// Create animation component
+	AnimationComponent = CreateDefaultSubobject<UAnimationComponent>(TEXT("AnimationComponent"));
+
+	// Create physics hit reaction component
+	PhysicsHitReactionComponent = CreateDefaultSubobject<UPhysicsHitReactionComponent>(TEXT("PhysicsHitReactionComponent"));
+
 	// Link components
 	if (CombatComponent && BlockingComponent)
 	{
@@ -112,6 +121,28 @@ void ASecondWindCharacter::BeginPlay()
 		{
 			MemorySystem->ApplyMemoryEffects(this);
 			UE_LOG(LogTemplateCharacter, Warning, TEXT("Applied memory effects to player"));
+		}
+
+		// Update physics component with gamestyle modifiers if available
+		if (PhysicsHitReactionComponent)
+		{
+			if (UGamestyleSystem* GamestyleSystem = GameInstance->GetSubsystem<UGamestyleSystem>())
+			{
+				// Get stack count based on current gamestyle type
+				int32 DefenseStacks = 0;
+				int32 MobilityStacks = 0;
+
+				if (GamestyleSystem->GetCurrentGamestyle() == EGamestyleType::Defense)
+				{
+					DefenseStacks = GamestyleSystem->GetStackCount();
+				}
+				else if (GamestyleSystem->GetCurrentGamestyle() == EGamestyleType::Mobility)
+				{
+					MobilityStacks = GamestyleSystem->GetStackCount();
+				}
+
+				PhysicsHitReactionComponent->UpdateGamestyleModifiers(DefenseStacks, MobilityStacks);
+			}
 		}
 	}
 

@@ -267,9 +267,16 @@ void UHackComponent::ApplyHackEffects(AActor* Target)
 
     UE_LOG(LogTemp, Warning, TEXT("HackComponent: Applied %f hack damage to %s"), HackDamage, *Target->GetName());
 
+    // Apply special hack physics reaction (psychic head impulse)
+    // This will be handled by the target's physics component if available
+    // The target should detect the hack damage and apply appropriate physics
+
+    // Play hack response animation on target
+    // The target's animation component should handle this when taking hack damage
+
     // Apply stun effect (would need to be implemented in enemy AI later)
     // For now, we'll just log it
-    UE_LOG(LogTemp, Warning, TEXT("HackComponent: Applied %f second stun to %s"), HackStunDuration, *Target->GetName());
+    UE_LOG(LogTemp, Warning, TEXT("HackComponent: Applied %f second stun to %s with psychic attack"), HackStunDuration, *Target->GetName());
 
     // Visual feedback on target
     DrawDebugSphere(

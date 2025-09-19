@@ -10,7 +10,10 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodeArenaEnemy() {}
 
 // Begin Cross Module References
+ENGINE_API UClass* Z_Construct_UClass_AActor_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_ACharacter();
+ENGINE_API UClass* Z_Construct_UClass_AController_NoRegister();
+ENGINE_API UClass* Z_Construct_UClass_UDamageType_NoRegister();
 SECONDWIND_API UClass* Z_Construct_UClass_AArenaEnemy();
 SECONDWIND_API UClass* Z_Construct_UClass_AArenaEnemy_NoRegister();
 SECONDWIND_API UClass* Z_Construct_UClass_AArenaZone_NoRegister();
@@ -108,6 +111,71 @@ DEFINE_FUNCTION(AArenaEnemy::execOnPhaseTransition)
 }
 // End Class AArenaEnemy Function OnPhaseTransition
 
+// Begin Class AArenaEnemy Function OnTakeDamage
+struct Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics
+{
+	struct ArenaEnemy_eventOnTakeDamage_Parms
+	{
+		AActor* DamagedActor;
+		float Damage;
+		const UDamageType* DamageType;
+		AController* InstigatedBy;
+		AActor* DamageCauser;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Actors/ArenaEnemy.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_DamageType_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_DamagedActor;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_Damage;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_DamageType;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_InstigatedBy;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_DamageCauser;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::NewProp_DamagedActor = { "DamagedActor", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ArenaEnemy_eventOnTakeDamage_Parms, DamagedActor), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::NewProp_Damage = { "Damage", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ArenaEnemy_eventOnTakeDamage_Parms, Damage), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::NewProp_DamageType = { "DamageType", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ArenaEnemy_eventOnTakeDamage_Parms, DamageType), Z_Construct_UClass_UDamageType_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DamageType_MetaData), NewProp_DamageType_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::NewProp_InstigatedBy = { "InstigatedBy", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ArenaEnemy_eventOnTakeDamage_Parms, InstigatedBy), Z_Construct_UClass_AController_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::NewProp_DamageCauser = { "DamageCauser", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ArenaEnemy_eventOnTakeDamage_Parms, DamageCauser), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::NewProp_DamagedActor,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::NewProp_Damage,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::NewProp_DamageType,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::NewProp_InstigatedBy,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::NewProp_DamageCauser,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AArenaEnemy, nullptr, "OnTakeDamage", nullptr, nullptr, Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::PropPointers), sizeof(Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::ArenaEnemy_eventOnTakeDamage_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00080401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::Function_MetaDataParams), Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::Function_MetaDataParams) };
+static_assert(sizeof(Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::ArenaEnemy_eventOnTakeDamage_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AArenaEnemy_OnTakeDamage()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AArenaEnemy_OnTakeDamage_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AArenaEnemy::execOnTakeDamage)
+{
+	P_GET_OBJECT(AActor,Z_Param_DamagedActor);
+	P_GET_PROPERTY(FFloatProperty,Z_Param_Damage);
+	P_GET_OBJECT(UDamageType,Z_Param_DamageType);
+	P_GET_OBJECT(AController,Z_Param_InstigatedBy);
+	P_GET_OBJECT(AActor,Z_Param_DamageCauser);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->OnTakeDamage(Z_Param_DamagedActor,Z_Param_Damage,Z_Param_DamageType,Z_Param_InstigatedBy,Z_Param_DamageCauser);
+	P_NATIVE_END;
+}
+// End Class AArenaEnemy Function OnTakeDamage
+
 // Begin Class AArenaEnemy
 void AArenaEnemy::StaticRegisterNativesAArenaEnemy()
 {
@@ -116,6 +184,7 @@ void AArenaEnemy::StaticRegisterNativesAArenaEnemy()
 		{ "EnterFinisherState", &AArenaEnemy::execEnterFinisherState },
 		{ "OnEnemyDeath", &AArenaEnemy::execOnEnemyDeath },
 		{ "OnPhaseTransition", &AArenaEnemy::execOnPhaseTransition },
+		{ "OnTakeDamage", &AArenaEnemy::execOnTakeDamage },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
@@ -193,6 +262,7 @@ struct Z_Construct_UClass_AArenaEnemy_Statics
 		{ &Z_Construct_UFunction_AArenaEnemy_EnterFinisherState, "EnterFinisherState" }, // 1916824088
 		{ &Z_Construct_UFunction_AArenaEnemy_OnEnemyDeath, "OnEnemyDeath" }, // 3053041987
 		{ &Z_Construct_UFunction_AArenaEnemy_OnPhaseTransition, "OnPhaseTransition" }, // 2985673581
+		{ &Z_Construct_UFunction_AArenaEnemy_OnTakeDamage, "OnTakeDamage" }, // 1565195179
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -263,10 +333,10 @@ AArenaEnemy::~AArenaEnemy() {}
 struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AArenaEnemy, AArenaEnemy::StaticClass, TEXT("AArenaEnemy"), &Z_Registration_Info_UClass_AArenaEnemy, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AArenaEnemy), 1628342246U) },
+		{ Z_Construct_UClass_AArenaEnemy, AArenaEnemy::StaticClass, TEXT("AArenaEnemy"), &Z_Registration_Info_UClass_AArenaEnemy, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AArenaEnemy), 3558791850U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_2703767509(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_473995413(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

@@ -218,8 +218,14 @@ void UCombatComponent::ApplyDamageToTarget(AActor* Target)
 		return;
 	}
 
-	// Calculate damage with gamestyle bonus
-	float FinalDamage = BaseDamage;
+	// Only apply damage if attack window is active (or if no animation component)
+	if (AnimationComponent && !bAttackWindowActive)
+	{
+		return;
+	}
+
+	// Calculate damage with animation multiplier and gamestyle bonus
+	float FinalDamage = BaseDamage * CurrentDamageMultiplier;
 
 	// Apply gamestyle offense bonus if available
 	UGameInstance* GameInstance = GetWorld()->GetGameInstance();
@@ -263,6 +269,9 @@ void UCombatComponent::ApplyDamageToTarget(AActor* Target)
 								TargetCharacter->LaunchCharacter(KnockbackDirection * 300.0f, false, false);
 								UE_LOG(LogTemp, Warning, TEXT("Applied knockback to target"));
 							}
+
+							// Heavy physics reaction for weak side hit will be handled by the HealthComponent
+							// when it receives the damage
 						}
 					}
 				}
@@ -279,6 +288,8 @@ void UCombatComponent::ApplyDamageToTarget(AActor* Target)
 		GetOwner(),
 		UDamageType::StaticClass()
 	);
+
+	// Physics reactions will be handled by the HealthComponent when it receives the damage
 }
 
 bool UCombatComponent::IsInCounterWindow() const

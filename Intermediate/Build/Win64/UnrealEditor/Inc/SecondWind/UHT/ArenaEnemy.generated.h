@@ -9,12 +9,16 @@
 #include "UObject/ScriptMacros.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
+class AActor;
+class AController;
+class UDamageType;
 #ifdef SECONDWIND_ArenaEnemy_generated_h
 #error "ArenaEnemy.generated.h already included, missing '#pragma once' in ArenaEnemy.h"
 #endif
 #define SECONDWIND_ArenaEnemy_generated_h
 
 #define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_14_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execOnTakeDamage); \
 	DECLARE_FUNCTION(execEnterFinisherState); \
 	DECLARE_FUNCTION(execOnEnemyDeath); \
 	DECLARE_FUNCTION(execOnPhaseTransition);

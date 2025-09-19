@@ -18,6 +18,8 @@ class UBlockingComponent;
 class UDodgeComponent;
 class UCameraLockOnComponent;
 class UFragmentComponent;
+class UAnimationComponent;
+class UPhysicsHitReactionComponent;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
@@ -89,6 +91,14 @@ class ASecondWindCharacter : public ACharacter
 	/** Fragment Component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UFragmentComponent* FragmentComponent;
+
+	/** Animation Component */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UAnimationComponent* AnimationComponent;
+
+	/** Physics Hit Reaction Component */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UPhysicsHitReactionComponent* PhysicsHitReactionComponent;
 
 public:
 	ASecondWindCharacter();

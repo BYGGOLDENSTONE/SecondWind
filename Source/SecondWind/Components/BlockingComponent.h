@@ -77,4 +77,12 @@ private:
 
 	void UpdateCounterWindow(float DeltaTime);
 	EBlockDirection CalculateBlockDirection(float NormalizedMouseX) const;
+
+	// Component references
+	class UAnimationComponent* AnimationComponent;
+
+public:
+	// New methods for animation integration
+	void StartCounterWindow(float Duration) { TriggerCounterWindow(CurrentBlockDirection); }
+	void EndCounterWindow() { bInCounterWindow = false; CounterWindowTimer = 0.0f; }
 };
