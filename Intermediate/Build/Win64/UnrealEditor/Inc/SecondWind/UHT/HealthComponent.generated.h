@@ -43,6 +43,8 @@ static void FOnEnterFinisherState_DelegateWrapper(const FMulticastScriptDelegate
 
 
 #define FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HealthComponent_h_19_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execSetCurrentHealth); \
+	DECLARE_FUNCTION(execSetMaxHealth); \
 	DECLARE_FUNCTION(execHealToFull); \
 	DECLARE_FUNCTION(execSetBlockingComponent); \
 	DECLARE_FUNCTION(execSetMaxPhases); \

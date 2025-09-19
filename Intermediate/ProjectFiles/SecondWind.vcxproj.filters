@@ -194,6 +194,12 @@
     <ClCompile Include="..\..\Source\SecondWind\Systems\FragmentSystem.h">
       <Filter>Source\SecondWind\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Systems\GamestyleSystem.cpp">
+      <Filter>Source\SecondWind\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Systems\GamestyleSystem.h">
+      <Filter>Source\SecondWind\Systems</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\SecondWind\Systems\MemorySystem.cpp">
       <Filter>Source\SecondWind\Systems</Filter>
     </ClCompile>

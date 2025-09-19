@@ -1,12 +1,15 @@
 #include "TrainingDummy.h"
 #include "../Components/HealthComponent.h"
 #include "../Components/CombatComponent.h"
+#include "../Components/WeakSideComponent.h"
 #include "../Systems/EnemyManager.h"
+#include "../Systems/MemorySystem.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "TimerManager.h"
 #include "Engine/World.h"
+#include "Engine/GameInstance.h"
 #include "Kismet/GameplayStatics.h"
 
 ATrainingDummy::ATrainingDummy()
@@ -27,6 +30,8 @@ ATrainingDummy::ATrainingDummy()
 
 	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
 
+	WeakSideComponent = CreateDefaultSubobject<UWeakSideComponent>(TEXT("WeakSideComponent"));
+
 	Tags.Add(FName("TrainingDummy"));
 }
 
@@ -40,6 +45,19 @@ void ATrainingDummy::BeginPlay()
 		if (UEnemyManager* EnemyManager = GameInstance->GetSubsystem<UEnemyManager>())
 		{
 			EnemyManager->RegisterEnemy(this);
+		}
+
+		// Check if Tactical Analysis memory is unlocked and activate weak side
+		if (UMemorySystem* MemorySystem = GameInstance->GetSubsystem<UMemorySystem>())
+		{
+			if (MemorySystem->IsMemoryUnlocked(TEXT("MEMORY_WEAK_SIDE")))
+			{
+				if (WeakSideComponent)
+				{
+					WeakSideComponent->ActivateWeakSide();
+					UE_LOG(LogTemp, Warning, TEXT("Weak side activated on training dummy due to Tactical Analysis memory"));
+				}
+			}
 		}
 	}
 

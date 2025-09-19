@@ -17,6 +17,7 @@ class UBlockingComponent;
 
 #define FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_CombatComponent_h_14_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execSetBlockingComponent); \
+	DECLARE_FUNCTION(execIsInAttackAnimation); \
 	DECLARE_FUNCTION(execCanExecuteFinisher); \
 	DECLARE_FUNCTION(execCanAttack); \
 	DECLARE_FUNCTION(execExecuteFinisher); \

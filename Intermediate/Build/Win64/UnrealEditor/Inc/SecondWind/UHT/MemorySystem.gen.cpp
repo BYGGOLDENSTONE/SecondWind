@@ -49,9 +49,12 @@ struct Z_Construct_UEnum_SecondWind_EMemoryType_Statics
 		{ "HealthBoost.DisplayName", "Health Boost" },
 		{ "HealthBoost.Name", "EMemoryType::HealthBoost" },
 		{ "ModuleRelativePath", "Systems/MemorySystem.h" },
+		{ "WeakSide.DisplayName", "Weak Side Detection" },
+		{ "WeakSide.Name", "EMemoryType::WeakSide" },
 	};
 #endif // WITH_METADATA
 	static constexpr UECodeGen_Private::FEnumeratorParam Enumerators[] = {
+		{ "EMemoryType::WeakSide", (int64)EMemoryType::WeakSide },
 		{ "EMemoryType::HackReduction", (int64)EMemoryType::HackReduction },
 		{ "EMemoryType::AttackBoost", (int64)EMemoryType::AttackBoost },
 		{ "EMemoryType::DefenseBoost", (int64)EMemoryType::DefenseBoost },
@@ -146,7 +149,7 @@ const UECodeGen_Private::FStrPropertyParams Z_Construct_UScriptStruct_FMemoryDat
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UScriptStruct_FMemoryData_Statics::NewProp_Description = { "Description", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FMemoryData, Description), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Description_MetaData), NewProp_Description_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FMemoryData_Statics::NewProp_FragmentCost = { "FragmentCost", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FMemoryData, FragmentCost), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_FragmentCost_MetaData), NewProp_FragmentCost_MetaData) };
 const UECodeGen_Private::FBytePropertyParams Z_Construct_UScriptStruct_FMemoryData_Statics::NewProp_MemoryType_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FEnumPropertyParams Z_Construct_UScriptStruct_FMemoryData_Statics::NewProp_MemoryType = { "MemoryType", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FMemoryData, MemoryType), Z_Construct_UEnum_SecondWind_EMemoryType, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MemoryType_MetaData), NewProp_MemoryType_MetaData) }; // 3247340141
+const UECodeGen_Private::FEnumPropertyParams Z_Construct_UScriptStruct_FMemoryData_Statics::NewProp_MemoryType = { "MemoryType", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FMemoryData, MemoryType), Z_Construct_UEnum_SecondWind_EMemoryType, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MemoryType_MetaData), NewProp_MemoryType_MetaData) }; // 3329407115
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FMemoryData_Statics::NewProp_EffectValue = { "EffectValue", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FMemoryData, EffectValue), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_EffectValue_MetaData), NewProp_EffectValue_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FMemoryData_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FMemoryData_Statics::NewProp_MemoryID,
@@ -289,8 +292,8 @@ struct Z_Construct_UFunction_UMemorySystem_GetAvailableMemories_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UMemorySystem_GetAvailableMemories_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FMemoryData, METADATA_PARAMS(0, nullptr) }; // 1632920523
-const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UMemorySystem_GetAvailableMemories_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(MemorySystem_eventGetAvailableMemories_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(0, nullptr) }; // 1632920523
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UMemorySystem_GetAvailableMemories_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FMemoryData, METADATA_PARAMS(0, nullptr) }; // 1520177267
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UMemorySystem_GetAvailableMemories_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(MemorySystem_eventGetAvailableMemories_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(0, nullptr) }; // 1520177267
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UMemorySystem_GetAvailableMemories_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UMemorySystem_GetAvailableMemories_Statics::NewProp_ReturnValue_Inner,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UMemorySystem_GetAvailableMemories_Statics::NewProp_ReturnValue,
@@ -381,7 +384,7 @@ struct Z_Construct_UFunction_UMemorySystem_GetMemoryData_Statics
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UMemorySystem_GetMemoryData_Statics::NewProp_MemoryID = { "MemoryID", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(MemorySystem_eventGetMemoryData_Parms, MemoryID), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MemoryID_MetaData), NewProp_MemoryID_MetaData) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UMemorySystem_GetMemoryData_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(MemorySystem_eventGetMemoryData_Parms, ReturnValue), Z_Construct_UScriptStruct_FMemoryData, METADATA_PARAMS(0, nullptr) }; // 1632920523
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UMemorySystem_GetMemoryData_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(MemorySystem_eventGetMemoryData_Parms, ReturnValue), Z_Construct_UScriptStruct_FMemoryData, METADATA_PARAMS(0, nullptr) }; // 1520177267
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UMemorySystem_GetMemoryData_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UMemorySystem_GetMemoryData_Statics::NewProp_MemoryID,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UMemorySystem_GetMemoryData_Statics::NewProp_ReturnValue,
@@ -642,9 +645,9 @@ struct Z_Construct_UClass_UMemorySystem_Statics
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_UMemorySystem_ApplyMemoryEffects, "ApplyMemoryEffects" }, // 3849118135
-		{ &Z_Construct_UFunction_UMemorySystem_GetAvailableMemories, "GetAvailableMemories" }, // 1204936529
+		{ &Z_Construct_UFunction_UMemorySystem_GetAvailableMemories, "GetAvailableMemories" }, // 393953650
 		{ &Z_Construct_UFunction_UMemorySystem_GetHackCounterRequirement, "GetHackCounterRequirement" }, // 646830951
-		{ &Z_Construct_UFunction_UMemorySystem_GetMemoryData, "GetMemoryData" }, // 1828954168
+		{ &Z_Construct_UFunction_UMemorySystem_GetMemoryData, "GetMemoryData" }, // 1884375127
 		{ &Z_Construct_UFunction_UMemorySystem_GetUnlockedMemories, "GetUnlockedMemories" }, // 1506363037
 		{ &Z_Construct_UFunction_UMemorySystem_IsMemoryUnlocked, "IsMemoryUnlocked" }, // 936880320
 		{ &Z_Construct_UFunction_UMemorySystem_ResetForNewRun, "ResetForNewRun" }, // 2905954108
@@ -659,9 +662,9 @@ struct Z_Construct_UClass_UMemorySystem_Statics
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_UMemorySystem_Statics::NewProp_OnMemoryUnlocked = { "OnMemoryUnlocked", nullptr, (EPropertyFlags)0x0010000010080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UMemorySystem, OnMemoryUnlocked), Z_Construct_UDelegateFunction_SecondWind_OnMemoryUnlocked__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnMemoryUnlocked_MetaData), NewProp_OnMemoryUnlocked_MetaData) }; // 282614925
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UMemorySystem_Statics::NewProp_UnlockedMemories_Inner = { "UnlockedMemories", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_UMemorySystem_Statics::NewProp_UnlockedMemories = { "UnlockedMemories", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UMemorySystem, UnlockedMemories), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_UnlockedMemories_MetaData), NewProp_UnlockedMemories_MetaData) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UMemorySystem_Statics::NewProp_AllMemories_ValueProp = { "AllMemories", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 1, Z_Construct_UScriptStruct_FMemoryData, METADATA_PARAMS(0, nullptr) }; // 1632920523
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UMemorySystem_Statics::NewProp_AllMemories_ValueProp = { "AllMemories", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 1, Z_Construct_UScriptStruct_FMemoryData, METADATA_PARAMS(0, nullptr) }; // 1520177267
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UMemorySystem_Statics::NewProp_AllMemories_Key_KeyProp = { "AllMemories_Key", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FMapPropertyParams Z_Construct_UClass_UMemorySystem_Statics::NewProp_AllMemories = { "AllMemories", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UMemorySystem, AllMemories), EMapPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AllMemories_MetaData), NewProp_AllMemories_MetaData) }; // 1632920523
+const UECodeGen_Private::FMapPropertyParams Z_Construct_UClass_UMemorySystem_Statics::NewProp_AllMemories = { "AllMemories", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UMemorySystem, AllMemories), EMapPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AllMemories_MetaData), NewProp_AllMemories_MetaData) }; // 1520177267
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UMemorySystem_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UMemorySystem_Statics::NewProp_OnMemoryUnlocked,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UMemorySystem_Statics::NewProp_UnlockedMemories_Inner,
@@ -712,16 +715,16 @@ UMemorySystem::~UMemorySystem() {}
 struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_Statics
 {
 	static constexpr FEnumRegisterCompiledInInfo EnumInfo[] = {
-		{ EMemoryType_StaticEnum, TEXT("EMemoryType"), &Z_Registration_Info_UEnum_EMemoryType, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 3247340141U) },
+		{ EMemoryType_StaticEnum, TEXT("EMemoryType"), &Z_Registration_Info_UEnum_EMemoryType, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 3329407115U) },
 	};
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
-		{ FMemoryData::StaticStruct, Z_Construct_UScriptStruct_FMemoryData_Statics::NewStructOps, TEXT("MemoryData"), &Z_Registration_Info_UScriptStruct_MemoryData, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FMemoryData), 1632920523U) },
+		{ FMemoryData::StaticStruct, Z_Construct_UScriptStruct_FMemoryData_Statics::NewStructOps, TEXT("MemoryData"), &Z_Registration_Info_UScriptStruct_MemoryData, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FMemoryData), 1520177267U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UMemorySystem, UMemorySystem::StaticClass, TEXT("UMemorySystem"), &Z_Registration_Info_UClass_UMemorySystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UMemorySystem), 1875612979U) },
+		{ Z_Construct_UClass_UMemorySystem, UMemorySystem::StaticClass, TEXT("UMemorySystem"), &Z_Registration_Info_UClass_UMemorySystem, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UMemorySystem), 2229423675U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_4120459438(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_151452470(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_Statics::ClassInfo),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_Statics::ScriptStructInfo),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_Statics::EnumInfo));

@@ -25,32 +25,15 @@ void UMemorySystem::Deinitialize()
 
 void UMemorySystem::InitializeMemoryDatabase()
 {
-    FMemoryData HackReduction;
-    HackReduction.MemoryID = TEXT("MEMORY_HACK_REDUCTION");
-    HackReduction.DisplayName = TEXT("Quick Hack");
-    HackReduction.Description = TEXT("Reduces hack attack requirement from 6 to 4 counter-attacks");
-    HackReduction.FragmentCost = 1;  // Reduced from 15 for testing
-    HackReduction.MemoryType = EMemoryType::HackReduction;
-    HackReduction.EffectValue = 2.0f;
-    AllMemories.Add(HackReduction.MemoryID, HackReduction);
-
-    FMemoryData AttackBoost;
-    AttackBoost.MemoryID = TEXT("MEMORY_ATTACK_BOOST");
-    AttackBoost.DisplayName = TEXT("Sharpened Blade");
-    AttackBoost.Description = TEXT("Increases attack damage by 25%");
-    AttackBoost.FragmentCost = 2;  // Reduced from 20 for testing
-    AttackBoost.MemoryType = EMemoryType::AttackBoost;
-    AttackBoost.EffectValue = 1.25f;
-    AllMemories.Add(AttackBoost.MemoryID, AttackBoost);
-
-    FMemoryData DefenseBoost;
-    DefenseBoost.MemoryID = TEXT("MEMORY_DEFENSE_BOOST");
-    DefenseBoost.DisplayName = TEXT("Hardened Resolve");
-    DefenseBoost.Description = TEXT("Increases block damage reduction from 40% to 60%");
-    DefenseBoost.FragmentCost = 3;  // Reduced from 25 for testing
-    DefenseBoost.MemoryType = EMemoryType::DefenseBoost;
-    DefenseBoost.EffectValue = 0.6f;
-    AllMemories.Add(DefenseBoost.MemoryID, DefenseBoost);
+    // New memory: Tactical Analysis (Weak Side)
+    FMemoryData WeakSide;
+    WeakSide.MemoryID = TEXT("MEMORY_WEAK_SIDE");
+    WeakSide.DisplayName = TEXT("Tactical Analysis");
+    WeakSide.Description = TEXT("Reveals enemy weak points for 1.5x damage and knockback");
+    WeakSide.FragmentCost = 4;
+    WeakSide.MemoryType = EMemoryType::WeakSide;
+    WeakSide.EffectValue = 1.5f;
+    AllMemories.Add(WeakSide.MemoryID, WeakSide);
 }
 
 bool UMemorySystem::UnlockMemory(const FString& MemoryID)
@@ -125,6 +108,13 @@ void UMemorySystem::ApplyMemoryEffects(AActor* Target)
 
         switch (MemoryData->MemoryType)
         {
+            case EMemoryType::WeakSide:
+            {
+                // Weak side is activated per-enemy when they spawn
+                // This is handled in enemy initialization
+                UE_LOG(LogTemp, Warning, TEXT("Tactical Analysis memory active - enemies will show weak sides"));
+                break;
+            }
             case EMemoryType::HackReduction:
             {
                 if (UHackComponent* HackComp = Target->FindComponentByClass<UHackComponent>())

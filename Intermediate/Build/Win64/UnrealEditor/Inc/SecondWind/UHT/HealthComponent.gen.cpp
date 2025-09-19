@@ -652,6 +652,90 @@ DEFINE_FUNCTION(UHealthComponent::execSetBlockingComponent)
 }
 // End Class UHealthComponent Function SetBlockingComponent
 
+// Begin Class UHealthComponent Function SetCurrentHealth
+struct Z_Construct_UFunction_UHealthComponent_SetCurrentHealth_Statics
+{
+	struct HealthComponent_eventSetCurrentHealth_Parms
+	{
+		float NewHealth;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Components/HealthComponent.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_NewHealth;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UHealthComponent_SetCurrentHealth_Statics::NewProp_NewHealth = { "NewHealth", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(HealthComponent_eventSetCurrentHealth_Parms, NewHealth), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UHealthComponent_SetCurrentHealth_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UHealthComponent_SetCurrentHealth_Statics::NewProp_NewHealth,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UHealthComponent_SetCurrentHealth_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UHealthComponent_SetCurrentHealth_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UHealthComponent, nullptr, "SetCurrentHealth", nullptr, nullptr, Z_Construct_UFunction_UHealthComponent_SetCurrentHealth_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UHealthComponent_SetCurrentHealth_Statics::PropPointers), sizeof(Z_Construct_UFunction_UHealthComponent_SetCurrentHealth_Statics::HealthComponent_eventSetCurrentHealth_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UHealthComponent_SetCurrentHealth_Statics::Function_MetaDataParams), Z_Construct_UFunction_UHealthComponent_SetCurrentHealth_Statics::Function_MetaDataParams) };
+static_assert(sizeof(Z_Construct_UFunction_UHealthComponent_SetCurrentHealth_Statics::HealthComponent_eventSetCurrentHealth_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UHealthComponent_SetCurrentHealth()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UHealthComponent_SetCurrentHealth_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UHealthComponent::execSetCurrentHealth)
+{
+	P_GET_PROPERTY(FFloatProperty,Z_Param_NewHealth);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->SetCurrentHealth(Z_Param_NewHealth);
+	P_NATIVE_END;
+}
+// End Class UHealthComponent Function SetCurrentHealth
+
+// Begin Class UHealthComponent Function SetMaxHealth
+struct Z_Construct_UFunction_UHealthComponent_SetMaxHealth_Statics
+{
+	struct HealthComponent_eventSetMaxHealth_Parms
+	{
+		float NewMaxHealth;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Components/HealthComponent.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_NewMaxHealth;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UHealthComponent_SetMaxHealth_Statics::NewProp_NewMaxHealth = { "NewMaxHealth", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(HealthComponent_eventSetMaxHealth_Parms, NewMaxHealth), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UHealthComponent_SetMaxHealth_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UHealthComponent_SetMaxHealth_Statics::NewProp_NewMaxHealth,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UHealthComponent_SetMaxHealth_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UHealthComponent_SetMaxHealth_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UHealthComponent, nullptr, "SetMaxHealth", nullptr, nullptr, Z_Construct_UFunction_UHealthComponent_SetMaxHealth_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UHealthComponent_SetMaxHealth_Statics::PropPointers), sizeof(Z_Construct_UFunction_UHealthComponent_SetMaxHealth_Statics::HealthComponent_eventSetMaxHealth_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UHealthComponent_SetMaxHealth_Statics::Function_MetaDataParams), Z_Construct_UFunction_UHealthComponent_SetMaxHealth_Statics::Function_MetaDataParams) };
+static_assert(sizeof(Z_Construct_UFunction_UHealthComponent_SetMaxHealth_Statics::HealthComponent_eventSetMaxHealth_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UHealthComponent_SetMaxHealth()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UHealthComponent_SetMaxHealth_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UHealthComponent::execSetMaxHealth)
+{
+	P_GET_PROPERTY(FFloatProperty,Z_Param_NewMaxHealth);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->SetMaxHealth(Z_Param_NewMaxHealth);
+	P_NATIVE_END;
+}
+// End Class UHealthComponent Function SetMaxHealth
+
 // Begin Class UHealthComponent Function SetMaxPhases
 struct Z_Construct_UFunction_UHealthComponent_SetMaxPhases_Statics
 {
@@ -775,6 +859,8 @@ void UHealthComponent::StaticRegisterNativesUHealthComponent()
 		{ "IsTrulyDead", &UHealthComponent::execIsTrulyDead },
 		{ "ResetHealth", &UHealthComponent::execResetHealth },
 		{ "SetBlockingComponent", &UHealthComponent::execSetBlockingComponent },
+		{ "SetCurrentHealth", &UHealthComponent::execSetCurrentHealth },
+		{ "SetMaxHealth", &UHealthComponent::execSetMaxHealth },
 		{ "SetMaxPhases", &UHealthComponent::execSetMaxPhases },
 		{ "TakeDamage", &UHealthComponent::execTakeDamage },
 	};
@@ -850,6 +936,8 @@ struct Z_Construct_UClass_UHealthComponent_Statics
 		{ &Z_Construct_UDelegateFunction_UHealthComponent_OnEnterFinisherState__DelegateSignature, "OnEnterFinisherState__DelegateSignature" }, // 4238130617
 		{ &Z_Construct_UFunction_UHealthComponent_ResetHealth, "ResetHealth" }, // 4262297127
 		{ &Z_Construct_UFunction_UHealthComponent_SetBlockingComponent, "SetBlockingComponent" }, // 2762564697
+		{ &Z_Construct_UFunction_UHealthComponent_SetCurrentHealth, "SetCurrentHealth" }, // 509768876
+		{ &Z_Construct_UFunction_UHealthComponent_SetMaxHealth, "SetMaxHealth" }, // 641662042
 		{ &Z_Construct_UFunction_UHealthComponent_SetMaxPhases, "SetMaxPhases" }, // 335159666
 		{ &Z_Construct_UFunction_UHealthComponent_TakeDamage, "TakeDamage" }, // 534615487
 	};
@@ -918,10 +1006,10 @@ UHealthComponent::~UHealthComponent() {}
 struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HealthComponent_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UHealthComponent, UHealthComponent::StaticClass, TEXT("UHealthComponent"), &Z_Registration_Info_UClass_UHealthComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UHealthComponent), 1473945777U) },
+		{ Z_Construct_UClass_UHealthComponent, UHealthComponent::StaticClass, TEXT("UHealthComponent"), &Z_Registration_Info_UClass_UHealthComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UHealthComponent), 80429221U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HealthComponent_h_262257546(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HealthComponent_h_256047962(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HealthComponent_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_HealthComponent_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

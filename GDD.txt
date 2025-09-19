@@ -1,75 +1,233 @@
-
 ### **Second Wind - Game Design Document**
 
-**1. Core Concept**
-* **Game Engine:** Unreal Engine 5.5, pure C++ implementation (ThirdPerson template foundation).
-* **Development Philosophy:** No visual scripting/Blueprints for gameplay logic. All gameplay systems, UI, and core mechanics implemented in C++. Blueprints only for asset references and minimal configuration.
-* **Game Type:** SINGLE-PLAYER ONLY - No multiplayer, no networking, no replication.
-* **Implementation Rules:** NO Gameplay Ability System (GAS) - Use simple, direct C++ implementations for all combat and abilities.
-* **Genre:** Roguelike, Soulslike, Boss Rush, with a focus on close-quarters 1v1 combat.
-* **Design Philosophy:** To create deep, complex gameplay from a small set of simple abilities that are easy to learn. The focus is on player skill, observation, and tactical execution over mindless action.
-* **Combat Inspiration:** Fast, responsive combat like Sifu/Sekiro rather than weighty Dark Souls feel.
+## **Game Overview**
 
-**2. Player Character & Controls**
-* **Input System:** Unreal Engine's Enhanced Input.
-* **Movement:** WASD for character movement, with a walk speed of 300. There is no jump ability, as combat is ground-based.
-* **Camera:** Third-person, over-the-shoulder view with mouse control for looking around.
-* **Camera Lock-On:** The camera automatically locks onto the enemy within a 1500 unit distance. There is no manual toggle or lock break - this enforces the 1v1 arena combat design where players must fight to the death. When locked on, movement with A and D keys causes the player to strafe and circle the enemy. Character always faces the enemy (except during specific animations). Camera has smooth lag when following dodge movements.
+**Genre:** Single-player Roguelike Boss Rush with Soulslike combat mechanics
+**Core Loop:** Face increasingly challenging 1v1 arena battles, die, learn, upgrade, and try again
+**Setting:** Abstract combat arenas focused on pure mechanical skill
+**Platform:** PC
 
-**3. Core Combat Abilities**
+## **Core Design Philosophy**
 
-* **Attack:**
-    * Executed by pressing the Left Mouse Button (LMB).
-    * Deals a base of 5 damage.
-    * The cooldown is the duration of the attack animation itself.
+Second Wind creates deep, complex gameplay from a small set of simple abilities. Every mechanic serves the core 1v1 combat experience, rewarding player observation, timing, and tactical execution over button mashing. Combat feels fast and responsive (Sifu/Sekiro) rather than weighty (Dark Souls).
 
-* **Block (Directional):**
-    * Executed by holding the Right Mouse Button (RMB). This is an active, directional blocking system (no parry mechanic).
-    * By default, holding RMB initiates a **front block** (center position).
-    * While holding RMB, horizontal mouse movement changes block direction along a 1D axis: slight left = left block, center = front block, slight right = right block. Camera remains horizontally centered on enemy, mouse controls block stance only.
-    * **Implementation:** Uses horizontal mouse delta only (vertical movement ignored). Three zones: left side, center (front), right side. Brief transition timing between stances where player cannot block (risk/reward for switching). Visual feedback shows current block direction and incoming attack direction.
-    * Successfully blocking an attack requires matching the direction of the enemy's swing (e.g., using a right-side block for an attack coming from the player's right).
-    * Blocking the wrong direction will leave the player vulnerable.
-    * A successful directional block reduces incoming damage by 40%. After blocking, a counter-attack window opens for 0.5 seconds, allowing the player to press LMB to perform a riposte.
+## **Core Gameplay Loop**
 
-* **Dodge (Strategic):**
-    * The player can dodge to the right, left, or back by briefly holding the A, S, or D key (e.g., a 0.1-second threshold) and then pressing the Space Key.
-    * **Input Clarification:** Holding A/S/D for movement continues normally - the Space key requirement prevents accidental dodges. Players can move and then quickly press the direction + Space to dodge.
-    * This system is designed to reward tactical positioning over mindless dodging. Enemies have glowing weak sides exposed during their attack animations.
-    * **Implementation:** Dodge distance is controlled by animations, not code. Input buffer system (~100-300ms) ensures smooth execution.
-    * After successfully dodging an attack, a counter-attack window opens for 0.5 seconds for the player to press LMB.
-    * The damage of this counter-attack is significantly increased if the player dodged towards the enemy's exposed weak side AND pressed LMB, rewarding players who learn enemy patterns.
-    * Dodging to weak sides builds hack meter faster (potential upgrade).
+1. Start a new run with a randomly assigned gamestyle
+2. Fight through 5 increasingly difficult arena battles
+3. Earn fragments from victories to purchase permanent upgrades
+4. Stack temporary bonuses with each enemy defeated
+5. Death returns you to the hub, keeping fragments and memories but losing all temporary bonuses
+6. Use accumulated knowledge and upgrades to progress further
 
-* **Dash & Leap Attack:**
-    * Hold the W key and press the Space Key to perform a forward dash, closing distance to the enemy.
-    * During the dash, a special attack window opens. If the player presses LMB during this window, they will execute a ranged leap attack.
+## **Combat System**
 
-**4. Special Ability: Hack Attack**
-* **Description:** A long-range hack attack that deals massive damage and briefly stuns the enemy.
-* **Activation:** The ability becomes available after the player successfully performs **6 counter-attacks** (from either directional blocks or strategic dodges).
-* **UI Feedback:** Counter arrows displayed left-center of screen. Cyan arrows show progress (3 cyan = 3 counters). Arrows turn red as warning when next unblocked hit will reset.
-* **Reset Condition:** The counter-attack meter resets to zero if the player gets hit by 2 unblocked attacks. Blocked attacks do not count towards this reset condition.
+### **Basic Actions**
 
-**5. Health and Phase System**
-* **Player Health:** The player starts with 100 health and has 2 phases. When health drops to 0, the enemy performs a finisher, and the player enters phase 2 with their health reset to 100. If health drops to 0 again, the player dies.
-* **Enemy Health:** Enemies also have a phase system, ranging from 1 to 5 phases depending on the arena number. Each enemy has 100 health per phase.
-* **Finishers:** When an enemy's health bar is depleted, they become stunned and play a looped stun animation waiting for player input. Player must press LMB to execute the finisher (no time limit). This transitions the enemy to their next phase with full health, or kills them if it was their last phase. Both player and enemy reset to 100 HP after phase transition, with forced waiting animations to prevent cheap deaths.
-* **Training Dummy:** Special case - has 2 phases and 100 health, but respawns automatically after being killed for continuous practice. Initially simple (takes damage, plays response animations), with complex training behaviors added later.
+**Attack**
+* Simple melee strike dealing base 5 damage
+* Fast execution with animation-based cooldown
+* Can be performed during counter windows for bonus effects
 
-**6. Progression and Rewards**
-* **Game Flow:** The player starts in a safe zone with a training dummy, proceeds to Arena 1 for combat, and upon victory, moves to an intermediate safe zone before the next arena. This is a pure 1v1 boss rush - no multiple enemies ever.
-* **Memory System:** In the zones between arenas, the player can spend `Fragments` to unlock memories. Uses UE5's standard save game system for persistence.
-* **Fragments:** These are earned by performing finishers on enemies. The amount gained increases with each phase defeated (e.g., a 4-phase enemy yields 1+2+3+4 = 10 fragments).
-* **First Memory:** Reduces required counter-attacks for hack ability from 6 to 4. Additional memories will be added later.
-* **Arena Structure:** 5 arenas total, each with identical design but different enemies. No environmental mechanics initially.
-* **Persistence:** Both `Fragments` and unlocked memories are carried over after the player dies, forming the core meta-progression.
+**Directional Block**
+* Hold to enter blocking stance
+* Move mouse horizontally to adjust block direction (left/center/right)
+* Matching enemy attack direction reduces damage by 40%
+* Successful blocks open 0.5-second counter windows
+* Wrong direction leaves you vulnerable
 
-**7. Technical Implementation Details**
-* **Target Platform:** PC only, 60 FPS target.
-* **Animation System:** Animation Blueprints for state machines only, all gameplay logic in C++. Heavy use of Animation Notifies for gameplay events (attack active frames, counter windows, dodge i-frames, phase transitions).
-* **Input System:** Enhanced Input with input buffering (~100-300ms like Souls games) for smooth combat execution.
-* **Enemy AI:** Will be implemented later - enemies currently use placeholder behavior with response animations.
-* **UI Design:** Pure C++ Slate implementation. Boss-style enemy health bar at top (wide), player health at bottom-left, both with phase indicators. Damage numbers appear below health bar (Elden Ring style). Counter-attack arrows left-center screen (cyan building, red warning). Visual effects for weak sides (glowing areas) and combat feedback.
-* **Camera System:** Auto lock-on within 1500 units, no manual toggle, enables strafe movement during combat.
-* **Asset Creation:** Custom animations and models will be created specifically for this project.
+**Strategic Dodge**
+* Hold movement direction briefly, then press dodge button
+* Three directions: left, right, back
+* Creates distance and opens 1-second counter windows
+* 0.5-second cooldown prevents spam
+
+**Dash Attack**
+* Forward dash to close distance
+* Can combo into leap attack during dash
+* Aggressive positioning tool
+
+### **Special Ability: Hack**
+
+A devastating ranged attack earned through skilled play:
+* Requires 6 successful counter-attacks to charge
+* Deals 50 damage at 1000 unit range
+* Counter progress shown as filling indicators
+* Resets if hit twice without blocking
+* Rewards defensive mastery
+
+### **Counter System**
+
+Counter windows are brief opportunities after successful defensive actions:
+* Appear after blocking or dodging attacks
+* Allow attacks while maintaining defense
+* Build toward hack ability
+* Create risk/reward decisions
+
+## **Health & Combat Flow**
+
+### **Phase System**
+
+Both player and enemies use a phase-based health system:
+* Each phase = 100 health
+* Depleting health triggers finisher state
+* Opponent must execute finisher to progress phase
+* Creates dramatic combat moments
+
+**Player:** 2 phases (200 total health)
+**Enemies:** 1-5 phases based on arena difficulty
+
+### **Finisher Mechanics**
+
+When a phase ends:
+1. Victim enters vulnerable finisher state
+2. Attacker must actively execute finisher
+3. Successful finisher transitions to next phase or victory
+4. Both combatants reset to neutral positions
+
+## **Progression Systems**
+
+### **Gamestyles (Temporary Run Bonuses)**
+
+Each run randomly assigns one of five gamestyles that grows stronger with each victory:
+
+**Defense:** Increases maximum health and provides healing with each kill
+**Offense:** Adds flat damage to all attacks
+**Mobility:** Reduces ability activation times for faster reactions
+**Utility:** Extends counter window durations
+**Technomancer:** Reduces hack requirements for more frequent use
+
+These bonuses stack with each arena victory but reset on death, ensuring each run feels unique.
+
+### **Memories (Permanent Upgrades)**
+
+Spend fragments between arenas to unlock permanent improvements:
+* **Quick Hack:** Reduces hack requirement from 6 to 4 counters
+* **Sharpened Blade:** Increases base attack damage by 25%
+* **Hardened Resolve:** Improves block damage reduction to 60%
+
+Memories persist across all runs, providing meta-progression.
+
+### **Fragment Economy**
+
+Fragments are the primary currency earned by defeating enemies:
+* Reward scales with enemy phases defeated
+* Early enemies: ~4 fragments
+* Late enemies: ~30 fragments
+* Balanced to encourage full arena completion
+
+## **Arena Structure**
+
+### **Level Design**
+
+**Starting Hub (Zone 0)**
+* Safe training area with practice dummy
+* Respawn point after death
+* No combat pressure
+
+**Combat Arenas (Zones 1-5)**
+* Five sequential 1v1 battles
+* Increasing enemy phase count (1-5)
+* Identical arena layouts, different opponents
+* Focus on pure combat skill
+
+**Safe Corridors**
+* Connect combat zones
+* Contain memory shop for upgrades
+* Automatic full healing
+* Brief respite between battles
+
+### **Door System**
+
+Doors control pacing and commitment:
+* Entry doors require deliberate approach (2-second proximity)
+* Exit doors lock during combat
+* Victory unlocks progression
+* No retreat once committed
+
+## **Enemy Design**
+
+### **Training Dummy**
+* Always available in hub
+* 2 phases for practice
+* Respawns automatically
+* Perfect for testing combos
+
+### **Arena Enemies**
+* Unique opponent per arena
+* Phase count matches arena number
+* Increasingly complex attack patterns
+* Each teaches different combat lessons
+
+## **Camera & Controls**
+
+### **Camera System**
+* Third-person perspective
+* Automatic enemy lock-on (no manual toggle)
+* Maintains combat focus
+* Fixed pitch during combat
+* Smooth follow during movement
+
+### **Movement**
+* Ground-based combat (no jumping)
+* Strafe movement when locked on
+* Position matters for dodging and spacing
+* Walk speed balanced for tactical positioning
+
+## **User Interface**
+
+### **Combat HUD**
+
+**Health Displays**
+* Player health (bottom-left) with phase indicators
+* Enemy health (top-center) with name and phases
+* Color-coded based on remaining health
+
+**Hack Indicators**
+* Vertical bars showing counter progress
+* Visual states: empty, filled, warning
+* "HACK READY" notification
+* Dynamic count based on requirements
+
+**Information Displays**
+* Fragment counter
+* Current gamestyle and stack count
+* Floating damage numbers
+* Combat feedback text
+
+## **Roguelike Structure**
+
+### **Run Persistence**
+* Each death starts fresh from hub
+* All temporary bonuses reset
+* Fragments and memories persist
+* Knowledge carries forward
+
+### **Session-Based**
+* Progress exists only during play session
+* No save files or cloud saves
+* Pure arcade-style experience
+* Focus on immediate gameplay
+
+## **Visual & Audio Design**
+
+### **Visual Style**
+* Clean, readable combat animations
+* Clear attack telegraphs
+* Distinct visual feedback for all actions
+* Color-coded UI elements
+
+### **Combat Feedback**
+* Impact effects on hits
+* Block/dodge success indicators
+* Phase transition effects
+* Damage number displays
+
+## **Design Goals**
+
+1. **Skill Expression:** Every death teaches something
+2. **Fair Challenge:** No cheap deaths or unclear mechanics
+3. **Meaningful Progression:** Both temporary and permanent growth
+4. **Replayability:** Gamestyle variety ensures unique runs
+5. **Respect for Time:** Quick restarts, no padding
+6. **Tactical Depth:** Simple inputs, complex decisions

@@ -7,6 +7,7 @@
 UENUM(BlueprintType)
 enum class EMemoryType : uint8
 {
+    WeakSide UMETA(DisplayName = "Weak Side Detection"),
     HackReduction UMETA(DisplayName = "Hack Attack Reduction"),
     AttackBoost UMETA(DisplayName = "Attack Damage Boost"),
     DefenseBoost UMETA(DisplayName = "Defense Boost"),

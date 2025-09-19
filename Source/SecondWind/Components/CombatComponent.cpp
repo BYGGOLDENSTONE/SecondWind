@@ -3,10 +3,14 @@
 #include "DodgeComponent.h"
 #include "HackComponent.h"
 #include "HealthComponent.h"
+#include "WeakSideComponent.h"
 #include "../Systems/GamestyleSystem.h"
+#include "../Systems/MemorySystem.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/World.h"
+#include "Engine/GameInstance.h"
 #include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -218,7 +222,8 @@ void UCombatComponent::ApplyDamageToTarget(AActor* Target)
 	float FinalDamage = BaseDamage;
 
 	// Apply gamestyle offense bonus if available
-	if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
+	UGameInstance* GameInstance = GetWorld()->GetGameInstance();
+	if (GameInstance)
 	{
 		if (UGamestyleSystem* GamestyleSystem = GameInstance->GetSubsystem<UGamestyleSystem>())
 		{
@@ -229,6 +234,38 @@ void UCombatComponent::ApplyDamageToTarget(AActor* Target)
 			{
 				UE_LOG(LogTemp, Warning, TEXT(">>> OFFENSE GAMESTYLE: Attack damage increased from %.0f to %.0f (+%.0f) <<<"),
 					BaseDamage, FinalDamage, OffenseBonus);
+			}
+		}
+
+		// Check for weak side hit if memory is unlocked
+		if (UWeakSideComponent* WeakSideComp = Target->FindComponentByClass<UWeakSideComponent>())
+		{
+			if (WeakSideComp->IsWeakSideActive())
+			{
+				// Check if the Tactical Analysis memory is unlocked
+				if (UMemorySystem* MemorySystem = GameInstance->GetSubsystem<UMemorySystem>())
+				{
+					if (MemorySystem->IsMemoryUnlocked(TEXT("MEMORY_WEAK_SIDE")))
+					{
+						AActor* Owner = GetOwner();
+						if (Owner && WeakSideComp->IsAttackFromWeakSide(Owner->GetActorLocation()))
+						{
+							FinalDamage *= 1.5f;
+							WeakSideComp->OnWeakSideHit();
+
+							UE_LOG(LogTemp, Warning, TEXT(">>> WEAK SIDE HIT! Damage increased to %.0f (1.5x multiplier) <<<"), FinalDamage);
+
+							// Apply knockback
+							if (ACharacter* TargetCharacter = Cast<ACharacter>(Target))
+							{
+								FVector KnockbackDirection = (Target->GetActorLocation() - Owner->GetActorLocation()).GetSafeNormal();
+								KnockbackDirection.Z = 0.2f;
+								TargetCharacter->LaunchCharacter(KnockbackDirection * 300.0f, false, false);
+								UE_LOG(LogTemp, Warning, TEXT("Applied knockback to target"));
+							}
+						}
+					}
+				}
 			}
 		}
 	}

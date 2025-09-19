@@ -9,12 +9,18 @@
 #include "UObject/ScriptMacros.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
+enum class EGamestyleType : uint8;
 #ifdef SECONDWIND_SecondWindHUD_generated_h
 #error "SecondWindHUD.generated.h already included, missing '#pragma once' in SecondWindHUD.h"
 #endif
 #define SECONDWIND_SecondWindHUD_generated_h
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_UI_SecondWindHUD_h_16_INCLASS_NO_PURE_DECLS \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_UI_SecondWindHUD_h_17_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execOnGamestyleStackAdded); \
+	DECLARE_FUNCTION(execOnGamestyleAssigned);
+
+
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_UI_SecondWindHUD_h_17_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesASecondWindHUD(); \
 	friend struct Z_Construct_UClass_ASecondWindHUD_Statics; \
@@ -23,7 +29,7 @@ public: \
 	DECLARE_SERIALIZER(ASecondWindHUD)
 
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_UI_SecondWindHUD_h_16_ENHANCED_CONSTRUCTORS \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_UI_SecondWindHUD_h_17_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	ASecondWindHUD(ASecondWindHUD&&); \
@@ -35,12 +41,13 @@ public: \
 	NO_API virtual ~ASecondWindHUD();
 
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_UI_SecondWindHUD_h_13_PROLOG
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_UI_SecondWindHUD_h_16_GENERATED_BODY \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_UI_SecondWindHUD_h_14_PROLOG
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_UI_SecondWindHUD_h_17_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Unreal_Projects_SecondWind_Source_SecondWind_UI_SecondWindHUD_h_16_INCLASS_NO_PURE_DECLS \
-	FID_Unreal_Projects_SecondWind_Source_SecondWind_UI_SecondWindHUD_h_16_ENHANCED_CONSTRUCTORS \
+	FID_Unreal_Projects_SecondWind_Source_SecondWind_UI_SecondWindHUD_h_17_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Unreal_Projects_SecondWind_Source_SecondWind_UI_SecondWindHUD_h_17_INCLASS_NO_PURE_DECLS \
+	FID_Unreal_Projects_SecondWind_Source_SecondWind_UI_SecondWindHUD_h_17_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

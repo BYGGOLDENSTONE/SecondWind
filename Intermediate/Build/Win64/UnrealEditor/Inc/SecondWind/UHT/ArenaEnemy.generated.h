@@ -14,13 +14,13 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define SECONDWIND_ArenaEnemy_generated_h
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_13_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_14_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execEnterFinisherState); \
 	DECLARE_FUNCTION(execOnEnemyDeath); \
 	DECLARE_FUNCTION(execOnPhaseTransition);
 
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_13_INCLASS_NO_PURE_DECLS \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_14_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAArenaEnemy(); \
 	friend struct Z_Construct_UClass_AArenaEnemy_Statics; \
@@ -29,7 +29,7 @@ public: \
 	DECLARE_SERIALIZER(AArenaEnemy)
 
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_13_ENHANCED_CONSTRUCTORS \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_14_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	AArenaEnemy(AArenaEnemy&&); \
@@ -41,13 +41,13 @@ public: \
 	NO_API virtual ~AArenaEnemy();
 
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_10_PROLOG
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_13_GENERATED_BODY \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_11_PROLOG
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_14_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_13_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_13_INCLASS_NO_PURE_DECLS \
-	FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_13_ENHANCED_CONSTRUCTORS \
+	FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_14_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_14_INCLASS_NO_PURE_DECLS \
+	FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_14_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

@@ -1,10 +1,13 @@
 #include "ArenaEnemy.h"
 #include "../Components/HealthComponent.h"
 #include "../Components/CombatComponent.h"
+#include "../Components/WeakSideComponent.h"
 #include "../Systems/EnemyManager.h"
 #include "../Systems/GamestyleSystem.h"
+#include "../Systems/MemorySystem.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Engine/GameInstance.h"
 #include "ArenaZone.h"
 #include "EnemySpawnPoint.h"
 #include "Kismet/GameplayStatics.h"
@@ -16,6 +19,7 @@ AArenaEnemy::AArenaEnemy()
 
     HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
     CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
+    WeakSideComponent = CreateDefaultSubobject<UWeakSideComponent>(TEXT("WeakSideComponent"));
 
     GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
     GetCharacterMovement()->MaxWalkSpeed = 400.f;
@@ -50,6 +54,19 @@ void AArenaEnemy::BeginPlay()
         if (UEnemyManager* EnemyManager = GameInstance->GetSubsystem<UEnemyManager>())
         {
             EnemyManager->RegisterEnemy(this);
+        }
+
+        // Check if Tactical Analysis memory is unlocked and activate weak side
+        if (UMemorySystem* MemorySystem = GameInstance->GetSubsystem<UMemorySystem>())
+        {
+            if (MemorySystem->IsMemoryUnlocked(TEXT("MEMORY_WEAK_SIDE")))
+            {
+                if (WeakSideComponent)
+                {
+                    WeakSideComponent->ActivateWeakSide();
+                    UE_LOG(LogTemp, Warning, TEXT("Weak side activated on enemy due to Tactical Analysis memory"));
+                }
+            }
         }
     }
 

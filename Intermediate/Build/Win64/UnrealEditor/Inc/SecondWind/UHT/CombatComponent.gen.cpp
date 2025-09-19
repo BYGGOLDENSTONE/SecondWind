@@ -138,6 +138,52 @@ DEFINE_FUNCTION(UCombatComponent::execExecuteFinisher)
 }
 // End Class UCombatComponent Function ExecuteFinisher
 
+// Begin Class UCombatComponent Function IsInAttackAnimation
+struct Z_Construct_UFunction_UCombatComponent_IsInAttackAnimation_Statics
+{
+	struct CombatComponent_eventIsInAttackAnimation_Parms
+	{
+		bool ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Components/CombatComponent.h" },
+	};
+#endif // WITH_METADATA
+	static void NewProp_ReturnValue_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+void Z_Construct_UFunction_UCombatComponent_IsInAttackAnimation_Statics::NewProp_ReturnValue_SetBit(void* Obj)
+{
+	((CombatComponent_eventIsInAttackAnimation_Parms*)Obj)->ReturnValue = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UCombatComponent_IsInAttackAnimation_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(CombatComponent_eventIsInAttackAnimation_Parms), &Z_Construct_UFunction_UCombatComponent_IsInAttackAnimation_Statics::NewProp_ReturnValue_SetBit, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UCombatComponent_IsInAttackAnimation_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCombatComponent_IsInAttackAnimation_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UCombatComponent_IsInAttackAnimation_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UCombatComponent_IsInAttackAnimation_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UCombatComponent, nullptr, "IsInAttackAnimation", nullptr, nullptr, Z_Construct_UFunction_UCombatComponent_IsInAttackAnimation_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UCombatComponent_IsInAttackAnimation_Statics::PropPointers), sizeof(Z_Construct_UFunction_UCombatComponent_IsInAttackAnimation_Statics::CombatComponent_eventIsInAttackAnimation_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x40020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UCombatComponent_IsInAttackAnimation_Statics::Function_MetaDataParams), Z_Construct_UFunction_UCombatComponent_IsInAttackAnimation_Statics::Function_MetaDataParams) };
+static_assert(sizeof(Z_Construct_UFunction_UCombatComponent_IsInAttackAnimation_Statics::CombatComponent_eventIsInAttackAnimation_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UCombatComponent_IsInAttackAnimation()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UCombatComponent_IsInAttackAnimation_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UCombatComponent::execIsInAttackAnimation)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(bool*)Z_Param__Result=P_THIS->IsInAttackAnimation();
+	P_NATIVE_END;
+}
+// End Class UCombatComponent Function IsInAttackAnimation
+
 // Begin Class UCombatComponent Function PerformAttack
 struct Z_Construct_UFunction_UCombatComponent_PerformAttack_Statics
 {
@@ -220,6 +266,7 @@ void UCombatComponent::StaticRegisterNativesUCombatComponent()
 		{ "CanAttack", &UCombatComponent::execCanAttack },
 		{ "CanExecuteFinisher", &UCombatComponent::execCanExecuteFinisher },
 		{ "ExecuteFinisher", &UCombatComponent::execExecuteFinisher },
+		{ "IsInAttackAnimation", &UCombatComponent::execIsInAttackAnimation },
 		{ "PerformAttack", &UCombatComponent::execPerformAttack },
 		{ "SetBlockingComponent", &UCombatComponent::execSetBlockingComponent },
 	};
@@ -261,6 +308,7 @@ struct Z_Construct_UClass_UCombatComponent_Statics
 		{ &Z_Construct_UFunction_UCombatComponent_CanAttack, "CanAttack" }, // 3592439846
 		{ &Z_Construct_UFunction_UCombatComponent_CanExecuteFinisher, "CanExecuteFinisher" }, // 3506946947
 		{ &Z_Construct_UFunction_UCombatComponent_ExecuteFinisher, "ExecuteFinisher" }, // 1181414928
+		{ &Z_Construct_UFunction_UCombatComponent_IsInAttackAnimation, "IsInAttackAnimation" }, // 2737509327
 		{ &Z_Construct_UFunction_UCombatComponent_PerformAttack, "PerformAttack" }, // 1117210523
 		{ &Z_Construct_UFunction_UCombatComponent_SetBlockingComponent, "SetBlockingComponent" }, // 3541554973
 	};
@@ -319,10 +367,10 @@ UCombatComponent::~UCombatComponent() {}
 struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_CombatComponent_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UCombatComponent, UCombatComponent::StaticClass, TEXT("UCombatComponent"), &Z_Registration_Info_UClass_UCombatComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCombatComponent), 639755623U) },
+		{ Z_Construct_UClass_UCombatComponent, UCombatComponent::StaticClass, TEXT("UCombatComponent"), &Z_Registration_Info_UClass_UCombatComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCombatComponent), 1725766079U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_CombatComponent_h_2429972331(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_CombatComponent_h_3691659581(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_CombatComponent_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_CombatComponent_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

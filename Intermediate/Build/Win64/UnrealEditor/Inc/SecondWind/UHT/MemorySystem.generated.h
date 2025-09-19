@@ -16,18 +16,18 @@ struct FMemoryData;
 #endif
 #define SECONDWIND_MemorySystem_generated_h
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_19_GENERATED_BODY \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_20_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FMemoryData_Statics; \
 	SECONDWIND_API static class UScriptStruct* StaticStruct();
 
 
 template<> SECONDWIND_API UScriptStruct* StaticStruct<struct FMemoryData>();
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_47_DELEGATE \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_48_DELEGATE \
 SECONDWIND_API void FOnMemoryUnlocked_DelegateWrapper(const FMulticastScriptDelegate& OnMemoryUnlocked, const FString& MemoryID);
 
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_52_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_53_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execResetForNewRun); \
 	DECLARE_FUNCTION(execGetHackCounterRequirement); \
 	DECLARE_FUNCTION(execApplyMemoryEffects); \
@@ -38,7 +38,7 @@ SECONDWIND_API void FOnMemoryUnlocked_DelegateWrapper(const FMulticastScriptDele
 	DECLARE_FUNCTION(execUnlockMemory);
 
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_52_INCLASS_NO_PURE_DECLS \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_53_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUMemorySystem(); \
 	friend struct Z_Construct_UClass_UMemorySystem_Statics; \
@@ -47,7 +47,7 @@ public: \
 	DECLARE_SERIALIZER(UMemorySystem)
 
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_52_ENHANCED_CONSTRUCTORS \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_53_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UMemorySystem(); \
 private: \
@@ -61,13 +61,13 @@ public: \
 	NO_API virtual ~UMemorySystem();
 
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_49_PROLOG
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_52_GENERATED_BODY \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_50_PROLOG
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_53_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_52_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_52_INCLASS_NO_PURE_DECLS \
-	FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_52_ENHANCED_CONSTRUCTORS \
+	FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_53_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_53_INCLASS_NO_PURE_DECLS \
+	FID_Unreal_Projects_SecondWind_Source_SecondWind_Systems_MemorySystem_h_53_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -79,6 +79,7 @@ template<> SECONDWIND_API UClass* StaticClass<class UMemorySystem>();
 
 
 #define FOREACH_ENUM_EMEMORYTYPE(op) \
+	op(EMemoryType::WeakSide) \
 	op(EMemoryType::HackReduction) \
 	op(EMemoryType::AttackBoost) \
 	op(EMemoryType::DefenseBoost) \
