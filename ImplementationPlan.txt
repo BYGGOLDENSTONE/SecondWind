@@ -10,9 +10,10 @@
 - **UI System:** All UI implemented in C++ using Slate framework
 - **Blueprints:** Only for asset references and minimal configuration
 
-**Current Status:** Phase 8 - Gamestyle System (Automatic Run Upgrades) ⏳ IN PROGRESS
-**Previous:** Phase 7 - UI & Polish ✅ COMPLETED (Critical fixes also completed)
-**Next Session:** Begin Phase 8 - Gamestyle System implementation
+**Current Status:** Phase 10 - Animation System 🚧 IN PROGRESS
+**Previous:** Phase 9 - Memory System Revisit & Economy ✅ COMPLETED
+**Prior Milestone:** Phase 8 - Gamestyle System (Automatic Run Upgrades) ✅ COMPLETED
+**Next Session:** Continue Phase 10 - Animation System implementation
 
 =============================================================================
 
@@ -465,7 +466,7 @@
 
 ### PHASE 9: MEMORY SYSTEM REVISIT & ECONOMY (Week 10)
 **Priority:** HIGH - Meta Progression Balance
-**Status:** IN PROGRESS (Started Week 10)
+**Status:** ✅ COMPLETED (Week 10 wrap)
 
 **Goals:**
 - Revisit and expand memory system
@@ -480,21 +481,18 @@
    - Arena progression: 1, 3, 6, 10, 15 fragments total
    - Skill bonuses: +1 no-hit, +1 quick kill (2s for testing)
    - Tactical Analysis costs 7 fragments (~4 runs to unlock)
-   - Economy tested and balanced for progression curve
+   - Economy validated against target progression curve
 
-2. [IN PROGRESS] Expand Memory Options
+2. [✅] Expand Memory Options
    - [✅] Tactical Analysis (Weak Side Detection) - 1.5x damage + knockback
-   - [ ] Design and implement additional memories
-   - Create memory tiers (basic/advanced)
-   - Implement memory prerequisites/unlocks
-   - Design synergies between memories
+   - [✅] Designed and implemented additional combat/support memories (see MemorySystem.cpp)
+   - Established memory tiers (basic/advanced) with unlock ordering
+   - Introduced prerequisites and synergy notes for future balancing
 
-3. [ ] Memory Shop Improvements
-   - Enhanced UI with memory descriptions
-   - Show memory effects clearly
-   - Add purchase confirmation
-   - Display current active memories
-   - Memory refund system (if needed)
+3. [✅] Memory Shop Improvements
+   - Enhanced UI with memory descriptions and effect callouts
+   - Purchase confirmation flow and active memory list integrated
+   - Refund posture documented (not required for v1 launch)
 
 4. [✅] Fragment Reward System
    - No-damage kill bonus: +1 fragment
@@ -505,45 +503,124 @@
 **Memory Implementation Status:**
 ✅ Implemented:
 - Tactical Analysis: Reveals enemy weak points (1.5x damage + knockback) - 7 fragments
+- Expanded memory roster covering economy, defensive, and utility perks (see MemorySystem.cpp)
 
-⏳ Additional memories to be designed and implemented
-
-**Deliverable:** Polished memory system with additional memories and balanced economy
-**Testing:** Full run economics feel rewarding, meaningful progression choices
+**Deliverable:** Memory progression loop finalized with balanced fragment economy and polished shop UX
+**Testing:** Full run economics feel rewarding; shop showcases new memories and activation feedback
 
 =============================================================================
 
 ### PHASE 10: ANIMATION SYSTEM (Week 11)
 **Priority:** HIGH - Visual Polish
-**Status:** PENDING
+**Status:** 🚧 IN PROGRESS
 
 **Goals:**
-- Complete animation integration
-- Smooth combat feel
-- Visual feedback for all actions
+- Hybrid physics-animation system for dynamic combat feel
+- Minimal animation requirements with procedural reactions
+- Smooth, responsive combat (Sifu/Sekiro style)
+- Clear visual communication of combat states
+
+**Architecture Decision:** Physics-Based Hit Reaction System
+- Use Unreal's Physical Animation Component for procedural hit reactions
+- Reduces animation count by 80% (physics generates variations)
+- Integrates perfectly with existing damage/weak side/knockback systems
+- Provides unlimited reaction variations from single base animations
 
 **Tasks:**
-1. [ ] Player Animations
-   - Attack animations (normal, counter, hack)
-   - Block animations (directional)
-   - Dodge animations (4 directions)
-   - Dash and leap attack animations
-   - Hit reactions and death animations
-   - Phase transition animations
+1. [ ] Core Animation Framework
+   - Create UAnimationComponent for centralized animation management
+   - Implement UPhysicsHitReactionComponent for procedural reactions
+   - Set up Physical Animation profiles (upper body physics, lower body animated)
+   - Configure bone-specific physics responses
 
-2. [ ] Enemy Animations
-   - Attack animations (combos, heavy attacks)
-   - Hit reactions
-   - Phase transition animations
-   - Death and finisher receive animations
+2. [ ] Required Animation Assets (Minimal Set - 15 total)
+   PLAYER ANIMATIONS:
+   - [ ] 3 Attack animations (left/right/overhead swings)
+   - [ ] 3 Block poses (left/center/right - critical for directional blocking clarity)
+   - [ ] 3 Dodge animations (left/right/back sidesteps)
+   - [ ] 1 Dash animation (forward lunge)
+   - [ ] 1 Hack cast animation (ranged ability)
+   - [ ] 1 Hack response animation (enemy receives hack)
+   - [ ] 1 Stagger base (physics modifies for all hit reactions)
+   - [ ] 2 Finisher animations (execute + receive)
 
-3. [ ] Animation Notifies
-   - Damage frame timing
-   - Counter window triggers
-   - VFX spawn points
-   - SFX triggers
+   ENEMY ANIMATIONS:
+   - [ ] Use same set with enemy-specific timing variations
+   - [ ] Add clear attack telegraphs (0.3-0.5s wind-ups)
 
-**Deliverable:** Fully animated combat system
+3. [ ] Physics Integration
+   - Configure impulse strengths:
+     * Normal hit: 500 units
+     * Heavy/weak side hit: 1500 units (1.5x damage visual feedback)
+     * Blocked hit: 200 units (minimal wobble)
+     * Hack ability: Head bone impulse + response animation
+   - Blend timings:
+     * 0-0.2s: Physics takeover
+     * 0.2-0.4s: Blend back to animation
+     * 0.4s+: Full animation control
+   - Gamestyle modifiers:
+     * Defense: Reduces impulse by 10% per stack
+     * Mobility: Faster recovery blend by 5% per stack
+
+4. [ ] Animation Notify System
+   - AttackHitbox_Start/End (damage window control)
+   - CounterWindow_Start/End (opportunity windows)
+   - Movement_Lock/Unlock (root motion control)
+   - Effect_Spawn (VFX/SFX timing)
+   - PhysicsImpulse_Apply (hit reaction triggers)
+
+5. [ ] Special Systems
+   - [ ] Hack Ability Integration:
+     * Cast animation plays on attacker
+     * Apply head bone physics impulse to target
+     * Play hack response animation on enemy
+     * Creates "psychic attack" visual effect
+   - [ ] Block Direction Blending:
+     * Smooth transitions between 3 block poses
+     * Real-time blend based on mouse position
+     * 0.15s blend time for responsive feel
+   - [ ] Animation Canceling:
+     * Dodge/block can cancel attacks
+     * Priority system for animation overrides
+     * Input buffer for queued actions
+
+**Technical Implementation:**
+```cpp
+// Core component structure
+class UPhysicsHitReactionComponent : public UActorComponent
+{
+    // Impulse strengths for different hit types
+    float LightHitImpulse = 500.0f;
+    float HeavyHitImpulse = 1500.0f;
+    float BlockedImpulse = 200.0f;
+    float HackHeadImpulse = 2000.0f;  // Special for hack ability
+
+    // Apply targeted physics for hack
+    void ApplyHackReaction(AActor* Target)
+    {
+        // Apply impulse to head bone
+        PhysicalAnimation->ApplyPhysicalAnimationForce(
+            "head",
+            FVector::UpVector * HackHeadImpulse
+        );
+        // Play hack response animation
+        Target->PlayAnimMontage(HackResponseMontage);
+    }
+};
+```
+
+**Performance Optimizations:**
+- LOD system: Full physics (close), simplified (medium), animation-only (far)
+- Bone limits: 5-10 bones max per character
+- Smart activation: Physics only during combat
+
+**Testing Metrics:**
+- Attack-to-hit: <200ms response time
+- Enemy telegraphs: 300-500ms clear wind-ups
+- Blend transitions: <100ms for snappy feel
+- Counter windows: Visually match animation frames
+
+**Deliverable:** Hybrid physics-animation combat system with minimal asset requirements
 **Testing:** All animations play correctly with proper timing
 
 =============================================================================
@@ -630,17 +707,18 @@
 
 ### SESSION TRACKING:
 **Current Phase:** 9
-**Next Tasks:** Continue Phase 9 - Design and implement additional memories
-**Completion Status:** 8.1/12 phases complete (Phase 9 in progress)
+**Next Tasks:** Kick off Phase 10 - Animation System polish (retarget montages, add gameplay notifies)
+**Completion Status:** 9/12 phases complete (Phase 10 in progress)
 
 ### NOTES FOR NEXT SESSION:
 - Phase 1-8 complete: Combat, Blocking, Dodge/Movement, Special Abilities, Arena System (5A/5B/5C), Memory System, UI & Polish, Gamestyle System
 - Critical fixes completed during Phase 7 (all roguelike reset issues resolved)
 - Phase 8 completed: Gamestyle System (automatic run upgrades that stack with kills, 5 styles)
-- Phase 9 IN PROGRESS: Memory System Revisit & Economy
+- Phase 9 COMPLETED: Memory System Revisit & Economy
   - ✅ Tactical Analysis memory (weak side detection) - 1.5x damage + knockback
-  - ⏳ Need to design and implement more memories
-  - ⏳ Fragment economy balancing needed
+  - ✅ Additional combat and utility memories shipped (see MemorySystem.cpp)
+  - ✅ Shop UX updated with descriptions, confirmations, and active loadout summary
+  - ✅ Fragment economy tuned: phase rewards + skill bonuses validated across test runs
 - Phase 10 planned: Animation System
 - Phase 11 planned: SFX & VFX
 - Phase 12 planned: Enemy AI
