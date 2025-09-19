@@ -273,10 +273,32 @@ Basic attack, health system, training dummy - All tested and working
 - ⏳ Enhanced memory shop UI
 - ⏳ Fragment reward bonuses (no-damage, combos, etc.)
 
-### Phase 10: Animation System
-- Combat animations
-- Animation notifies
-- Smooth transitions
+### Phase 10: Animation System 🚧 IN PROGRESS
+- ✅ `UAnimationComponent` - Montage system with priorities/queuing - Functional
+- ✅ `UPhysicsHitReactionComponent` - Physics-based hit reactions - Functional
+- ⏳ Animation asset import from Mixamo/Marketplace
+- ⏳ Animation Blueprint creation (ABP_SecondWindCharacter)
+- ⏳ Montage setup with notifies
+- ⏳ Integration testing
+
+#### Implementation Steps:
+1. **Import Animation Assets** - Attack combo, dodges, blocks, idle/movement
+2. **Create Animation Blueprint** - Minimal state machine + montage slot
+3. **Create Montages & Notifies** - Damage frames, combo windows, counter windows
+4. **Connect Components** - Assign montages to AnimationComponent properties
+5. **Configure Physics** - PhysicalAnimationComponent + physics asset
+6. **Test Integration** - Verify combat flow with animations
+
+#### Key Integration Points:
+- CombatComponent already calls `PlayAnimation()`
+- DodgeComponent already calls `PlayAnimation()`
+- PhysicsHitReactionComponent auto-triggers on damage
+- Notifies needed: AttackWindow, ComboWindow, DodgeInvincibility, BlockCounter
+
+#### Optional Enhancements:
+- Motion Warping for precise dodge positioning
+- Control Rig for procedural reactions
+- Advanced physics blending
 
 ### Phase 11: SFX & VFX
 - Sound effects
