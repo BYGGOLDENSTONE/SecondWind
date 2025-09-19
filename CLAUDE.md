@@ -8,7 +8,7 @@
 ## 📍 Current Status
 **Phase:** 9 of 12 🚧 IN PROGRESS
 **Previous:** Phase 8 - Gamestyle System ✅ COMPLETED
-**Current:** Phase 9 - Memory System Revisit & Economy 🚧 IN PROGRESS (1 of 8-10 memories complete)
+**Current:** Phase 9 - Memory System Revisit & Economy 🚧 IN PROGRESS
 **Next:** Phase 10 - Animation System
 **Timeline:** 12 phases over 13 weeks
 
@@ -210,15 +210,18 @@ Basic attack, health system, training dummy - All tested and working
 - ✅ NO disk saves - all progress lost on game close (by design)
 - ✅ `SMemoryShopWidget` - Slate UI for memory purchases
 - ✅ `UMemoryShopComponent` - Shop interaction component
-- ✅ Three memories implemented:
-  - Quick Hack: 1 fragment (reduces hack counters 6→4)
-  - Sharpened Blade: 2 fragments (+25% attack damage)
-  - Hardened Resolve: 3 fragments (block reduction 40%→60%)
+- ✅ Memory shop system implemented (awaiting new memories)
 - ✅ Safe zone auto-opens memory shop
 - ✅ Memory effects reapply on run reset
 - ✅ Player death → 3s delay → new run at hub
 - ✅ Fragments/memories persist between runs (same session only)
-- ✅ Fragment rewards: 3 + phase number per phase (e.g., 1-phase = 4, 2-phase = 9)
+- ✅ Phase-based fragment rewards (fragments = phase number per phase completion)
+  - Arena 1: 1 fragment on kill
+  - Arena 2: 1 fragment (phase 1) + 2 fragments (kill) = 3 total
+  - Arena 3: 1 + 2 + 3 = 6 total
+  - Arena 4: 1 + 2 + 3 + 4 = 10 total
+  - Arena 5: 1 + 2 + 3 + 4 + 5 = 15 total
+- ✅ Skill bonuses: +1 for no-hit kill, +1 for quick kill (<2s for testing, normally 30s)
 - ✅ Fixed spawned enemy movement and phase transitions
 - ✅ Fixed multi-phase enemy fragment rewards and door unlocking
 - ✅ HackComponent now targets both training dummies and arena enemies
@@ -237,10 +240,12 @@ Basic attack, health system, training dummy - All tested and working
   - `UWeakSideComponent` - Enemy weak point system
   - 3-second active periods, 2-second cooldown after hit
   - Visual feedback with custom depth stencil
-  - Cost: 4 fragments
-- ⏳ Additional memories to implement (8-10 total needed)
-- ⏳ Fragment economy balancing
-- ⏳ Fragment reward bonuses
+  - Cost: 7 fragments
+- ✅ Fragment economy implemented and balanced
+  - Phase-based rewards system
+  - Skill-based bonus fragments (no-hit, quick kill)
+  - Balanced for ~4 runs before first memory purchase
+- ⏳ Additional memories to implement
 
 ### Phase 8: Gamestyle System (Automatic Run Upgrades) ✅ COMPLETED
 - ✅ `UGamestyleSystem` - Complete gamestyle subsystem
@@ -262,7 +267,7 @@ Basic attack, health system, training dummy - All tested and working
 
 ### Phase 9: Memory System Revisit & Economy 🚧 IN PROGRESS
 - ✅ Tactical Analysis memory implemented
-- ⏳ Expand memory options to 8-10 total (1 complete)
+- ⏳ Expand memory options
 - ⏳ Balance fragment economy and rewards
 - ⏳ Implement proper fragment distribution
 - ⏳ Enhanced memory shop UI

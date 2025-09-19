@@ -30,7 +30,7 @@ void UMemorySystem::InitializeMemoryDatabase()
     WeakSide.MemoryID = TEXT("MEMORY_WEAK_SIDE");
     WeakSide.DisplayName = TEXT("Tactical Analysis");
     WeakSide.Description = TEXT("Reveals enemy weak points for 1.5x damage and knockback");
-    WeakSide.FragmentCost = 4;
+    WeakSide.FragmentCost = 7;
     WeakSide.MemoryType = EMemoryType::WeakSide;
     WeakSide.EffectValue = 1.5f;
     AllMemories.Add(WeakSide.MemoryID, WeakSide);

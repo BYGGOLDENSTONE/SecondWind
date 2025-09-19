@@ -2,6 +2,8 @@
 #include "../Components/HealthComponent.h"
 #include "../Components/CombatComponent.h"
 #include "../Components/WeakSideComponent.h"
+#include "../Components/FragmentComponent.h"
+#include "../SecondWindCharacter.h"
 #include "../Systems/EnemyManager.h"
 #include "../Systems/GamestyleSystem.h"
 #include "../Systems/MemorySystem.h"
@@ -38,6 +40,9 @@ void AArenaEnemy::BeginPlay()
         SpawnDefaultController();
         UE_LOG(LogTemp, Warning, TEXT("ArenaEnemy: Spawned default controller in BeginPlay"));
     }
+
+    // Bind to damage event to track damage taken
+    OnTakeAnyDamage.AddDynamic(this, &AArenaEnemy::OnTakeDamage);
 
     // Ensure movement component is properly initialized
     if (GetCharacterMovement())
@@ -81,6 +86,9 @@ void AArenaEnemy::BeginPlay()
     {
         UE_LOG(LogTemp, Error, TEXT("ERROR: ArenaEnemy has no HealthComponent!"));
     }
+
+    // Mark combat start time
+    CombatStartTime = GetWorld()->GetTimeSeconds();
 
     // Start attacking every 2-3 seconds
     GetWorldTimerManager().SetTimer(AttackTimerHandle, this, &AArenaEnemy::PerformAttack,
@@ -182,6 +190,9 @@ void AArenaEnemy::OnPhaseTransition()
 {
     UE_LOG(LogTemp, Warning, TEXT("=== PHASE TRANSITION: Old phase %d/%d ==="), CurrentPhase, MaxPhases);
 
+    // Store the old phase before syncing
+    int32 CompletedPhase = CurrentPhase;
+
     // Update our phase counter to match the HealthComponent's phase
     // The HealthComponent has already incremented its phase
     if (HealthComponent)
@@ -189,6 +200,16 @@ void AArenaEnemy::OnPhaseTransition()
         CurrentPhase = HealthComponent->GetCurrentPhase();
         UE_LOG(LogTemp, Warning, TEXT("Updated to new phase %d/%d from HealthComponent"), CurrentPhase, MaxPhases);
     }
+
+    // Award fragments for the phase we just completed (CompletedPhase, not CurrentPhase)
+    UE_LOG(LogTemp, Warning, TEXT("PHASE TRANSITION: About to award fragments for phase %d"), CompletedPhase);
+    AwardPhaseFragments(CompletedPhase);
+    UE_LOG(LogTemp, Warning, TEXT("PHASE TRANSITION: Awarded fragments for completing phase %d"), CompletedPhase);
+
+    // Reset damage taken for potential no-hit bonus on next phase
+    DamageTakenThisLife = 0.0f;
+    // Reset combat timer for quick kill tracking
+    CombatStartTime = GetWorld()->GetTimeSeconds();
 
     // Start the next phase (re-enable movement, adjust stats, etc.)
     StartNextPhase();
@@ -210,10 +231,18 @@ void AArenaEnemy::OnEnemyDeath()
 
     if (CurrentPhase >= MaxPhases)
     {
-        int32 Fragments = CalculateFragmentReward();
+        // Award fragments for defeating the enemy
+        // The final phase reward is the number of phases (MaxPhases)
+        // For 1-phase enemy: 1 fragment
+        // For 2-phase enemy: 2 fragments (phase 1 already gave 1)
+        // For 3-phase enemy: 3 fragments (phases 1&2 already gave 1+2)
+        UE_LOG(LogTemp, Warning, TEXT("ENEMY DEATH: About to award fragments for final phase %d"), MaxPhases);
+        AwardPhaseFragments(MaxPhases);
+        UE_LOG(LogTemp, Warning, TEXT("ENEMY DEATH: Awarded fragments for final phase %d"), MaxPhases);
+
         UE_LOG(LogTemp, Warning, TEXT("=== ENEMY DEATH ==="));
-        UE_LOG(LogTemp, Warning, TEXT("Enemy defeated in Arena %d! MaxPhases: %d, Fragments: %d"),
-            ArenaLevel, MaxPhases, Fragments);
+        UE_LOG(LogTemp, Warning, TEXT("Enemy defeated in Arena %d! MaxPhases: %d"),
+            ArenaLevel, MaxPhases);
         UE_LOG(LogTemp, Warning, TEXT("OwnerZone is %s"), OwnerZone ? TEXT("SET") : TEXT("NULL"));
 
         // Stop attacking when dead
@@ -285,16 +314,67 @@ void AArenaEnemy::ExecuteFinisher()
 
 int32 AArenaEnemy::CalculateFragmentReward() const
 {
-    // New formula: 3 base fragments + phase number for each phase
-    // Phase 1: 3 + 1 = 4 fragments
-    // Phase 2: 3 + 2 = 5 fragments
-    // Phase 3: 3 + 3 = 6 fragments, etc.
-    int32 TotalFragments = 0;
-    for (int32 i = 1; i <= MaxPhases; i++)
+    // This is only called when enemy is fully defeated (final phase)
+    // Return the fragment reward for completing the final phase
+    return GetPhaseFragmentReward(MaxPhases);
+}
+
+int32 AArenaEnemy::GetPhaseFragmentReward(int32 Phase) const
+{
+    // Phase-based rewards: phase number = fragments
+    // Phase 1 = 1 fragment, Phase 2 = 2 fragments, etc.
+    return Phase;
+}
+
+void AArenaEnemy::OnTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType,
+    class AController* InstigatedBy, AActor* DamageCauser)
+{
+    // Track damage taken for no-hit bonus calculation
+    DamageTakenThisLife += Damage;
+    UE_LOG(LogTemp, Warning, TEXT("ArenaEnemy took %.1f damage (total this phase: %.1f)"),
+        Damage, DamageTakenThisLife);
+}
+
+void AArenaEnemy::AwardPhaseFragments(int32 PhaseCompleted)
+{
+    UE_LOG(LogTemp, Warning, TEXT("*** AWARDING FRAGMENTS for Phase %d completion (MaxPhases: %d) ***"),
+        PhaseCompleted, MaxPhases);
+
+    int32 BaseFragments = GetPhaseFragmentReward(PhaseCompleted);
+    int32 BonusFragments = 0;
+
+    // Calculate bonuses only for final phase (enemy defeated)
+    if (PhaseCompleted == MaxPhases)
     {
-        TotalFragments += (3 + i);
+        // No-hit bonus: +1 fragment
+        if (DamageTakenThisLife <= 0.0f)
+        {
+            BonusFragments += 1;
+            UE_LOG(LogTemp, Warning, TEXT("No-hit kill bonus! +1 fragment"));
+        }
+
+        // Quick kill bonus: +1 fragment if killed under 2 seconds (reduced for testing)
+        float CombatDuration = GetWorld()->GetTimeSeconds() - CombatStartTime;
+        if (CombatDuration < 2.0f && CombatStartTime > 0.0f)
+        {
+            BonusFragments += 1;
+            UE_LOG(LogTemp, Warning, TEXT("Quick kill bonus (%.1fs)! +1 fragment"), CombatDuration);
+        }
     }
-    return TotalFragments;
+
+    int32 TotalFragments = BaseFragments + BonusFragments;
+
+    // Award fragments to player
+    if (ASecondWindCharacter* PlayerCharacter = Cast<ASecondWindCharacter>(
+        GetWorld()->GetFirstPlayerController()->GetPawn()))
+    {
+        if (UFragmentComponent* FragComponent = PlayerCharacter->FindComponentByClass<UFragmentComponent>())
+        {
+            FragComponent->AddFragments(TotalFragments);
+            UE_LOG(LogTemp, Warning, TEXT("Awarded %d fragments (base: %d, bonus: %d) for Phase %d completion"),
+                TotalFragments, BaseFragments, BonusFragments, PhaseCompleted);
+        }
+    }
 }
 
 void AArenaEnemy::SetupPhases()

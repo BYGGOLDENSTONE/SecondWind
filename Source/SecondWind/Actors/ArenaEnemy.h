@@ -39,6 +39,8 @@ public:
 
     void ExecuteFinisher();
     int32 CalculateFragmentReward() const;
+    int32 GetPhaseFragmentReward(int32 Phase) const;
+    void AwardPhaseFragments(int32 PhaseCompleted);
     void SetPhaseCount(int32 PhaseCount);
     void SetOwnerZone(class AArenaZone* Zone);
     class AArenaZone* GetOwnerZone() const { return OwnerZone; }
@@ -50,6 +52,10 @@ protected:
     void StartNextPhase();
     UFUNCTION()
     void EnterFinisherState();
+
+    UFUNCTION()
+    void OnTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType,
+        class AController* InstigatedBy, AActor* DamageCauser);
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     UHealthComponent* HealthComponent;
@@ -70,6 +76,12 @@ protected:
 private:
     UPROPERTY()
     int32 ArenaLevel = 1;
+
+    // Track damage taken for no-hit bonus
+    float DamageTakenThisLife = 0.0f;
+
+    // Track combat start time for quick kill bonus
+    float CombatStartTime = 0.0f;
 
     UPROPERTY()
     int32 CurrentPhase = 1;

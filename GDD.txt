@@ -104,22 +104,32 @@ These bonuses stack with each arena victory but reset on death, ensuring each ru
 Spend fragments between arenas to unlock permanent improvements:
 
 **Currently Implemented:**
-* **Tactical Analysis (4 fragments):** Reveals enemy weak points for 1.5x damage + knockback
+* **Tactical Analysis (7 fragments):** Reveals enemy weak points for 1.5x damage + knockback
   * 3-second active periods with random side selection
   * 2-second cooldown after successful hit
   * Visual glow indicates vulnerable side
 
-**Note:** Additional memories to be implemented (8-10 total planned for Phase 9)
+**Note:** Additional memories to be implemented in Phase 9
 
 Memories persist across all runs (within same game session), providing meta-progression.
 
 ### **Fragment Economy**
 
-Fragments are the primary currency earned by defeating enemies:
-* Reward scales with enemy phases defeated
-* Early enemies: ~4 fragments
-* Late enemies: ~30 fragments
-* Balanced to encourage full arena completion
+Fragments are the primary currency earned through phase-based rewards:
+
+**Base Rewards (per enemy defeated):**
+* Arena 1: 1 fragment (1 phase)
+* Arena 2: 3 fragments total (2 phases: 1+2)
+* Arena 3: 6 fragments total (3 phases: 1+2+3)
+* Arena 4: 10 fragments total (4 phases: 1+2+3+4)
+* Arena 5: 15 fragments total (5 phases: 1+2+3+4+5)
+
+**Skill Bonuses (final phase only):**
+* No-hit kill: +1 fragment
+* Quick kill (under 30s): +1 fragment
+* Both bonuses can stack for +2 maximum
+
+Balanced so players need ~4 attempts to afford first memory
 
 ## **Arena Structure**
 

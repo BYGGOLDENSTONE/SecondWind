@@ -145,28 +145,8 @@ void AArenaZone::OnEnemyDefeated(AArenaEnemy* Enemy)
         return;
     }
 
-    // Award fragments to player
-    int32 FragmentReward = Enemy->CalculateFragmentReward();
-    UE_LOG(LogTemp, Warning, TEXT("Fragment reward calculated: %d"), FragmentReward);
-
-    if (ASecondWindCharacter* PlayerCharacter = Cast<ASecondWindCharacter>(
-        UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))
-    {
-        if (UFragmentComponent* FragmentComp = PlayerCharacter->FindComponentByClass<UFragmentComponent>())
-        {
-            FragmentComp->AddFragments(FragmentReward);
-            UE_LOG(LogTemp, Warning, TEXT("SUCCESS: Player earned %d fragments from enemy in Zone %d"),
-                FragmentReward, ZoneNumber);
-        }
-        else
-        {
-            UE_LOG(LogTemp, Error, TEXT("ERROR: Player has no FragmentComponent"));
-        }
-    }
-    else
-    {
-        UE_LOG(LogTemp, Error, TEXT("ERROR: Could not find player character"));
-    }
+    // Fragment awarding is now handled by ArenaEnemy itself on phase transitions and death
+    UE_LOG(LogTemp, Warning, TEXT("Enemy defeated in Zone %d (fragments handled by ArenaEnemy)"), ZoneNumber);
 
     ActiveEnemies.Remove(Enemy);
     UE_LOG(LogTemp, Warning, TEXT("Enemy removed from ActiveEnemies. Remaining: %d"), ActiveEnemies.Num());

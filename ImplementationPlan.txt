@@ -354,9 +354,7 @@
    - Gameplay effect application framework
    - Safe zone memory spending interface
    - Three memories implemented:
-     • Quick Hack: 1 fragment (reduces hack counters 6→4)
-     • Sharpened Blade: 2 fragments (+25% attack damage)
-     • Hardened Resolve: 3 fragments (block reduction 40%→60%)
+     • (Old memories removed - incompatible with new upgrade system)
 
 3. [✅] Roguelike Session System
    - Run resets on player death (3s delay → respawn at hub)
@@ -477,16 +475,16 @@
 - Polish shop experience
 
 **Tasks:**
-1. [IN PROGRESS] Fragment Economy Balancing
-   - Review and adjust fragment rewards per enemy phase
-   - Test economy flow through full runs
-   - Ensure meaningful progression choices
-   - Balance memory costs vs. fragment availability
-   - Implement actual fragment rewards (currently placeholder)
+1. [✅] Fragment Economy Balancing
+   - Phase-based rewards: phase number = fragments earned
+   - Arena progression: 1, 3, 6, 10, 15 fragments total
+   - Skill bonuses: +1 no-hit, +1 quick kill (2s for testing)
+   - Tactical Analysis costs 7 fragments (~4 runs to unlock)
+   - Economy tested and balanced for progression curve
 
 2. [IN PROGRESS] Expand Memory Options
    - [✅] Tactical Analysis (Weak Side Detection) - 1.5x damage + knockback
-   - [ ] Design and implement 7-9 additional memories for total of 8-10
+   - [ ] Design and implement additional memories
    - Create memory tiers (basic/advanced)
    - Implement memory prerequisites/unlocks
    - Design synergies between memories
@@ -498,19 +496,19 @@
    - Display current active memories
    - Memory refund system (if needed)
 
-4. [ ] Fragment Reward System
-   - Bonus fragments for no-damage kills
-   - Combo multipliers for quick kills
-   - Special rewards for counter-kill finishers
-   - First-time boss defeat bonuses
+4. [✅] Fragment Reward System
+   - No-damage kill bonus: +1 fragment
+   - Quick kill bonus: +1 fragment (under 2s for testing, 30s normal)
+   - Bonuses stack for +2 maximum per enemy
+   - Phase-based distribution prevents farming
 
 **Memory Implementation Status:**
 ✅ Implemented:
-- Tactical Analysis: Reveals enemy weak points (1.5x damage + knockback) - 4 fragments
+- Tactical Analysis: Reveals enemy weak points (1.5x damage + knockback) - 7 fragments
 
-⏳ Additional memories to be designed and implemented (7-9 more for total of 8-10)
+⏳ Additional memories to be designed and implemented
 
-**Deliverable:** Polished memory system with 8-10 memories and balanced economy
+**Deliverable:** Polished memory system with additional memories and balanced economy
 **Testing:** Full run economics feel rewarding, meaningful progression choices
 
 =============================================================================
@@ -641,7 +639,7 @@
 - Phase 8 completed: Gamestyle System (automatic run upgrades that stack with kills, 5 styles)
 - Phase 9 IN PROGRESS: Memory System Revisit & Economy
   - ✅ Tactical Analysis memory (weak side detection) - 1.5x damage + knockback
-  - ⏳ Need to design and implement 7-9 more memories for total of 8-10
+  - ⏳ Need to design and implement more memories
   - ⏳ Fragment economy balancing needed
 - Phase 10 planned: Animation System
 - Phase 11 planned: SFX & VFX
