@@ -102,11 +102,24 @@ These bonuses stack with each arena victory but reset on death, ensuring each ru
 ### **Memories (Permanent Upgrades)**
 
 Spend fragments between arenas to unlock permanent improvements:
-* **Quick Hack:** Reduces hack requirement from 6 to 4 counters
-* **Sharpened Blade:** Increases base attack damage by 25%
-* **Hardened Resolve:** Improves block damage reduction to 60%
 
-Memories persist across all runs, providing meta-progression.
+**Currently Implemented:**
+* **Tactical Analysis (4 fragments):** Reveals enemy weak points for 1.5x damage + knockback
+  * 3-second active periods with random side selection
+  * 2-second cooldown after successful hit
+  * Visual glow indicates vulnerable side
+
+**Planned Memories (Phase 9):**
+* **Swift Recovery:** Reduce dodge cooldown by 20%
+* **Vampire Strike:** Heal 2 HP per counter-attack
+* **Fragment Magnet:** +1 base fragment per phase
+* **Resilient Spirit:** Start each run with 120 HP
+* **Master Deflector:** Perfect blocks deal 5 damage back
+* **Perfect Timing:** Increase counter window duration by 0.2s
+* **Berserker's Rage:** +2 damage per 10% health missing
+* **Phase Walker:** Brief invulnerability after dodging
+
+Memories persist across all runs (within same game session), providing meta-progression.
 
 ### **Fragment Economy**
 

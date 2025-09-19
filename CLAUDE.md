@@ -6,9 +6,9 @@
 **Core Focus:** 1v1 close-quarters combat with deep mechanics from simple abilities
 
 ## 📍 Current Status
-**Phase:** 9 of 12 ⏳ READY TO START
+**Phase:** 9 of 12 🚧 IN PROGRESS
 **Previous:** Phase 8 - Gamestyle System ✅ COMPLETED
-**Current:** Phase 9 - Memory System Revisit & Economy ⏳ NOT STARTED
+**Current:** Phase 9 - Memory System Revisit & Economy 🚧 IN PROGRESS (1 of 8-10 memories complete)
 **Next:** Phase 10 - Animation System
 **Timeline:** 12 phases over 13 weeks
 
@@ -111,7 +111,8 @@ Source/SecondWind/
 │   ├── HackComponent.cpp/h            [Hack ability]
 │   ├── HackUIComponent.cpp/h          [Hack UI]
 │   ├── FragmentComponent.cpp/h        [Fragments]
-│   └── MemoryShopComponent.cpp/h      [Memory shop UI - Phase 6]
+│   ├── MemoryShopComponent.cpp/h      [Memory shop UI - Phase 6]
+│   └── WeakSideComponent.cpp/h        [Weak side system - Phase 9]
 ├── Actors/
 │   ├── TrainingDummy.cpp/h            [Test enemy]
 │   ├── ArenaEnemy.cpp/h               [Enemy with phases]
@@ -231,6 +232,16 @@ Basic attack, health system, training dummy - All tested and working
 - ✅ Real-time UI updates during combat
 - ✅ All UI elements functional and tested
 
+### Phase 9: Memory System Revisit & Economy 🚧 IN PROGRESS
+- ✅ Tactical Analysis Memory - Weak side detection (1.5x damage + knockback)
+  - `UWeakSideComponent` - Enemy weak point system
+  - 3-second active periods, 2-second cooldown after hit
+  - Visual feedback with custom depth stencil
+  - Cost: 4 fragments
+- ⏳ 7-9 more memories to implement
+- ⏳ Fragment economy balancing
+- ⏳ Fragment reward bonuses
+
 ### Phase 8: Gamestyle System (Automatic Run Upgrades) ✅ COMPLETED
 - ✅ `UGamestyleSystem` - Complete gamestyle subsystem
 - ✅ Random gamestyle assigned at start of each run (no player choice)
@@ -249,12 +260,13 @@ Basic attack, health system, training dummy - All tested and working
 - ✅ Comprehensive feedback system for all bonuses
 - ✅ No caps on progression (balance via testing)
 
-### Phase 9: Memory System Revisit & Economy
-- Expand memory options (8-10 total)
-- Balance fragment economy and rewards
-- Implement proper fragment distribution
-- Enhanced memory shop UI
-- Fragment reward bonuses (no-damage, combos, etc.)
+### Phase 9: Memory System Revisit & Economy 🚧 IN PROGRESS
+- ✅ Tactical Analysis memory implemented
+- ⏳ Expand memory options (1 of 8-10 complete)
+- ⏳ Balance fragment economy and rewards
+- ⏳ Implement proper fragment distribution
+- ⏳ Enhanced memory shop UI
+- ⏳ Fragment reward bonuses (no-damage, combos, etc.)
 
 ### Phase 10: Animation System
 - Combat animations

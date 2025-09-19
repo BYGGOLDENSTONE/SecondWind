@@ -467,7 +467,7 @@
 
 ### PHASE 9: MEMORY SYSTEM REVISIT & ECONOMY (Week 10)
 **Priority:** HIGH - Meta Progression Balance
-**Status:** PENDING
+**Status:** IN PROGRESS (Started Week 10)
 
 **Goals:**
 - Revisit and expand memory system
@@ -477,15 +477,16 @@
 - Polish shop experience
 
 **Tasks:**
-1. [ ] Fragment Economy Balancing
+1. [IN PROGRESS] Fragment Economy Balancing
    - Review and adjust fragment rewards per enemy phase
    - Test economy flow through full runs
    - Ensure meaningful progression choices
    - Balance memory costs vs. fragment availability
    - Implement actual fragment rewards (currently placeholder)
 
-2. [ ] Expand Memory Options
-   - Add 3-5 additional memories beyond current 3
+2. [IN PROGRESS] Expand Memory Options
+   - [✅] Tactical Analysis (Weak Side Detection) - 1.5x damage + knockback
+   - [ ] Add 7-9 additional memories for total of 8-10
    - Create memory tiers (basic/advanced)
    - Implement memory prerequisites/unlocks
    - Design synergies between memories
@@ -503,12 +504,19 @@
    - Special rewards for counter-kill finishers
    - First-time boss defeat bonuses
 
-**New Memory Examples:**
+**Memory Implementation Status:**
+✅ Implemented:
+- Tactical Analysis: Reveals enemy weak points (1.5x damage + knockback) - 4 fragments
+
+⏳ Planned Memories:
 - Swift Recovery: Reduce dodge cooldown by 20%
 - Vampire Strike: Heal 2 HP per counter-attack
 - Fragment Magnet: +1 base fragment per phase
 - Resilient Spirit: Start each run with 120 HP
 - Master Deflector: Perfect blocks deal 5 damage back
+- Perfect Timing: Increase counter window duration by 0.2s
+- Berserker's Rage: +2 damage per 10% health missing
+- Phase Walker: Brief invulnerability after dodging
 
 **Deliverable:** Polished memory system with 8-10 memories and balanced economy
 **Testing:** Full run economics feel rewarding, meaningful progression choices
@@ -631,20 +639,23 @@
 =============================================================================
 
 ### SESSION TRACKING:
-**Current Phase:** 8
-**Next Tasks:** Begin Phase 8 - Gamestyle System implementation
-**Completion Status:** 7/12 phases complete
+**Current Phase:** 9
+**Next Tasks:** Continue Phase 9 - Memory System implementation (7-9 more memories)
+**Completion Status:** 8.1/12 phases complete (Phase 9 in progress)
 
 ### NOTES FOR NEXT SESSION:
-- Phase 1-7 complete: Combat, Blocking, Dodge/Movement, Special Abilities, Arena System (5A/5B/5C), Memory System, UI & Polish
+- Phase 1-8 complete: Combat, Blocking, Dodge/Movement, Special Abilities, Arena System (5A/5B/5C), Memory System, UI & Polish, Gamestyle System
 - Critical fixes completed during Phase 7 (all roguelike reset issues resolved)
-- Phase 8 starting: Blessing System (temporary upgrades after defeating each enemy)
-- Phase 9 planned: Memory System Revisit & Economy
+- Phase 8 completed: Gamestyle System (automatic run upgrades that stack with kills, 5 styles)
+- Phase 9 IN PROGRESS: Memory System Revisit & Economy
+  - ✅ Tactical Analysis memory (weak side detection) - 1.5x damage + knockback
+  - ⏳ Need 7-9 more memories for total of 8-10
+  - ⏳ Fragment economy balancing needed
 - Phase 10 planned: Animation System
 - Phase 11 planned: SFX & VFX
 - Phase 12 planned: Enemy AI
 - Key distinction: Memories are permanent upgrades (purchased with fragments, session-based only)
-- Blessings are temporary upgrades (lost on death, earned after each enemy defeat)
+- Gamestyles are temporary upgrades (random assignment, stack with kills, lost on death)
 - Total of 12 phases with reorganized priorities
 
 ### CRITICAL FIXES COMPLETED (During Phase 7):
