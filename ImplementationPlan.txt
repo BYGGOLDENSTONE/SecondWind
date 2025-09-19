@@ -486,7 +486,7 @@
 
 2. [IN PROGRESS] Expand Memory Options
    - [✅] Tactical Analysis (Weak Side Detection) - 1.5x damage + knockback
-   - [ ] Add 7-9 additional memories for total of 8-10
+   - [ ] Design and implement 7-9 additional memories for total of 8-10
    - Create memory tiers (basic/advanced)
    - Implement memory prerequisites/unlocks
    - Design synergies between memories
@@ -508,15 +508,7 @@
 ✅ Implemented:
 - Tactical Analysis: Reveals enemy weak points (1.5x damage + knockback) - 4 fragments
 
-⏳ Planned Memories:
-- Swift Recovery: Reduce dodge cooldown by 20%
-- Vampire Strike: Heal 2 HP per counter-attack
-- Fragment Magnet: +1 base fragment per phase
-- Resilient Spirit: Start each run with 120 HP
-- Master Deflector: Perfect blocks deal 5 damage back
-- Perfect Timing: Increase counter window duration by 0.2s
-- Berserker's Rage: +2 damage per 10% health missing
-- Phase Walker: Brief invulnerability after dodging
+⏳ Additional memories to be designed and implemented (7-9 more for total of 8-10)
 
 **Deliverable:** Polished memory system with 8-10 memories and balanced economy
 **Testing:** Full run economics feel rewarding, meaningful progression choices
@@ -640,7 +632,7 @@
 
 ### SESSION TRACKING:
 **Current Phase:** 9
-**Next Tasks:** Continue Phase 9 - Memory System implementation (7-9 more memories)
+**Next Tasks:** Continue Phase 9 - Design and implement additional memories
 **Completion Status:** 8.1/12 phases complete (Phase 9 in progress)
 
 ### NOTES FOR NEXT SESSION:
@@ -649,7 +641,7 @@
 - Phase 8 completed: Gamestyle System (automatic run upgrades that stack with kills, 5 styles)
 - Phase 9 IN PROGRESS: Memory System Revisit & Economy
   - ✅ Tactical Analysis memory (weak side detection) - 1.5x damage + knockback
-  - ⏳ Need 7-9 more memories for total of 8-10
+  - ⏳ Need to design and implement 7-9 more memories for total of 8-10
   - ⏳ Fragment economy balancing needed
 - Phase 10 planned: Animation System
 - Phase 11 planned: SFX & VFX

@@ -238,7 +238,7 @@ Basic attack, health system, training dummy - All tested and working
   - 3-second active periods, 2-second cooldown after hit
   - Visual feedback with custom depth stencil
   - Cost: 4 fragments
-- ⏳ 7-9 more memories to implement
+- ⏳ Additional memories to implement (8-10 total needed)
 - ⏳ Fragment economy balancing
 - ⏳ Fragment reward bonuses
 
@@ -262,7 +262,7 @@ Basic attack, health system, training dummy - All tested and working
 
 ### Phase 9: Memory System Revisit & Economy 🚧 IN PROGRESS
 - ✅ Tactical Analysis memory implemented
-- ⏳ Expand memory options (1 of 8-10 complete)
+- ⏳ Expand memory options to 8-10 total (1 complete)
 - ⏳ Balance fragment economy and rewards
 - ⏳ Implement proper fragment distribution
 - ⏳ Enhanced memory shop UI
