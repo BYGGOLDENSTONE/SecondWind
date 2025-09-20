@@ -20,7 +20,7 @@ enum class EAnimationType : uint8
 	DodgeLeft,
 	DodgeRight,
 	DodgeBack,
-	Dash,
+	DodgeForward,
 	HackCast,
 	HackResponse,
 	Stagger,
@@ -98,8 +98,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Animations|Dodge")
 	UAnimMontage* DodgeBackMontage;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Animations|Special")
-	UAnimMontage* DashMontage;
+	UPROPERTY(EditDefaultsOnly, Category = "Animations|Dodge")
+	UAnimMontage* DodgeForwardMontage;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Animations|Special")
 	UAnimMontage* HackCastMontage;
@@ -151,4 +151,8 @@ private:
 	// Component references
 	class UPhysicsHitReactionComponent* PhysicsReactionComponent;
 	class ACharacter* OwnerCharacter;
+
+public:
+	// New montage section support
+	void PlayMontageSection(UAnimMontage* Montage, const FName& SectionName);
 };

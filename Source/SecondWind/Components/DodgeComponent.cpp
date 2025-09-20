@@ -207,6 +207,9 @@ void UDodgeComponent::PerformDodge(EDodgeDirection Direction)
             case EDodgeDirection::Back:
                 DodgeAnim = EAnimationType::DodgeBack;
                 break;
+            case EDodgeDirection::Forward:
+                DodgeAnim = EAnimationType::DodgeForward;
+                break;
         }
         AnimationComponent->PlayAnimation(DodgeAnim, EAnimationPriority::High);
     }
@@ -239,10 +242,10 @@ void UDodgeComponent::PerformDash()
     if (!OwnerCharacter)
         return;
 
-    // Play dash animation
+    // Play forward dodge animation (acts as dash)
     if (AnimationComponent)
     {
-        AnimationComponent->PlayAnimation(EAnimationType::Dash, EAnimationPriority::High);
+        AnimationComponent->PlayAnimation(EAnimationType::DodgeForward, EAnimationPriority::High);
     }
 
     // Log mobility bonus if active

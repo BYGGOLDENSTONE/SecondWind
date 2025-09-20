@@ -17,6 +17,9 @@
     <None Include="..\..\CLAUDE.md" />
     <None Include="..\..\GDD.txt" />
     <None Include="..\..\ImplementationPlan.txt" />
+    <None Include="..\..\Phase10_AnimationMapping.md" />
+    <None Include="..\..\Phase10_AnimationSystemGuide.md" />
+    <None Include="..\..\Phase10_AnimationSystemSummary.md" />
     <None Include="..\..\SecondWind.sln.DotSettings.user" />
     <Filter Include="Config">
       <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
@@ -200,6 +203,15 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\SecondWind\Components\WeakSideComponent.h">
       <Filter>Source\SecondWind\Components</Filter>
+    </ClCompile>
+    <Filter Include="Source\SecondWind\Data">
+      <UniqueIdentifier>{4E12F045-2749-3433-AF7F-B91E6DE18A49}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\SecondWind\Data\AnimationDataAsset.cpp">
+      <Filter>Source\SecondWind\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Data\AnimationDataAsset.h">
+      <Filter>Source\SecondWind\Data</Filter>
     </ClCompile>
     <Filter Include="Source\SecondWind\GameModes">
       <UniqueIdentifier>{DF834EAD-24FB-3387-8B45-3B23EBCDB155}</UniqueIdentifier>

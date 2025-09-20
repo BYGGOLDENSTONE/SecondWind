@@ -44,8 +44,8 @@ struct Z_Construct_UEnum_SecondWind_EAnimationType_Statics
 		{ "BlockLeft.Name", "EAnimationType::BlockLeft" },
 		{ "BlockRight.Name", "EAnimationType::BlockRight" },
 		{ "BlueprintType", "true" },
-		{ "Dash.Name", "EAnimationType::Dash" },
 		{ "DodgeBack.Name", "EAnimationType::DodgeBack" },
+		{ "DodgeForward.Name", "EAnimationType::DodgeForward" },
 		{ "DodgeLeft.Name", "EAnimationType::DodgeLeft" },
 		{ "DodgeRight.Name", "EAnimationType::DodgeRight" },
 		{ "FinisherExecute.Name", "EAnimationType::FinisherExecute" },
@@ -68,7 +68,7 @@ struct Z_Construct_UEnum_SecondWind_EAnimationType_Statics
 		{ "EAnimationType::DodgeLeft", (int64)EAnimationType::DodgeLeft },
 		{ "EAnimationType::DodgeRight", (int64)EAnimationType::DodgeRight },
 		{ "EAnimationType::DodgeBack", (int64)EAnimationType::DodgeBack },
-		{ "EAnimationType::Dash", (int64)EAnimationType::Dash },
+		{ "EAnimationType::DodgeForward", (int64)EAnimationType::DodgeForward },
 		{ "EAnimationType::HackCast", (int64)EAnimationType::HackCast },
 		{ "EAnimationType::HackResponse", (int64)EAnimationType::HackResponse },
 		{ "EAnimationType::Stagger", (int64)EAnimationType::Stagger },
@@ -325,8 +325,8 @@ struct Z_Construct_UClass_UAnimationComponent_Statics
 		{ "Category", "Animations|Dodge" },
 		{ "ModuleRelativePath", "Components/AnimationComponent.h" },
 	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_DashMontage_MetaData[] = {
-		{ "Category", "Animations|Special" },
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_DodgeForwardMontage_MetaData[] = {
+		{ "Category", "Animations|Dodge" },
 		{ "ModuleRelativePath", "Components/AnimationComponent.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HackCastMontage_MetaData[] = {
@@ -377,7 +377,7 @@ struct Z_Construct_UClass_UAnimationComponent_Statics
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_DodgeLeftMontage;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_DodgeRightMontage;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_DodgeBackMontage;
-	static const UECodeGen_Private::FObjectPropertyParams NewProp_DashMontage;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_DodgeForwardMontage;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_HackCastMontage;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_HackResponseMontage;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_StaggerMontage;
@@ -408,7 +408,7 @@ const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UAnimationComp
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UAnimationComponent_Statics::NewProp_DodgeLeftMontage = { "DodgeLeftMontage", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UAnimationComponent, DodgeLeftMontage), Z_Construct_UClass_UAnimMontage_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DodgeLeftMontage_MetaData), NewProp_DodgeLeftMontage_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UAnimationComponent_Statics::NewProp_DodgeRightMontage = { "DodgeRightMontage", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UAnimationComponent, DodgeRightMontage), Z_Construct_UClass_UAnimMontage_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DodgeRightMontage_MetaData), NewProp_DodgeRightMontage_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UAnimationComponent_Statics::NewProp_DodgeBackMontage = { "DodgeBackMontage", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UAnimationComponent, DodgeBackMontage), Z_Construct_UClass_UAnimMontage_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DodgeBackMontage_MetaData), NewProp_DodgeBackMontage_MetaData) };
-const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UAnimationComponent_Statics::NewProp_DashMontage = { "DashMontage", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UAnimationComponent, DashMontage), Z_Construct_UClass_UAnimMontage_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DashMontage_MetaData), NewProp_DashMontage_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UAnimationComponent_Statics::NewProp_DodgeForwardMontage = { "DodgeForwardMontage", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UAnimationComponent, DodgeForwardMontage), Z_Construct_UClass_UAnimMontage_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DodgeForwardMontage_MetaData), NewProp_DodgeForwardMontage_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UAnimationComponent_Statics::NewProp_HackCastMontage = { "HackCastMontage", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UAnimationComponent, HackCastMontage), Z_Construct_UClass_UAnimMontage_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HackCastMontage_MetaData), NewProp_HackCastMontage_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UAnimationComponent_Statics::NewProp_HackResponseMontage = { "HackResponseMontage", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UAnimationComponent, HackResponseMontage), Z_Construct_UClass_UAnimMontage_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HackResponseMontage_MetaData), NewProp_HackResponseMontage_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UAnimationComponent_Statics::NewProp_StaggerMontage = { "StaggerMontage", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UAnimationComponent, StaggerMontage), Z_Construct_UClass_UAnimMontage_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_StaggerMontage_MetaData), NewProp_StaggerMontage_MetaData) };
@@ -431,7 +431,7 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UAnimatio
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UAnimationComponent_Statics::NewProp_DodgeLeftMontage,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UAnimationComponent_Statics::NewProp_DodgeRightMontage,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UAnimationComponent_Statics::NewProp_DodgeBackMontage,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UAnimationComponent_Statics::NewProp_DashMontage,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UAnimationComponent_Statics::NewProp_DodgeForwardMontage,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UAnimationComponent_Statics::NewProp_HackCastMontage,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UAnimationComponent_Statics::NewProp_HackResponseMontage,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UAnimationComponent_Statics::NewProp_StaggerMontage,
@@ -482,14 +482,14 @@ UAnimationComponent::~UAnimationComponent() {}
 struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_AnimationComponent_h_Statics
 {
 	static constexpr FEnumRegisterCompiledInInfo EnumInfo[] = {
-		{ EAnimationType_StaticEnum, TEXT("EAnimationType"), &Z_Registration_Info_UEnum_EAnimationType, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 500354300U) },
+		{ EAnimationType_StaticEnum, TEXT("EAnimationType"), &Z_Registration_Info_UEnum_EAnimationType, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 4015763413U) },
 		{ EAnimationPriority_StaticEnum, TEXT("EAnimationPriority"), &Z_Registration_Info_UEnum_EAnimationPriority, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 3930044194U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UAnimationComponent, UAnimationComponent::StaticClass, TEXT("UAnimationComponent"), &Z_Registration_Info_UClass_UAnimationComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UAnimationComponent), 3900445594U) },
+		{ Z_Construct_UClass_UAnimationComponent, UAnimationComponent::StaticClass, TEXT("UAnimationComponent"), &Z_Registration_Info_UClass_UAnimationComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UAnimationComponent), 1484597841U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_AnimationComponent_h_1763091743(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_AnimationComponent_h_1709918080(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_AnimationComponent_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_AnimationComponent_h_Statics::ClassInfo),
 	nullptr, 0,
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_AnimationComponent_h_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_AnimationComponent_h_Statics::EnumInfo));

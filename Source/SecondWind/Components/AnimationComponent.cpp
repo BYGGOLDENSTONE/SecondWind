@@ -293,6 +293,8 @@ void UAnimationComponent::ProcessAnimationQueue()
 
 UAnimMontage* UAnimationComponent::GetMontageForAnimation(EAnimationType AnimType) const
 {
+	// NOTE: This will be refactored to use montage sections
+	// For now, keeping backward compatibility
 	switch (AnimType)
 	{
 		case EAnimationType::AttackLeft: return AttackLeftMontage;
@@ -304,13 +306,29 @@ UAnimMontage* UAnimationComponent::GetMontageForAnimation(EAnimationType AnimTyp
 		case EAnimationType::DodgeLeft: return DodgeLeftMontage;
 		case EAnimationType::DodgeRight: return DodgeRightMontage;
 		case EAnimationType::DodgeBack: return DodgeBackMontage;
-		case EAnimationType::Dash: return DashMontage;
+		case EAnimationType::DodgeForward: return DodgeForwardMontage;
 		case EAnimationType::HackCast: return HackCastMontage;
 		case EAnimationType::HackResponse: return HackResponseMontage;
 		case EAnimationType::Stagger: return StaggerMontage;
 		case EAnimationType::FinisherExecute: return FinisherExecuteMontage;
 		case EAnimationType::FinisherReceive: return FinisherReceiveMontage;
 		default: return nullptr;
+	}
+}
+
+// New function to support montage sections approach
+void UAnimationComponent::PlayMontageSection(UAnimMontage* Montage, const FName& SectionName)
+{
+	if (!Montage || !OwnerCharacter) return;
+
+	if (UAnimInstance* AnimInstance = OwnerCharacter->GetMesh()->GetAnimInstance())
+	{
+		// Play montage and jump to section
+		float MontageLength = AnimInstance->Montage_Play(Montage, AnimationSpeedMultiplier);
+		if (MontageLength > 0.0f && SectionName != NAME_None)
+		{
+			AnimInstance->Montage_JumpToSection(SectionName, Montage);
+		}
 	}
 }
 

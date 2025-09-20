@@ -258,6 +258,9 @@
     <None Include="..\..\CLAUDE.md"/>
     <None Include="..\..\GDD.txt"/>
     <None Include="..\..\ImplementationPlan.txt"/>
+    <None Include="..\..\Phase10_AnimationMapping.md"/>
+    <None Include="..\..\Phase10_AnimationSystemGuide.md"/>
+    <None Include="..\..\Phase10_AnimationSystemSummary.md"/>
     <None Include="..\..\SecondWind.sln.DotSettings.user"/>
     <None Include="..\..\Config\DefaultEditor.ini"/>
     <None Include="..\..\Config\DefaultEditorPerProjectUserSettings.ini"/>
@@ -413,6 +416,12 @@
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="..\..\Source\SecondWind\Components\WeakSideComponent.h">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Data\AnimationDataAsset.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SecondWind\Data\AnimationDataAsset.h">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="..\..\Source\SecondWind\GameModes\SecondWindArenaGameMode.cpp">

@@ -69,7 +69,7 @@ template<> SECONDWIND_API UClass* StaticClass<class UAnimationComponent>();
 	op(EAnimationType::DodgeLeft) \
 	op(EAnimationType::DodgeRight) \
 	op(EAnimationType::DodgeBack) \
-	op(EAnimationType::Dash) \
+	op(EAnimationType::DodgeForward) \
 	op(EAnimationType::HackCast) \
 	op(EAnimationType::HackResponse) \
 	op(EAnimationType::Stagger) \
