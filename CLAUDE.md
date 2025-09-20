@@ -276,23 +276,92 @@ Basic attack, health system, training dummy - All tested and working
 ### Phase 10: Animation System 🚧 IN PROGRESS
 - ✅ `UAnimationComponent` - Montage system with priorities/queuing - Functional
 - ✅ `UPhysicsHitReactionComponent` - Physics-based hit reactions - Functional
-- ⏳ Animation asset import from Mixamo/Marketplace
+- ✅ Animation assets acquired - 299 marketplace animations available
+- ✅ Animation mapping complete - See `Phase10_AnimationMapping.md`
 - ⏳ Animation Blueprint creation (ABP_SecondWindCharacter)
 - ⏳ Montage setup with notifies
 - ⏳ Integration testing
 
-#### Implementation Steps:
-1. **Import Animation Assets** - Attack combo, dodges, blocks, idle/movement
-2. **Create Animation Blueprint** - Minimal state machine + montage slot
-3. **Create Montages & Notifies** - Damage frames, combo windows, counter windows
-4. **Connect Components** - Assign montages to AnimationComponent properties
-5. **Configure Physics** - PhysicalAnimationComponent + physics asset
-6. **Test Integration** - Verify combat flow with animations
+#### Marketplace Animation Mapping (17 Core + Bonuses):
+**Attack Animations:**
+1. `A_Jab_L` → Attack_Front (player/enemy center)
+2. `A_90L_Punch` → Attack_Left (enemy side attack)
+3. `A_90R_Punch` → Attack_Right (enemy side attack)
+
+**Block Poses:**
+4. `A_Block_Idle` → Block_Center
+5. `A_BlockHit_L_IP` (frame 1) → Block_Left (extract pose)
+6. `A_BlockHit_R_IP` (frame 1) → Block_Right (extract pose)
+
+**Dodge Animations:**
+7. `A_Dodge_F` → Dodge_Forward
+8. `A_Dodge_B` → Dodge_Back
+9. `A_Dodge_L` → Dodge_Left
+10. `A_Dodge_R` → Dodge_Right
+
+**Hack Animations:**
+11. `A_UpperCut_Jump` → Hack_Attack
+12. `A_FallBack_Twist_L` → Hack_Hit_Response
+
+**Movement Animations:**
+13. `A_Idle_Active` → Idle_Combat
+14. `A_Move_F` → Walk_Forward
+15. `A_Move_B` → Walk_Back (strafe)
+16. `A_Move_L` → Walk_Left (strafe)
+17. `A_Move_R` → Walk_Right (strafe)
+
+**Bonus Content Available:**
+- 15 Counter animations (`A_Counter_1-15`)
+- 15 Finisher pairs (`A_Finisher_1-15` + reactions)
+- Multiple combo animations for future phases
+- Directional hit reactions for physics enhancement
+- Complete crouch combat system
+
+#### Animation System Design:
+- **Player attacks:** Always use Attack_Front (damage from front)
+- **Enemy attacks:** Use side-specific animations (Attack_Left/Center/Right)
+- **Dash mechanic:** Forward dodge + LMB in window = dash (adds forward force)
+- **Death/Finisher:** Handled by ragdoll physics activation (no animations)
+- **Block transitions:** Animation blending between 3 poses
+- **Hit reactions:** PhysicsHitReactionComponent + ragdoll for death
+- **Counter attack:** Reuses Attack_Front animation during counter windows
+
+#### Implementation Steps (Next Session):
+1. **Extract Block Poses** - Create static poses from BlockHit animations
+2. **Create Animation Blueprint** - State machine with montage slots
+3. **Setup Montages** - Organize attacks, dodges, counters, finishers
+4. **Add Notifies** - AttackWindow, ComboWindow, DodgeInvincibility, BlockCounter
+5. **Connect Components** - Wire montages to AnimationComponent
+6. **Test Integration** - Verify all 17 core animations work
+
+#### Code Changes Required:
+**DodgeComponent:**
+- Replace `PerformDash()` with forward dodge + attack window logic
+- Remove separate dash animation call
+- Add force impulse when attacking during forward dodge window
+- Use `Dodge_Forward` animation instead of dash
+
+**CombatComponent:**
+- Add `EAttackSide` enum (Left, Center, Right)
+- Add attack side parameter to `PerformAttack()` for enemies
+- Player always uses Center/Front attack
+- Enemies specify attack side based on their attack pattern
+
+**PhysicsHitReactionComponent:**
+- Add `EnableRagdoll()` function for death/finisher
+- Add ragdoll blend settings
+- Integrate with death detection from HealthComponent
+
+**AnimationComponent:**
+- Remove `EAnimationType::Dash` enum value
+- Map attack sides to appropriate animations
+- Handle block pose selection based on `BlockingComponent->CurrentBlockZone`
 
 #### Key Integration Points:
 - CombatComponent already calls `PlayAnimation()`
 - DodgeComponent already calls `PlayAnimation()`
 - PhysicsHitReactionComponent auto-triggers on damage
+- BlockingComponent provides `CurrentBlockZone` for pose selection
 - Notifies needed: AttackWindow, ComboWindow, DodgeInvincibility, BlockCounter
 
 #### Optional Enhancements:
@@ -329,6 +398,7 @@ Basic attack, health system, training dummy - All tested and working
 - `ImplementationPlan.txt` - Phase-by-phase breakdown (includes Phase 8 gamestyle details)
 - `CLAUDE.md` - This quick reference
 - `Phase5C_Plan.md` - Pre-placed level design system plan
+- `Phase10_AnimationMapping.md` - Complete marketplace animation mapping (299 animations)
 
 ## 🔧 Development Commands
 ```bash
