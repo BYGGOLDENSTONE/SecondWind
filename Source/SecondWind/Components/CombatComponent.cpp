@@ -186,8 +186,13 @@ void UCombatComponent::ExecuteAttack()
 	AActor* Owner = GetOwner();
 	if (!Owner)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("CombatComponent::ExecuteAttack - No owner!"));
 		return;
 	}
+
+	UE_LOG(LogTemp, Warning, TEXT("CombatComponent::ExecuteAttack - %s executing attack (Window Active: %s)"),
+		*Owner->GetName(),
+		bAttackWindowActive ? TEXT("YES") : TEXT("NO"));
 
 	// Check if this is a counter-attack
 	bool bIsCounterAttack = IsInCounterWindow();

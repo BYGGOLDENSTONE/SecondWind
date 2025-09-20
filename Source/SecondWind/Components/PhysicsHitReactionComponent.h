@@ -59,27 +59,27 @@ public:
 	void UpdateGamestyleModifiers(int32 DefenseStacks, int32 MobilityStacks);
 
 protected:
-	// Impulse strengths for different hit types
+	// Impulse strengths for different hit types (much lower for controlled reactions)
 	UPROPERTY(EditDefaultsOnly, Category = "Physics|Impulse")
-	float LightHitImpulse = 500.0f;
+	float LightHitImpulse = 50.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Physics|Impulse")
-	float MediumHitImpulse = 1000.0f;
+	float MediumHitImpulse = 100.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Physics|Impulse")
-	float HeavyHitImpulse = 1500.0f;
+	float HeavyHitImpulse = 200.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Physics|Impulse")
-	float BlockedHitImpulse = 200.0f;
+	float BlockedHitImpulse = 20.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Physics|Impulse")
-	float WeakSideImpulse = 2000.0f;
+	float WeakSideImpulse = 300.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Physics|Impulse")
-	float HackHeadImpulse = 2500.0f;
+	float HackHeadImpulse = 400.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Physics|Impulse")
-	float KnockbackImpulse = 3000.0f;
+	float KnockbackImpulse = 500.0f;
 
 	// Blend timings
 	UPROPERTY(EditDefaultsOnly, Category = "Physics|Blending")
@@ -140,4 +140,9 @@ private:
 	// Performance
 	int32 CurrentLODLevel = 0;
 	float DistanceToCamera = 0.0f;
+
+	// Last hit data
+	FName LastHitBone = NAME_None;
+	FVector LastHitDirection = FVector::ZeroVector;
+	float LastHitStrength = 0.0f;
 };

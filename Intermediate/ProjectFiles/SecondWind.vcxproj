@@ -260,7 +260,6 @@
     <None Include="..\..\ImplementationPlan.txt"/>
     <None Include="..\..\Phase10_MasterMontageGuide.md"/>
     <None Include="..\..\SecondWind.sln.DotSettings.user"/>
-    <None Include="..\..\SkeletonCompatibilityGuide.md"/>
     <None Include="..\..\Config\DefaultEditor.ini"/>
     <None Include="..\..\Config\DefaultEditorPerProjectUserSettings.ini"/>
     <None Include="..\..\Config\DefaultEngine.ini"/>

@@ -3,6 +3,7 @@
 #include "../Components/CombatComponent.h"
 #include "../Components/WeakSideComponent.h"
 #include "../Components/AnimationComponentSimplified.h"
+#include "../Components/PhysicsHitReactionComponent.h"
 #include "../Systems/EnemyManager.h"
 #include "../Systems/MemorySystem.h"
 #include "Components/CapsuleComponent.h"
@@ -34,6 +35,8 @@ ATrainingDummy::ATrainingDummy()
 	WeakSideComponent = CreateDefaultSubobject<UWeakSideComponent>(TEXT("WeakSideComponent"));
 
 	AnimationComponent = CreateDefaultSubobject<UAnimationComponentSimplified>(TEXT("AnimationComponent"));
+
+	PhysicsHitReactionComponent = CreateDefaultSubobject<UPhysicsHitReactionComponent>(TEXT("PhysicsHitReactionComponent"));
 
 	Tags.Add(FName("TrainingDummy"));
 }
@@ -211,6 +214,16 @@ void ATrainingDummy::PerformTestAttack()
 	if (CombatComponent)
 	{
 		CombatComponent->PerformAttack();
-		UE_LOG(LogTemp, Log, TEXT("Training Dummy attacking player"));
+		UE_LOG(LogTemp, Warning, TEXT("Training Dummy calling PerformAttack()"));
+
+		// Debug: Check if AnimationComponent exists
+		if (AnimationComponent)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Training Dummy has AnimationComponent"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Training Dummy MISSING AnimationComponent!"));
+		}
 	}
 }

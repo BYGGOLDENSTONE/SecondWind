@@ -1,6 +1,8 @@
 #include "HealthComponent.h"
 #include "BlockingComponent.h"
 #include "HackComponent.h"
+#include "PhysicsHitReactionComponent.h"
+#include "AnimationComponentSimplified.h"
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
 #include "SecondWind/UI/SecondWindHUD.h"
@@ -115,6 +117,56 @@ void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const clas
 
 	UE_LOG(LogTemp, Warning, TEXT("%s took %f damage. Health: %f/%f (Phase %d/%d)"),
 		*GetOwner()->GetName(), ActualDamage, CurrentHealth, MaxHealth, CurrentPhase, MaxPhases);
+
+	// Determine hit reaction type based on damage and blocking state
+	EHitReactionType ReactionType = EHitReactionType::Medium;
+
+	if (BlockingComponent && BlockingComponent->IsBlocking() && BlockingComponent->GetBlockDirection() != EBlockDirection::None)
+	{
+		ReactionType = EHitReactionType::Blocked;
+	}
+	else if (ActualDamage >= 50.0f)
+	{
+		ReactionType = EHitReactionType::Heavy;
+	}
+	else if (ActualDamage <= 10.0f)
+	{
+		ReactionType = EHitReactionType::Light;
+	}
+
+	// Apply physics hit reaction if available
+	if (UPhysicsHitReactionComponent* PhysicsComponent = GetOwner()->FindComponentByClass<UPhysicsHitReactionComponent>())
+	{
+		// Calculate hit direction from damage causer to this actor
+		FVector HitLocation = GetOwner()->GetActorLocation();
+		FVector HitDirection = FVector::ForwardVector;
+
+		if (DamageCauser)
+		{
+			HitDirection = (GetOwner()->GetActorLocation() - DamageCauser->GetActorLocation()).GetSafeNormal();
+		}
+
+		PhysicsComponent->ApplyHitReaction(HitLocation, HitDirection, ReactionType, ActualDamage);
+		UE_LOG(LogTemp, Warning, TEXT("Applied physics hit reaction (Type: %d) to %s"), static_cast<int32>(ReactionType), *GetOwner()->GetName());
+	}
+
+	// Also trigger hit reaction animation
+	if (UAnimationComponentSimplified* AnimComp = GetOwner()->FindComponentByClass<UAnimationComponentSimplified>())
+	{
+		// Play hit reaction based on reaction type
+		if (ReactionType == EHitReactionType::Heavy)
+		{
+			AnimComp->PlayHitReaction(2);  // Heavy hit
+		}
+		else if (ReactionType == EHitReactionType::Light)
+		{
+			AnimComp->PlayHitReaction(0);  // Light hit
+		}
+		else
+		{
+			AnimComp->PlayHitReaction(1);  // Medium hit
+		}
+	}
 
 	// Update HUD
 	if (UWorld* World = GetWorld())

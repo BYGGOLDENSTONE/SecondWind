@@ -3,6 +3,7 @@
 #include "../Components/CombatComponent.h"
 #include "../Components/WeakSideComponent.h"
 #include "../Components/AnimationComponentSimplified.h"
+#include "../Components/PhysicsHitReactionComponent.h"
 #include "../Components/FragmentComponent.h"
 #include "../SecondWindCharacter.h"
 #include "../Systems/EnemyManager.h"
@@ -24,6 +25,7 @@ AArenaEnemy::AArenaEnemy()
     CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
     WeakSideComponent = CreateDefaultSubobject<UWeakSideComponent>(TEXT("WeakSideComponent"));
     AnimationComponent = CreateDefaultSubobject<UAnimationComponentSimplified>(TEXT("AnimationComponent"));
+    PhysicsHitReactionComponent = CreateDefaultSubobject<UPhysicsHitReactionComponent>(TEXT("PhysicsHitReactionComponent"));
 
     GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
     GetCharacterMovement()->MaxWalkSpeed = 400.f;

@@ -51,10 +51,13 @@ void UAnimationComponentSimplified::BeginPlay()
     }
 
     // Success
-    UE_LOG(LogTemp, Warning, TEXT("AnimationComponentSimplified: Successfully initialized with AnimInstance"));
+    UE_LOG(LogTemp, Warning, TEXT("AnimationComponentSimplified: Successfully initialized with AnimInstance for %s"), *OwnerCharacter->GetName());
 
     AnimInstance->OnMontageEnded.AddDynamic(this, &UAnimationComponentSimplified::OnMontageEnded);
     AnimInstance->OnPlayMontageNotifyBegin.AddDynamic(this, &UAnimationComponentSimplified::OnNotifyBeginReceived);
+
+    // Debug: Check AnimInstance class
+    UE_LOG(LogTemp, Warning, TEXT("AnimInstance Class: %s"), AnimInstance ? *AnimInstance->GetClass()->GetName() : TEXT("NULL"));
 
     // Log montage status
     UE_LOG(LogTemp, Warning, TEXT("AnimationComponentSimplified Montages:"));
@@ -172,13 +175,28 @@ void UAnimationComponentSimplified::PlayBlock(int32 Zone)
 
 void UAnimationComponentSimplified::PlayHitReaction(int32 Severity)
 {
-    if (!ReactionMontage || !AnimInstance) return;
+    if (!ReactionMontage)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("PlayHitReaction: ReactionMontage is NULL - assign it in Blueprint!"));
+        return;
+    }
+
+    if (!AnimInstance)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("PlayHitReaction: AnimInstance is NULL"));
+        return;
+    }
 
     static const TArray<FName> HitSections = {"Hit_Light", "Hit_Medium", "Hit_Heavy"};
 
     if (Severity >= 0 && Severity < 3)
     {
+        UE_LOG(LogTemp, Warning, TEXT("Playing hit reaction: %s (Severity %d)"), *HitSections[Severity].ToString(), Severity);
         PlayMontageSection(ReactionMontage, HitSections[Severity]);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("PlayHitReaction: Invalid severity %d"), Severity);
     }
 }
 
@@ -260,7 +278,10 @@ void UAnimationComponentSimplified::PlayMontageSection(UAnimMontage* Montage, FN
     // Play montage with speed multiplier and jump to section
     float MontageLength = AnimInstance->Montage_Play(Montage, AnimationSpeedMultiplier);
 
-    UE_LOG(LogTemp, Warning, TEXT("PlayMontageSection: Playing section '%s' (Montage length: %f)"), *SectionName.ToString(), MontageLength);
+    UE_LOG(LogTemp, Warning, TEXT("PlayMontageSection: Playing section '%s' for %s (Montage length: %f)"),
+        *SectionName.ToString(),
+        OwnerCharacter ? *OwnerCharacter->GetName() : TEXT("Unknown"),
+        MontageLength);
 
     if (MontageLength > 0.0f)
     {
@@ -272,6 +293,16 @@ void UAnimationComponentSimplified::PlayMontageSection(UAnimMontage* Montage, FN
         AnimInstance->Montage_SetNextSection(SectionName, NAME_None, Montage);
 
         UE_LOG(LogTemp, Warning, TEXT("PlayMontageSection: Set section '%s' to NOT advance to next section"), *SectionName.ToString());
+
+        // Debug: Check if montage is actually playing
+        if (AnimInstance->Montage_IsPlaying(Montage))
+        {
+            UE_LOG(LogTemp, Warning, TEXT("CONFIRMED: Montage IS playing for %s"), *OwnerCharacter->GetName());
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("ERROR: Montage is NOT playing for %s!"), *OwnerCharacter->GetName());
+        }
     }
     else
     {

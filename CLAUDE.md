@@ -112,7 +112,9 @@ Source/SecondWind/
 │   ├── HackUIComponent.cpp/h          [Hack UI]
 │   ├── FragmentComponent.cpp/h        [Fragments]
 │   ├── MemoryShopComponent.cpp/h      [Memory shop UI - Phase 6]
-│   └── WeakSideComponent.cpp/h        [Weak side system - Phase 9]
+│   ├── WeakSideComponent.cpp/h        [Weak side system - Phase 9]
+│   ├── AnimationComponentSimplified.cpp/h [Animation montage system - Phase 10]
+│   └── PhysicsHitReactionComponent.cpp/h  [Knockback system - Phase 10]
 ├── Actors/
 │   ├── TrainingDummy.cpp/h            [Test enemy]
 │   ├── ArenaEnemy.cpp/h               [Enemy with phases]
@@ -275,20 +277,22 @@ Basic attack, health system, training dummy - All tested and working
 
 ### Phase 10: Animation System 🚧 IN PROGRESS
 - ✅ `UAnimationComponentSimplified` - Master montage system with sections
-- ✅ `UPhysicsHitReactionComponent` - Physics-based hit reactions (bone names configurable)
+- ✅ `UPhysicsHitReactionComponent` - Movement-based knockback system (no physics simulation)
 - ✅ Animation assets acquired - 299 marketplace animations (UE4 skeleton)
 - ✅ Code integration complete - Old AnimationComponent removed, all using simplified
 - ✅ **Combat Montage** - 3-attack combo system working (sequential attacks)
 - ✅ **Combo System** - 2-second window, resets if player waits too long
 - ✅ **Animation-Driven Combat** - Damage only triggers when animation notifies fire
 - ✅ **Enemy Animation Support** - All enemies use AnimationComponentSimplified
-- 🚧 **In Progress:** Hit reactions, dodges, blocks, finisher animations
-- ⏳ **Next:** Implement remaining animations with proper notifies
+- ✅ **Hit Reactions** - Animation-based reactions with knockback (no physics ragdoll)
+- 🚧 **In Progress:** Dodges, blocks, finisher animations
+- ⏳ **Next:** Implement remaining master montages with proper notifies
 
 #### Animation System Features:
 - **Master Montages with Sections** - 5 montages replace 299 individual files
 - **Combo Attack System** - Sequential attacks with configurable window
 - **Animation-Driven Damage** - AttackHitboxNotify controls damage timing
+- **Knockback System** - Movement-based pushback without physics simulation
 - **Unified System** - Both player and enemies use same animation component
 - **Blueprint-Configurable** - All settings adjustable without recompiling
 - **See:** `Phase10_MasterMontageGuide.md` for complete montage setup

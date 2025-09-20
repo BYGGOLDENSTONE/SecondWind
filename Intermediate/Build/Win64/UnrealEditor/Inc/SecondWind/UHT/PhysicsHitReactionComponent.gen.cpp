@@ -194,11 +194,11 @@ struct Z_Construct_UClass_UPhysicsHitReactionComponent_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_LightHitImpulse_MetaData[] = {
 		{ "Category", "Physics|Impulse" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// Impulse strengths for different hit types\n" },
+		{ "Comment", "// Impulse strengths for different hit types (much lower for controlled reactions)\n" },
 #endif
 		{ "ModuleRelativePath", "Components/PhysicsHitReactionComponent.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Impulse strengths for different hit types" },
+		{ "ToolTip", "Impulse strengths for different hit types (much lower for controlled reactions)" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MediumHitImpulse_MetaData[] = {
@@ -400,10 +400,10 @@ struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Co
 		{ FPhysicsProfile::StaticStruct, Z_Construct_UScriptStruct_FPhysicsProfile_Statics::NewStructOps, TEXT("PhysicsProfile"), &Z_Registration_Info_UScriptStruct_PhysicsProfile, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FPhysicsProfile), 3501688197U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UPhysicsHitReactionComponent, UPhysicsHitReactionComponent::StaticClass, TEXT("UPhysicsHitReactionComponent"), &Z_Registration_Info_UClass_UPhysicsHitReactionComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UPhysicsHitReactionComponent), 716022041U) },
+		{ Z_Construct_UClass_UPhysicsHitReactionComponent, UPhysicsHitReactionComponent::StaticClass, TEXT("UPhysicsHitReactionComponent"), &Z_Registration_Info_UClass_UPhysicsHitReactionComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UPhysicsHitReactionComponent), 3868905630U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_PhysicsHitReactionComponent_h_1732188861(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_PhysicsHitReactionComponent_h_3376996782(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_PhysicsHitReactionComponent_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_PhysicsHitReactionComponent_h_Statics::ClassInfo),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_PhysicsHitReactionComponent_h_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_PhysicsHitReactionComponent_h_Statics::ScriptStructInfo),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_PhysicsHitReactionComponent_h_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_PhysicsHitReactionComponent_h_Statics::EnumInfo));

@@ -10,6 +10,7 @@ class USkeletalMeshComponent;
 class UCombatComponent;
 class UWeakSideComponent;
 class UAnimationComponentSimplified;
+class UPhysicsHitReactionComponent;
 
 UCLASS()
 class SECONDWIND_API ATrainingDummy : public ACharacter
@@ -39,6 +40,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UAnimationComponentSimplified* AnimationComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UPhysicsHitReactionComponent* PhysicsHitReactionComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Training Dummy")
 	float RespawnDelay = 3.0f;

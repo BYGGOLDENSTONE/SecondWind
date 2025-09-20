@@ -19,7 +19,6 @@
     <None Include="..\..\ImplementationPlan.txt" />
     <None Include="..\..\Phase10_MasterMontageGuide.md" />
     <None Include="..\..\SecondWind.sln.DotSettings.user" />
-    <None Include="..\..\SkeletonCompatibilityGuide.md" />
     <Filter Include="Config">
       <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
     </Filter>
