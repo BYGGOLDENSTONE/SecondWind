@@ -134,6 +134,7 @@ void UCombatComponent::PerformAttack()
 	bIsInAttackAnimation = true;  // Mark that we're in the actual attack animation
 	AttackTimer = AttackCooldown;
 	LastAttackTime = CurrentTime;  // Update last attack time
+	bPendingAttack = true;  // Mark that we want to attack when the window opens
 
 	// Play attack animation
 	if (AnimationSystem)
@@ -159,9 +160,9 @@ void UCombatComponent::PerformAttack()
 	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("CombatComponent: Cannot play attack animation - AnimationSystem is NULL!"));
+		// If no animation system, execute attack immediately (fallback)
+		ExecuteAttack();
 	}
-
-	ExecuteAttack();
 }
 
 bool UCombatComponent::CanAttack() const
@@ -257,10 +258,30 @@ void UCombatComponent::ResetAttack()
 	bIsAttacking = false;
 	bIsInAttackAnimation = false;  // Ensure animation flag is also reset
 	AttackTimer = 0.0f;
+	bPendingAttack = false;  // Clear any pending attack
+	bAttackWindowActive = false;  // Ensure window is closed
 
 	// Don't reset combo here - only reset when combo window expires
 	// This allows the player to continue combos between attacks
 	UE_LOG(LogTemp, Verbose, TEXT("CombatComponent: Attack cooldown ended"));
+}
+
+void UCombatComponent::SetAttackWindowActive(bool bActive)
+{
+	bAttackWindowActive = bActive;
+
+	if (bActive && bPendingAttack)
+	{
+		// Attack window just opened and we have a pending attack
+		UE_LOG(LogTemp, Warning, TEXT("CombatComponent: Attack window opened - executing pending attack"));
+		ExecuteAttack();
+		bPendingAttack = false;  // Clear the pending attack after executing
+	}
+	else if (!bActive)
+	{
+		// Attack window closed
+		UE_LOG(LogTemp, Verbose, TEXT("CombatComponent: Attack window closed"));
+	}
 }
 
 AActor* UCombatComponent::GetTargetInRange() const
@@ -310,9 +331,11 @@ void UCombatComponent::ApplyDamageToTarget(AActor* Target)
 		return;
 	}
 
-	// Only apply damage if attack window is active (or if no animation component)
+	// Animation-driven combat: damage only applies during attack window
+	// If no animation system exists, allow damage (fallback behavior)
 	if (AnimationSystem && !bAttackWindowActive)
 	{
+		UE_LOG(LogTemp, Verbose, TEXT("ApplyDamageToTarget: Attack window not active, skipping damage"));
 		return;
 	}
 

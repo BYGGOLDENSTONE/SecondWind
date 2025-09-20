@@ -2,6 +2,7 @@
 #include "../Components/HealthComponent.h"
 #include "../Components/CombatComponent.h"
 #include "../Components/WeakSideComponent.h"
+#include "../Components/AnimationComponentSimplified.h"
 #include "../Systems/EnemyManager.h"
 #include "../Systems/MemorySystem.h"
 #include "Components/CapsuleComponent.h"
@@ -31,6 +32,8 @@ ATrainingDummy::ATrainingDummy()
 	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
 
 	WeakSideComponent = CreateDefaultSubobject<UWeakSideComponent>(TEXT("WeakSideComponent"));
+
+	AnimationComponent = CreateDefaultSubobject<UAnimationComponentSimplified>(TEXT("AnimationComponent"));
 
 	Tags.Add(FName("TrainingDummy"));
 }

@@ -18,6 +18,7 @@ SECONDWIND_API UClass* Z_Construct_UClass_AArenaEnemy();
 SECONDWIND_API UClass* Z_Construct_UClass_AArenaEnemy_NoRegister();
 SECONDWIND_API UClass* Z_Construct_UClass_AArenaZone_NoRegister();
 SECONDWIND_API UClass* Z_Construct_UClass_AEnemySpawnPoint_NoRegister();
+SECONDWIND_API UClass* Z_Construct_UClass_UAnimationComponentSimplified_NoRegister();
 SECONDWIND_API UClass* Z_Construct_UClass_UCombatComponent_NoRegister();
 SECONDWIND_API UClass* Z_Construct_UClass_UHealthComponent_NoRegister();
 SECONDWIND_API UClass* Z_Construct_UClass_UWeakSideComponent_NoRegister();
@@ -216,6 +217,11 @@ struct Z_Construct_UClass_AArenaEnemy_Statics
 		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "Actors/ArenaEnemy.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_AnimationComponent_MetaData[] = {
+		{ "Category", "Components" },
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "Actors/ArenaEnemy.h" },
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_BaseDamage_MetaData[] = {
 		{ "Category", "Combat (Deprecated - Use CombatComponent)" },
 #if !UE_BUILD_SHIPPING
@@ -249,6 +255,7 @@ struct Z_Construct_UClass_AArenaEnemy_Statics
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_HealthComponent;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_CombatComponent;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_WeakSideComponent;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_AnimationComponent;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_BaseDamage;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_AttackRange;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_ArenaLevel;
@@ -273,6 +280,7 @@ struct Z_Construct_UClass_AArenaEnemy_Statics
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AArenaEnemy_Statics::NewProp_HealthComponent = { "HealthComponent", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaEnemy, HealthComponent), Z_Construct_UClass_UHealthComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HealthComponent_MetaData), NewProp_HealthComponent_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AArenaEnemy_Statics::NewProp_CombatComponent = { "CombatComponent", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaEnemy, CombatComponent), Z_Construct_UClass_UCombatComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CombatComponent_MetaData), NewProp_CombatComponent_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AArenaEnemy_Statics::NewProp_WeakSideComponent = { "WeakSideComponent", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaEnemy, WeakSideComponent), Z_Construct_UClass_UWeakSideComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_WeakSideComponent_MetaData), NewProp_WeakSideComponent_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AArenaEnemy_Statics::NewProp_AnimationComponent = { "AnimationComponent", nullptr, (EPropertyFlags)0x00200800000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaEnemy, AnimationComponent), Z_Construct_UClass_UAnimationComponentSimplified_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AnimationComponent_MetaData), NewProp_AnimationComponent_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_AArenaEnemy_Statics::NewProp_BaseDamage = { "BaseDamage", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaEnemy, BaseDamage), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_BaseDamage_MetaData), NewProp_BaseDamage_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AArenaEnemy_Statics::NewProp_AttackRange = { "AttackRange", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaEnemy, AttackRange), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AttackRange_MetaData), NewProp_AttackRange_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_AArenaEnemy_Statics::NewProp_ArenaLevel = { "ArenaLevel", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AArenaEnemy, ArenaLevel), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ArenaLevel_MetaData), NewProp_ArenaLevel_MetaData) };
@@ -284,6 +292,7 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AArenaEne
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaEnemy_Statics::NewProp_HealthComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaEnemy_Statics::NewProp_CombatComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaEnemy_Statics::NewProp_WeakSideComponent,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaEnemy_Statics::NewProp_AnimationComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaEnemy_Statics::NewProp_BaseDamage,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaEnemy_Statics::NewProp_AttackRange,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AArenaEnemy_Statics::NewProp_ArenaLevel,
@@ -333,10 +342,10 @@ AArenaEnemy::~AArenaEnemy() {}
 struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AArenaEnemy, AArenaEnemy::StaticClass, TEXT("AArenaEnemy"), &Z_Registration_Info_UClass_AArenaEnemy, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AArenaEnemy), 3558791850U) },
+		{ Z_Construct_UClass_AArenaEnemy, AArenaEnemy::StaticClass, TEXT("AArenaEnemy"), &Z_Registration_Info_UClass_AArenaEnemy, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AArenaEnemy), 1012899307U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_473995413(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_1801948356(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_ArenaEnemy_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

@@ -14,14 +14,14 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define SECONDWIND_TrainingDummy_generated_h
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_16_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_17_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execOnPhaseTransition); \
 	DECLARE_FUNCTION(execOnEnterFinisherState); \
 	DECLARE_FUNCTION(execOnPhaseChanged); \
 	DECLARE_FUNCTION(execOnHealthDepleted);
 
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_16_INCLASS_NO_PURE_DECLS \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_17_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesATrainingDummy(); \
 	friend struct Z_Construct_UClass_ATrainingDummy_Statics; \
@@ -30,7 +30,7 @@ public: \
 	DECLARE_SERIALIZER(ATrainingDummy)
 
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_16_ENHANCED_CONSTRUCTORS \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_17_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	ATrainingDummy(ATrainingDummy&&); \
@@ -42,13 +42,13 @@ public: \
 	NO_API virtual ~ATrainingDummy();
 
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_13_PROLOG
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_16_GENERATED_BODY \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_14_PROLOG
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_17_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_16_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_16_INCLASS_NO_PURE_DECLS \
-	FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_16_ENHANCED_CONSTRUCTORS \
+	FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_17_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_17_INCLASS_NO_PURE_DECLS \
+	FID_Unreal_Projects_SecondWind_Source_SecondWind_Actors_TrainingDummy_h_17_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

@@ -42,7 +42,7 @@ public:
 	void SetBlockingComponent(UBlockingComponent* InBlockingComponent) { BlockingComponent = InBlockingComponent; }
 
 	// Animation integration
-	void SetAttackWindowActive(bool bActive) { bAttackWindowActive = bActive; }
+	void SetAttackWindowActive(bool bActive);
 	void SetCurrentDamageMultiplier(float Multiplier) { CurrentDamageMultiplier = Multiplier; }
 
 private:
@@ -74,6 +74,7 @@ private:
 
 	// Animation-driven attack state
 	bool bAttackWindowActive = false;
+	bool bPendingAttack = false;  // True when we're waiting for the attack window to open
 	float CurrentDamageMultiplier = 1.0f;
 
 	// Attack combo tracking

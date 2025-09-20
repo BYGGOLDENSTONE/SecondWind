@@ -280,12 +280,16 @@ Basic attack, health system, training dummy - All tested and working
 - ✅ Code integration complete - Old AnimationComponent removed, all using simplified
 - ✅ **Combat Montage** - 3-attack combo system working (sequential attacks)
 - ✅ **Combo System** - 2-second window, resets if player waits too long
-- 🚧 **In Progress:** Other montages (Dodge, Block, Reaction, Finisher)
-- ⏳ **Next:** Implement remaining animations (dodges, blocks, reactions)
+- ✅ **Animation-Driven Combat** - Damage only triggers when animation notifies fire
+- ✅ **Enemy Animation Support** - All enemies use AnimationComponentSimplified
+- 🚧 **In Progress:** Hit reactions, dodges, blocks, finisher animations
+- ⏳ **Next:** Implement remaining animations with proper notifies
 
 #### Animation System Features:
 - **Master Montages with Sections** - 5 montages replace 299 individual files
 - **Combo Attack System** - Sequential attacks with configurable window
+- **Animation-Driven Damage** - AttackHitboxNotify controls damage timing
+- **Unified System** - Both player and enemies use same animation component
 - **Blueprint-Configurable** - All settings adjustable without recompiling
 - **See:** `Phase10_MasterMontageGuide.md` for complete montage setup
 

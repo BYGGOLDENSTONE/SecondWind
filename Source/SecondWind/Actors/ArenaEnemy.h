@@ -7,6 +7,7 @@
 class UHealthComponent;
 class UCombatComponent;
 class UWeakSideComponent;
+class UAnimationComponentSimplified;
 
 UCLASS()
 class SECONDWIND_API AArenaEnemy : public ACharacter
@@ -65,6 +66,9 @@ protected:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     UWeakSideComponent* WeakSideComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    UAnimationComponentSimplified* AnimationComponent;
 
     // Legacy attack values - kept for backward compatibility but use CombatComponent instead
     UPROPERTY(EditDefaultsOnly, Category = "Combat (Deprecated - Use CombatComponent)")
