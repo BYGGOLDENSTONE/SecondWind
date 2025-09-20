@@ -286,7 +286,6 @@ Basic attack, health system, training dummy - All tested and working
 - **5 Master Montages** replace 299 individual files
 - **Montage Sections** allow jumping between animations
 - **See:** `Phase10_MasterMontageGuide.md` for detailed setup instructions
-- **See:** `Phase10_AnimationMapping.md` for complete animation list
 
 ### Phase 11: SFX & VFX
 - Sound effects
