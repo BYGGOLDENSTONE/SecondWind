@@ -18,26 +18,45 @@
       <change beforePath="$PROJECT_DIR$/Binaries/Win64/UnrealEditor-SecondWind-Win64-DebugGame.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Binaries/Win64/UnrealEditor-SecondWind-Win64-DebugGame.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Binaries/Win64/UnrealEditor-SecondWind-Win64-DebugGame.exp" beforeDir="false" afterPath="$PROJECT_DIR$/Binaries/Win64/UnrealEditor-SecondWind-Win64-DebugGame.exp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CLAUDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/CLAUDE.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/5/1N/T4V1VPDM8LNZY2PNSEVM56.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/5/1N/T4V1VPDM8LNZY2PNSEVM56.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/FightAnimations/Animations/Punch/InPlace/Head/A_JabHead_L_IP_Montage.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/FightAnimations/Animations/Punch/InPlace/Head/A_PunchHead_R_IP_Montage.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/FightAnimations/Animations/Punch/InPlace/Head/A_UppercutHead_R_IP_Montage.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/FightAnimations/Animations/Punch/Move/Body/A_HookBody_L_M.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/FightAnimations/Animations/Punch/Move/Body/A_HookBody_L_M.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/FightAnimations/Animations/Punch/Move/Body/A_HookBody_R_M.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/FightAnimations/Animations/Punch/Move/Body/A_HookBody_R_M.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/blueprints/BP_ThirdPersonCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/blueprints/BP_ThirdPersonCharacter.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/blueprints/arenas/BP_ArenaEnemy.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/blueprints/arenas/BP_ArenaEnemy.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/blueprints/arenas/BP_TrainingDummy.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/blueprints/arenas/BP_TrainingDummy.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Intermediate/Build/SourceFileCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/SourceFileCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/ActionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/ActionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/SecondWindEditor/DebugGame/SecondWindEditor.uhtmanifest" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/SecondWindEditor/DebugGame/SecondWindEditor.uhtmanifest" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/AnimationComponent.gen.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/AnimationComponent.gen.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/AnimationComponent.generated.h" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/AnimationComponent.generated.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/AnimationComponent.gen.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/AnimationComponent.generated.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/AnimationComponentSimplified.gen.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/AnimationComponentSimplified.gen.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/AnimationComponentSimplified.generated.h" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/AnimationComponentSimplified.generated.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/PhysicsHitReactionComponent.gen.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/PhysicsHitReactionComponent.gen.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/SecondWind.init.gen.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/SecondWind.init.gen.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/SecondWindCharacter.gen.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/SecondWindCharacter.gen.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/SecondWindCharacter.generated.h" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/SecondWindCharacter.generated.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/Timestamp" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/SecondWind/UHT/Timestamp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Intermediate/CachedAssetRegistry_0.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/CachedAssetRegistry_0.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Intermediate/ProjectFiles/SecondWind.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/ProjectFiles/SecondWind.vcxproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Intermediate/ProjectFiles/SecondWind.vcxproj.filters" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/ProjectFiles/SecondWind.vcxproj.filters" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Saved/AutoScreenshot.png" beforeDir="false" afterPath="$PROJECT_DIR$/Saved/AutoScreenshot.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Saved/Config/WindowsEditor/EditorPerProjectUserSettings.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Saved/Config/WindowsEditor/EditorPerProjectUserSettings.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Saved/Config/WindowsEditor/GameUserSettings.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Saved/Config/WindowsEditor/GameUserSettings.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Saved/SourceControl/UncontrolledChangelists.json" beforeDir="false" afterPath="$PROJECT_DIR$/Saved/SourceControl/UncontrolledChangelists.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SecondWind/Components/AnimationComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Components/AnimationComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SecondWind/Components/AnimationComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Components/AnimationComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SecondWind/Components/AnimationComponent.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SecondWind/Components/AnimationComponent.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SecondWind/Components/AnimationComponentSimplified.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Components/AnimationComponentSimplified.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SecondWind/Components/AnimationComponentSimplified.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Components/AnimationComponentSimplified.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SecondWind/Components/BlockingComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Components/BlockingComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SecondWind/Components/BlockingComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Components/BlockingComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SecondWind/Components/CombatComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Components/CombatComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SecondWind/Components/CombatComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Components/CombatComponent.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SecondWind/Components/DodgeComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Components/DodgeComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SecondWind/Components/DodgeComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Components/DodgeComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SecondWind/Components/PhysicsHitReactionComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Components/PhysicsHitReactionComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SecondWind/Components/PhysicsHitReactionComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/Components/PhysicsHitReactionComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SecondWind/SecondWindCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/SecondWindCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/SecondWind/SecondWindCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SecondWind/SecondWindCharacter.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +70,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="cidr-memory-view://0" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://4" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../UE_5.5/Engine/Source/Runtime/Core/Public/Delegates/DelegateSignatureImpl.inl" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
@@ -209,7 +228,8 @@
       <workItem from="1758306764584" duration="1808000" />
       <workItem from="1758359934399" duration="780000" />
       <workItem from="1758361997652" duration="2816000" />
-      <workItem from="1758372689713" duration="835000" />
+      <workItem from="1758372689713" duration="1595000" />
+      <workItem from="1758377891686" duration="2244000" />
     </task>
     <servers />
   </component>

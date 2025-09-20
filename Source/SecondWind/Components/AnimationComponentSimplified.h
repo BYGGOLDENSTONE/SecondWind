@@ -5,6 +5,38 @@
 #include "Engine/DataTable.h"
 #include "AnimationComponentSimplified.generated.h"
 
+// Legacy animation types for backward compatibility
+UENUM(BlueprintType)
+enum class EAnimationType : uint8
+{
+	None,
+	AttackLeft,
+	AttackRight,
+	AttackOverhead,
+	AttackFront,
+	BlockLeft,
+	BlockCenter,
+	BlockRight,
+	DodgeLeft,
+	DodgeRight,
+	DodgeBack,
+	DodgeForward,
+	HackCast,
+	HackResponse,
+	Stagger,
+	FinisherExecute,
+	FinisherReceive
+};
+
+UENUM(BlueprintType)
+enum class EAnimationPriority : uint8
+{
+	Low,
+	Medium,
+	High,
+	Critical
+};
+
 class UAnimMontage;
 
 /**
@@ -42,17 +74,33 @@ public:
     virtual void BeginPlay() override;
 
     // Simple interface - play animations by type
-    void PlayAttack(int32 VariationIndex = -1);  // -1 = random
+    void PlayAttack(int32 VariationIndex = -1);  // -1 = random, 0+ = specific index
+    int32 GetAttackSectionCount() const { return AttackSections.Num(); }
     void PlayDodge(int32 Direction);  // 0=F, 1=B, 2=L, 3=R
     void PlayCounter();  // Randomly selects from 15 counters
     void PlayFinisher(bool bIsVictim = false);
     void PlayBlock(int32 Zone);  // 0=L, 1=C, 2=R
     void PlayHitReaction(int32 Severity);  // 0=Light, 1=Medium, 2=Heavy
+    void PlayHackCast();
+    void PlayHackResponse();
+    void PlayStagger();
+
+    // Legacy adapter interface for smooth migration
+    bool PlayAnimation(EAnimationType AnimType, EAnimationPriority Priority = EAnimationPriority::Medium);
+    void StopAnimation(EAnimationType AnimType);
+    void StopAllAnimations();
+    bool IsAnimationPlaying(EAnimationType AnimType) const;
+    float GetAnimationTimeRemaining(EAnimationType AnimType) const;
+
+    // Animation speed modifiers (for gamestyle system)
+    void SetAnimationSpeedMultiplier(float Multiplier) { AnimationSpeedMultiplier = Multiplier; }
+    float GetAnimationSpeedMultiplier() const { return AnimationSpeedMultiplier; }
 
     // Utility functions
     void StopCurrentMontage(float BlendOut = 0.25f);
     bool IsPlayingMontage() const;
     float GetMontageTimeRemaining() const;
+    bool IsProperlyConfigured() const { return CombatMontage != nullptr || DodgeMontage != nullptr; }
 
     // For combo system
     void PlayComboAttack(int32 ComboStep);
@@ -113,6 +161,11 @@ private:
     FName CurrentSection;
     bool bComboWindowOpen = false;
     int32 CurrentComboStep = 0;
+    float AnimationSpeedMultiplier = 1.0f;
+
+    // Legacy compatibility
+    EAnimationType CurrentAnimationType = EAnimationType::None;
+    EAnimationPriority CurrentPriority = EAnimationPriority::Low;
 
     // Component references
     class UAnimInstance* AnimInstance;

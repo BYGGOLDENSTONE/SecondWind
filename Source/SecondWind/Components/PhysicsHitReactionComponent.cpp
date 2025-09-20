@@ -1,5 +1,5 @@
 #include "PhysicsHitReactionComponent.h"
-#include "AnimationComponent.h"
+#include "AnimationComponentSimplified.h"
 #include "PhysicsEngine/PhysicalAnimationComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/Character.h"
@@ -93,7 +93,7 @@ void UPhysicsHitReactionComponent::TickComponent(float DeltaTime, ELevelTick Tic
 	// Update physics blend weight
 	if (SkeletalMeshComponent)
 	{
-		SkeletalMeshComponent->SetAllBodiesBelowPhysicsBlendWeight(TEXT("pelvis"), CurrentBlendWeight);
+		SkeletalMeshComponent->SetAllBodiesBelowPhysicsBlendWeight(PelvisBoneName, CurrentBlendWeight);
 	}
 
 	// Update LOD
@@ -130,7 +130,7 @@ void UPhysicsHitReactionComponent::ApplyHitReaction(const FVector& HitLocation, 
 	FName ClosestBone = SkeletalMeshComponent->FindClosestBone(HitLocation);
 	if (ClosestBone == NAME_None)
 	{
-		ClosestBone = TEXT("spine_02"); // Default to spine
+		ClosestBone = DefaultHitBoneName; // Default to spine
 	}
 
 	// Apply impulse to hit bone and nearby bones
@@ -157,7 +157,7 @@ void UPhysicsHitReactionComponent::ApplyHitReaction(const FVector& HitLocation, 
 	}
 
 	// Enable physics simulation on affected bodies
-	SkeletalMeshComponent->SetAllBodiesBelowSimulatePhysics(TEXT("pelvis"), true);
+	SkeletalMeshComponent->SetAllBodiesBelowSimulatePhysics(PelvisBoneName, true);
 
 	UE_LOG(LogTemp, Verbose, TEXT("PhysicsHitReaction: Applied %s reaction with impulse %.1f"), 
 		*UEnum::GetValueAsString(ReactionType), ImpulseStrength);
@@ -178,10 +178,10 @@ void UPhysicsHitReactionComponent::ApplyHackReaction(AActor* Target)
 
 	// Apply special head impulse for hack
 	FVector UpwardImpulse = FVector::UpVector * HackHeadImpulse;
-	TargetPhysics->ApplyImpulseToBone(TEXT("head"), UpwardImpulse, 1.5f);
+	TargetPhysics->ApplyImpulseToBone(TargetPhysics->HeadBoneName, UpwardImpulse, 1.5f);
 
 	// Play hack response animation on target
-	if (UAnimationComponent* AnimComp = Target->FindComponentByClass<UAnimationComponent>())
+	if (UAnimationComponentSimplified* AnimComp = Target->FindComponentByClass<UAnimationComponentSimplified>())
 	{
 		AnimComp->PlayAnimation(EAnimationType::HackResponse, EAnimationPriority::Critical);
 	}
@@ -198,10 +198,10 @@ void UPhysicsHitReactionComponent::ResetPhysics()
 	if (SkeletalMeshComponent)
 	{
 		// Reset physics blend weight
-		SkeletalMeshComponent->SetAllBodiesBelowPhysicsBlendWeight(TEXT("pelvis"), 0.0f);
+		SkeletalMeshComponent->SetAllBodiesBelowPhysicsBlendWeight(PelvisBoneName, 0.0f);
 		
 		// Disable physics simulation
-		SkeletalMeshComponent->SetAllBodiesBelowSimulatePhysics(TEXT("pelvis"), false);
+		SkeletalMeshComponent->SetAllBodiesBelowSimulatePhysics(PelvisBoneName, false);
 	}
 }
 
@@ -218,7 +218,7 @@ void UPhysicsHitReactionComponent::SetPhysicsBlendWeight(float Weight)
 	CurrentBlendWeight = FMath::Clamp(Weight, 0.0f, 1.0f);
 	if (SkeletalMeshComponent)
 	{
-		SkeletalMeshComponent->SetAllBodiesBelowPhysicsBlendWeight(TEXT("pelvis"), CurrentBlendWeight);
+		SkeletalMeshComponent->SetAllBodiesBelowPhysicsBlendWeight(PelvisBoneName, CurrentBlendWeight);
 	}
 }
 

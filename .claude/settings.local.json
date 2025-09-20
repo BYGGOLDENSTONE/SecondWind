@@ -9,7 +9,9 @@
       "Bash(del:*)",
       "Bash(for dir in Content/FightAnimations/Animations/*/)",
       "Bash(ls:*)",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(findstr:*)",
+      "Bash(xargs:*)"
     ],
     "deny": [],
     "ask": []

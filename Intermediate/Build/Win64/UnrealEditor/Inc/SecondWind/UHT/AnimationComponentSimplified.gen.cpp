@@ -18,9 +18,155 @@ ENGINE_API UScriptStruct* Z_Construct_UScriptStruct_FBranchingPointNotifyPayload
 ENGINE_API UScriptStruct* Z_Construct_UScriptStruct_FTableRowBase();
 SECONDWIND_API UClass* Z_Construct_UClass_UAnimationComponentSimplified();
 SECONDWIND_API UClass* Z_Construct_UClass_UAnimationComponentSimplified_NoRegister();
+SECONDWIND_API UEnum* Z_Construct_UEnum_SecondWind_EAnimationPriority();
+SECONDWIND_API UEnum* Z_Construct_UEnum_SecondWind_EAnimationType();
 SECONDWIND_API UScriptStruct* Z_Construct_UScriptStruct_FAnimationVariation();
 UPackage* Z_Construct_UPackage__Script_SecondWind();
 // End Cross Module References
+
+// Begin Enum EAnimationType
+static FEnumRegistrationInfo Z_Registration_Info_UEnum_EAnimationType;
+static UEnum* EAnimationType_StaticEnum()
+{
+	if (!Z_Registration_Info_UEnum_EAnimationType.OuterSingleton)
+	{
+		Z_Registration_Info_UEnum_EAnimationType.OuterSingleton = GetStaticEnum(Z_Construct_UEnum_SecondWind_EAnimationType, (UObject*)Z_Construct_UPackage__Script_SecondWind(), TEXT("EAnimationType"));
+	}
+	return Z_Registration_Info_UEnum_EAnimationType.OuterSingleton;
+}
+template<> SECONDWIND_API UEnum* StaticEnum<EAnimationType>()
+{
+	return EAnimationType_StaticEnum();
+}
+struct Z_Construct_UEnum_SecondWind_EAnimationType_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Enum_MetaDataParams[] = {
+		{ "AttackFront.Name", "EAnimationType::AttackFront" },
+		{ "AttackLeft.Name", "EAnimationType::AttackLeft" },
+		{ "AttackOverhead.Name", "EAnimationType::AttackOverhead" },
+		{ "AttackRight.Name", "EAnimationType::AttackRight" },
+		{ "BlockCenter.Name", "EAnimationType::BlockCenter" },
+		{ "BlockLeft.Name", "EAnimationType::BlockLeft" },
+		{ "BlockRight.Name", "EAnimationType::BlockRight" },
+		{ "BlueprintType", "true" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// Legacy animation types for backward compatibility\n" },
+#endif
+		{ "DodgeBack.Name", "EAnimationType::DodgeBack" },
+		{ "DodgeForward.Name", "EAnimationType::DodgeForward" },
+		{ "DodgeLeft.Name", "EAnimationType::DodgeLeft" },
+		{ "DodgeRight.Name", "EAnimationType::DodgeRight" },
+		{ "FinisherExecute.Name", "EAnimationType::FinisherExecute" },
+		{ "FinisherReceive.Name", "EAnimationType::FinisherReceive" },
+		{ "HackCast.Name", "EAnimationType::HackCast" },
+		{ "HackResponse.Name", "EAnimationType::HackResponse" },
+		{ "ModuleRelativePath", "Components/AnimationComponentSimplified.h" },
+		{ "None.Name", "EAnimationType::None" },
+		{ "Stagger.Name", "EAnimationType::Stagger" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Legacy animation types for backward compatibility" },
+#endif
+	};
+#endif // WITH_METADATA
+	static constexpr UECodeGen_Private::FEnumeratorParam Enumerators[] = {
+		{ "EAnimationType::None", (int64)EAnimationType::None },
+		{ "EAnimationType::AttackLeft", (int64)EAnimationType::AttackLeft },
+		{ "EAnimationType::AttackRight", (int64)EAnimationType::AttackRight },
+		{ "EAnimationType::AttackOverhead", (int64)EAnimationType::AttackOverhead },
+		{ "EAnimationType::AttackFront", (int64)EAnimationType::AttackFront },
+		{ "EAnimationType::BlockLeft", (int64)EAnimationType::BlockLeft },
+		{ "EAnimationType::BlockCenter", (int64)EAnimationType::BlockCenter },
+		{ "EAnimationType::BlockRight", (int64)EAnimationType::BlockRight },
+		{ "EAnimationType::DodgeLeft", (int64)EAnimationType::DodgeLeft },
+		{ "EAnimationType::DodgeRight", (int64)EAnimationType::DodgeRight },
+		{ "EAnimationType::DodgeBack", (int64)EAnimationType::DodgeBack },
+		{ "EAnimationType::DodgeForward", (int64)EAnimationType::DodgeForward },
+		{ "EAnimationType::HackCast", (int64)EAnimationType::HackCast },
+		{ "EAnimationType::HackResponse", (int64)EAnimationType::HackResponse },
+		{ "EAnimationType::Stagger", (int64)EAnimationType::Stagger },
+		{ "EAnimationType::FinisherExecute", (int64)EAnimationType::FinisherExecute },
+		{ "EAnimationType::FinisherReceive", (int64)EAnimationType::FinisherReceive },
+	};
+	static const UECodeGen_Private::FEnumParams EnumParams;
+};
+const UECodeGen_Private::FEnumParams Z_Construct_UEnum_SecondWind_EAnimationType_Statics::EnumParams = {
+	(UObject*(*)())Z_Construct_UPackage__Script_SecondWind,
+	nullptr,
+	"EAnimationType",
+	"EAnimationType",
+	Z_Construct_UEnum_SecondWind_EAnimationType_Statics::Enumerators,
+	RF_Public|RF_Transient|RF_MarkAsNative,
+	UE_ARRAY_COUNT(Z_Construct_UEnum_SecondWind_EAnimationType_Statics::Enumerators),
+	EEnumFlags::None,
+	(uint8)UEnum::ECppForm::EnumClass,
+	METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UEnum_SecondWind_EAnimationType_Statics::Enum_MetaDataParams), Z_Construct_UEnum_SecondWind_EAnimationType_Statics::Enum_MetaDataParams)
+};
+UEnum* Z_Construct_UEnum_SecondWind_EAnimationType()
+{
+	if (!Z_Registration_Info_UEnum_EAnimationType.InnerSingleton)
+	{
+		UECodeGen_Private::ConstructUEnum(Z_Registration_Info_UEnum_EAnimationType.InnerSingleton, Z_Construct_UEnum_SecondWind_EAnimationType_Statics::EnumParams);
+	}
+	return Z_Registration_Info_UEnum_EAnimationType.InnerSingleton;
+}
+// End Enum EAnimationType
+
+// Begin Enum EAnimationPriority
+static FEnumRegistrationInfo Z_Registration_Info_UEnum_EAnimationPriority;
+static UEnum* EAnimationPriority_StaticEnum()
+{
+	if (!Z_Registration_Info_UEnum_EAnimationPriority.OuterSingleton)
+	{
+		Z_Registration_Info_UEnum_EAnimationPriority.OuterSingleton = GetStaticEnum(Z_Construct_UEnum_SecondWind_EAnimationPriority, (UObject*)Z_Construct_UPackage__Script_SecondWind(), TEXT("EAnimationPriority"));
+	}
+	return Z_Registration_Info_UEnum_EAnimationPriority.OuterSingleton;
+}
+template<> SECONDWIND_API UEnum* StaticEnum<EAnimationPriority>()
+{
+	return EAnimationPriority_StaticEnum();
+}
+struct Z_Construct_UEnum_SecondWind_EAnimationPriority_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Enum_MetaDataParams[] = {
+		{ "BlueprintType", "true" },
+		{ "Critical.Name", "EAnimationPriority::Critical" },
+		{ "High.Name", "EAnimationPriority::High" },
+		{ "Low.Name", "EAnimationPriority::Low" },
+		{ "Medium.Name", "EAnimationPriority::Medium" },
+		{ "ModuleRelativePath", "Components/AnimationComponentSimplified.h" },
+	};
+#endif // WITH_METADATA
+	static constexpr UECodeGen_Private::FEnumeratorParam Enumerators[] = {
+		{ "EAnimationPriority::Low", (int64)EAnimationPriority::Low },
+		{ "EAnimationPriority::Medium", (int64)EAnimationPriority::Medium },
+		{ "EAnimationPriority::High", (int64)EAnimationPriority::High },
+		{ "EAnimationPriority::Critical", (int64)EAnimationPriority::Critical },
+	};
+	static const UECodeGen_Private::FEnumParams EnumParams;
+};
+const UECodeGen_Private::FEnumParams Z_Construct_UEnum_SecondWind_EAnimationPriority_Statics::EnumParams = {
+	(UObject*(*)())Z_Construct_UPackage__Script_SecondWind,
+	nullptr,
+	"EAnimationPriority",
+	"EAnimationPriority",
+	Z_Construct_UEnum_SecondWind_EAnimationPriority_Statics::Enumerators,
+	RF_Public|RF_Transient|RF_MarkAsNative,
+	UE_ARRAY_COUNT(Z_Construct_UEnum_SecondWind_EAnimationPriority_Statics::Enumerators),
+	EEnumFlags::None,
+	(uint8)UEnum::ECppForm::EnumClass,
+	METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UEnum_SecondWind_EAnimationPriority_Statics::Enum_MetaDataParams), Z_Construct_UEnum_SecondWind_EAnimationPriority_Statics::Enum_MetaDataParams)
+};
+UEnum* Z_Construct_UEnum_SecondWind_EAnimationPriority()
+{
+	if (!Z_Registration_Info_UEnum_EAnimationPriority.InnerSingleton)
+	{
+		UECodeGen_Private::ConstructUEnum(Z_Registration_Info_UEnum_EAnimationPriority.InnerSingleton, Z_Construct_UEnum_SecondWind_EAnimationPriority_Statics::EnumParams);
+	}
+	return Z_Registration_Info_UEnum_EAnimationPriority.InnerSingleton;
+}
+// End Enum EAnimationPriority
 
 // Begin ScriptStruct FAnimationVariation
 static_assert(std::is_polymorphic<FAnimationVariation>() == std::is_polymorphic<FTableRowBase>(), "USTRUCT FAnimationVariation cannot be polymorphic unless super FTableRowBase is polymorphic");
@@ -462,6 +608,10 @@ UAnimationComponentSimplified::~UAnimationComponentSimplified() {}
 // Begin Registration
 struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_AnimationComponentSimplified_h_Statics
 {
+	static constexpr FEnumRegisterCompiledInInfo EnumInfo[] = {
+		{ EAnimationType_StaticEnum, TEXT("EAnimationType"), &Z_Registration_Info_UEnum_EAnimationType, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 3946783937U) },
+		{ EAnimationPriority_StaticEnum, TEXT("EAnimationPriority"), &Z_Registration_Info_UEnum_EAnimationPriority, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 28340324U) },
+	};
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
 		{ FAnimationVariation::StaticStruct, Z_Construct_UScriptStruct_FAnimationVariation_Statics::NewStructOps, TEXT("AnimationVariation"), &Z_Registration_Info_UScriptStruct_AnimationVariation, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FAnimationVariation), 1337873564U) },
 	};
@@ -469,9 +619,9 @@ struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Co
 		{ Z_Construct_UClass_UAnimationComponentSimplified, UAnimationComponentSimplified::StaticClass, TEXT("UAnimationComponentSimplified"), &Z_Registration_Info_UClass_UAnimationComponentSimplified, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UAnimationComponentSimplified), 172185763U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_AnimationComponentSimplified_h_3311508270(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_AnimationComponentSimplified_h_348163354(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_AnimationComponentSimplified_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_AnimationComponentSimplified_h_Statics::ClassInfo),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_AnimationComponentSimplified_h_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_AnimationComponentSimplified_h_Statics::ScriptStructInfo),
-	nullptr, 0);
+	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_AnimationComponentSimplified_h_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_AnimationComponentSimplified_h_Statics::EnumInfo));
 // End Registration
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

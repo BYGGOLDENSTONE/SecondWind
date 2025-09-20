@@ -28,37 +28,99 @@ void UAnimationComponentSimplified::BeginPlay()
     Super::BeginPlay();
 
     OwnerCharacter = Cast<ACharacter>(GetOwner());
-    if (OwnerCharacter && OwnerCharacter->GetMesh())
+    if (!OwnerCharacter)
     {
-        AnimInstance = OwnerCharacter->GetMesh()->GetAnimInstance();
+        UE_LOG(LogTemp, Error, TEXT("AnimationComponentSimplified: Owner is not a Character!"));
+        return;
+    }
 
-        if (AnimInstance)
-        {
-            AnimInstance->OnMontageEnded.AddDynamic(this, &UAnimationComponentSimplified::OnMontageEnded);
-            AnimInstance->OnPlayMontageNotifyBegin.AddDynamic(this, &UAnimationComponentSimplified::OnNotifyBeginReceived);
-        }
+    if (!OwnerCharacter->GetMesh())
+    {
+        UE_LOG(LogTemp, Error, TEXT("AnimationComponentSimplified: Character has no mesh component!"));
+        return;
+    }
+
+    AnimInstance = OwnerCharacter->GetMesh()->GetAnimInstance();
+    if (!AnimInstance)
+    {
+        UE_LOG(LogTemp, Error, TEXT("AnimationComponentSimplified: No AnimInstance found! Make sure:"));
+        UE_LOG(LogTemp, Error, TEXT("  1. Character mesh has an Animation Blueprint assigned"));
+        UE_LOG(LogTemp, Error, TEXT("  2. Animation Blueprint has a slot named 'DefaultSlot'"));
+        UE_LOG(LogTemp, Error, TEXT("  3. Animation Blueprint's skeleton matches character's skeleton"));
+        return;
+    }
+
+    // Success
+    UE_LOG(LogTemp, Warning, TEXT("AnimationComponentSimplified: Successfully initialized with AnimInstance"));
+
+    AnimInstance->OnMontageEnded.AddDynamic(this, &UAnimationComponentSimplified::OnMontageEnded);
+    AnimInstance->OnPlayMontageNotifyBegin.AddDynamic(this, &UAnimationComponentSimplified::OnNotifyBeginReceived);
+
+    // Log montage status
+    UE_LOG(LogTemp, Warning, TEXT("AnimationComponentSimplified Montages:"));
+    UE_LOG(LogTemp, Warning, TEXT("  - CombatMontage: %s"), CombatMontage ? TEXT("ASSIGNED") : TEXT("NULL"));
+    UE_LOG(LogTemp, Warning, TEXT("  - DodgeMontage: %s"), DodgeMontage ? TEXT("ASSIGNED") : TEXT("NULL"));
+    UE_LOG(LogTemp, Warning, TEXT("  - ReactionMontage: %s"), ReactionMontage ? TEXT("ASSIGNED") : TEXT("NULL"));
+    UE_LOG(LogTemp, Warning, TEXT("  - FinisherMontage: %s"), FinisherMontage ? TEXT("ASSIGNED") : TEXT("NULL"));
+    UE_LOG(LogTemp, Warning, TEXT("  - BlockMontage: %s"), BlockMontage ? TEXT("ASSIGNED") : TEXT("NULL"));
+    UE_LOG(LogTemp, Warning, TEXT("  - Attack Sections Count: %d"), AttackSections.Num());
+
+    for (int32 i = 0; i < AttackSections.Num(); i++)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("    [%d] %s"), i, *AttackSections[i].ToString());
     }
 }
 
 void UAnimationComponentSimplified::PlayAttack(int32 VariationIndex)
 {
-    if (!CombatMontage || !AnimInstance) return;
+    // Debug logging
+    UE_LOG(LogTemp, Warning, TEXT("PlayAttack called with VariationIndex: %d"), VariationIndex);
+
+    if (!CombatMontage)
+    {
+        UE_LOG(LogTemp, Error, TEXT("PlayAttack FAILED: CombatMontage is NULL! Make sure it's assigned in Blueprint"));
+        return;
+    }
+
+    if (!AnimInstance)
+    {
+        UE_LOG(LogTemp, Error, TEXT("PlayAttack FAILED: AnimInstance is NULL! Character needs an AnimBlueprint assigned"));
+        return;
+    }
+
+    if (AttackSections.Num() == 0)
+    {
+        UE_LOG(LogTemp, Error, TEXT("PlayAttack FAILED: AttackSections array is empty!"));
+        return;
+    }
 
     FName SectionToPlay;
 
     if (VariationIndex >= 0 && VariationIndex < AttackSections.Num())
     {
         SectionToPlay = AttackSections[VariationIndex];
+        UE_LOG(LogTemp, Warning, TEXT("PlayAttack: Playing specific attack index %d: '%s'"), VariationIndex, *SectionToPlay.ToString());
     }
     else
     {
         // Random selection - could use weighted selection from DataTable
         SectionToPlay = GetRandomSection(AttackSections);
+        UE_LOG(LogTemp, Warning, TEXT("PlayAttack: Playing random attack: '%s'"), *SectionToPlay.ToString());
+    }
+
+    UE_LOG(LogTemp, Warning, TEXT("PlayAttack: Attempting to play section '%s' from CombatMontage"), *SectionToPlay.ToString());
+
+    // Verify section exists in montage
+    if (CombatMontage && !CombatMontage->IsValidSectionName(SectionToPlay))
+    {
+        UE_LOG(LogTemp, Error, TEXT("PlayAttack FAILED: Section '%s' does not exist in CombatMontage!"), *SectionToPlay.ToString());
+        UE_LOG(LogTemp, Error, TEXT("Make sure section names in Montage match exactly (case-sensitive)!"));
+        return;
     }
 
     PlayMontageSection(CombatMontage, SectionToPlay);
 
-    UE_LOG(LogTemp, Verbose, TEXT("Playing attack section: %s"), *SectionToPlay.ToString());
+    UE_LOG(LogTemp, Warning, TEXT("PlayAttack: Successfully called PlayMontageSection for '%s'"), *SectionToPlay.ToString());
 }
 
 void UAnimationComponentSimplified::PlayDodge(int32 Direction)
@@ -170,22 +232,53 @@ float UAnimationComponentSimplified::GetMontageTimeRemaining() const
 
 void UAnimationComponentSimplified::PlayMontageSection(UAnimMontage* Montage, FName SectionName)
 {
-    if (!Montage || !AnimInstance) return;
-
-    // Stop current if playing
-    if (CurrentMontage && CurrentMontage != Montage)
+    if (!Montage)
     {
-        AnimInstance->Montage_Stop(0.2f, CurrentMontage);
+        UE_LOG(LogTemp, Error, TEXT("PlayMontageSection: Montage is NULL!"));
+        return;
+    }
+
+    if (!AnimInstance)
+    {
+        UE_LOG(LogTemp, Error, TEXT("PlayMontageSection: AnimInstance is NULL!"));
+        return;
+    }
+
+    // Stop current montage completely to prevent section chaining
+    if (AnimInstance->Montage_IsPlaying(Montage))
+    {
+        AnimInstance->Montage_Stop(0.1f, Montage);
+    }
+    else if (CurrentMontage && CurrentMontage != Montage)
+    {
+        AnimInstance->Montage_Stop(0.1f, CurrentMontage);
     }
 
     CurrentMontage = Montage;
     CurrentSection = SectionName;
 
-    // Play montage and jump to section
-    float MontageLength = AnimInstance->Montage_Play(Montage);
+    // Play montage with speed multiplier and jump to section
+    float MontageLength = AnimInstance->Montage_Play(Montage, AnimationSpeedMultiplier);
+
+    UE_LOG(LogTemp, Warning, TEXT("PlayMontageSection: Playing section '%s' (Montage length: %f)"), *SectionName.ToString(), MontageLength);
+
     if (MontageLength > 0.0f)
     {
+        // Jump to the specific section
         AnimInstance->Montage_JumpToSection(SectionName, Montage);
+
+        // IMPORTANT: Set the montage to NOT automatically advance to next section
+        // This prevents playing multiple attacks in sequence
+        AnimInstance->Montage_SetNextSection(SectionName, NAME_None, Montage);
+
+        UE_LOG(LogTemp, Warning, TEXT("PlayMontageSection: Set section '%s' to NOT advance to next section"), *SectionName.ToString());
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("PlayMontageSection: Montage_Play failed (returned 0)! Check:"));
+        UE_LOG(LogTemp, Error, TEXT("  1. AnimBP has a Slot node named 'DefaultSlot'"));
+        UE_LOG(LogTemp, Error, TEXT("  2. Slot is connected between State Machine and Output Pose"));
+        UE_LOG(LogTemp, Error, TEXT("  3. Montage Skeleton matches Character Skeleton"));
     }
 }
 
@@ -267,4 +360,162 @@ void UAnimationComponentSimplified::OnNotifyBeginReceived(FName NotifyName, cons
         // Broadcast to combat component
         UE_LOG(LogTemp, Verbose, TEXT("Attack hit window active"));
     }
+}
+
+void UAnimationComponentSimplified::PlayHackCast()
+{
+    if (!CombatMontage || !AnimInstance) return;
+
+    // Play hack cast section if it exists, or use a special attack
+    FName HackSection = "Hack_Cast";
+    // Fallback to a dramatic attack if hack section doesn't exist
+    if (!CombatMontage->IsValidSectionName(HackSection))
+    {
+        HackSection = AttackSections.Num() > 0 ? AttackSections.Last() : NAME_None;
+    }
+
+    if (HackSection != NAME_None)
+    {
+        PlayMontageSection(CombatMontage, HackSection);
+        UE_LOG(LogTemp, Warning, TEXT(">>> HACK CAST <<<"));
+    }
+}
+
+void UAnimationComponentSimplified::PlayHackResponse()
+{
+    if (!ReactionMontage || !AnimInstance) return;
+
+    // Play a special hit reaction for hack response
+    static const TArray<FName> HackResponseSections = {"Hack_Response", "Hit_Heavy", "Stagger_Heavy"};
+
+    for (const FName& Section : HackResponseSections)
+    {
+        if (ReactionMontage->IsValidSectionName(Section))
+        {
+            PlayMontageSection(ReactionMontage, Section);
+            UE_LOG(LogTemp, Warning, TEXT(">>> HACK RESPONSE <<<"));
+            return;
+        }
+    }
+
+    // Fallback to heavy hit reaction
+    PlayHitReaction(2);
+}
+
+void UAnimationComponentSimplified::PlayStagger()
+{
+    if (!ReactionMontage || !AnimInstance) return;
+
+    static const TArray<FName> StaggerSections = {"Stagger", "Stagger_Light", "Stagger_Heavy", "Hit_Heavy"};
+
+    for (const FName& Section : StaggerSections)
+    {
+        if (ReactionMontage->IsValidSectionName(Section))
+        {
+            PlayMontageSection(ReactionMontage, Section);
+            return;
+        }
+    }
+
+    // Fallback to heavy hit
+    PlayHitReaction(2);
+}
+
+// Legacy adapter methods for backward compatibility
+bool UAnimationComponentSimplified::PlayAnimation(EAnimationType AnimType, EAnimationPriority Priority)
+{
+    if (AnimType == EAnimationType::None) return false;
+
+    UE_LOG(LogTemp, Warning, TEXT("PlayAnimation called with AnimType: %d, Priority: %d"), (int32)AnimType, (int32)Priority);
+
+    // Store current animation state for queries
+    CurrentAnimationType = AnimType;
+    CurrentPriority = Priority;
+
+    // Map legacy enum to new methods
+    switch (AnimType)
+    {
+        case EAnimationType::AttackLeft:
+        case EAnimationType::AttackRight:
+        case EAnimationType::AttackOverhead:
+        case EAnimationType::AttackFront:
+            UE_LOG(LogTemp, Warning, TEXT("PlayAnimation: Calling PlayAttack for attack type"));
+            PlayAttack(-1);  // Random attack
+            return true;
+
+        case EAnimationType::DodgeForward:
+            PlayDodge(0);
+            return true;
+        case EAnimationType::DodgeBack:
+            PlayDodge(1);
+            return true;
+        case EAnimationType::DodgeLeft:
+            PlayDodge(2);
+            return true;
+        case EAnimationType::DodgeRight:
+            PlayDodge(3);
+            return true;
+
+        case EAnimationType::BlockLeft:
+            PlayBlock(0);
+            return true;
+        case EAnimationType::BlockCenter:
+            PlayBlock(1);
+            return true;
+        case EAnimationType::BlockRight:
+            PlayBlock(2);
+            return true;
+
+        case EAnimationType::HackCast:
+            PlayHackCast();
+            return true;
+        case EAnimationType::HackResponse:
+            PlayHackResponse();
+            return true;
+
+        case EAnimationType::Stagger:
+            PlayStagger();
+            return true;
+
+        case EAnimationType::FinisherExecute:
+            PlayFinisher(false);
+            return true;
+        case EAnimationType::FinisherReceive:
+            PlayFinisher(true);
+            return true;
+
+        default:
+            return false;
+    }
+}
+
+void UAnimationComponentSimplified::StopAnimation(EAnimationType AnimType)
+{
+    if (CurrentAnimationType == AnimType)
+    {
+        StopCurrentMontage();
+        CurrentAnimationType = EAnimationType::None;
+        CurrentPriority = EAnimationPriority::Low;
+    }
+}
+
+void UAnimationComponentSimplified::StopAllAnimations()
+{
+    StopCurrentMontage();
+    CurrentAnimationType = EAnimationType::None;
+    CurrentPriority = EAnimationPriority::Low;
+}
+
+bool UAnimationComponentSimplified::IsAnimationPlaying(EAnimationType AnimType) const
+{
+    return CurrentAnimationType == AnimType && IsPlayingMontage();
+}
+
+float UAnimationComponentSimplified::GetAnimationTimeRemaining(EAnimationType AnimType) const
+{
+    if (CurrentAnimationType == AnimType)
+    {
+        return GetMontageTimeRemaining();
+    }
+    return 0.0f;
 }

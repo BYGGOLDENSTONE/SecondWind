@@ -14,13 +14,13 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define SECONDWIND_SecondWindCharacter_generated_h
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_29_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_28_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execOnPlayerPhaseTransition); \
 	DECLARE_FUNCTION(execOnPlayerEnterFinisherState); \
 	DECLARE_FUNCTION(execOnPlayerDeath);
 
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_29_INCLASS_NO_PURE_DECLS \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_28_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesASecondWindCharacter(); \
 	friend struct Z_Construct_UClass_ASecondWindCharacter_Statics; \
@@ -29,7 +29,7 @@ public: \
 	DECLARE_SERIALIZER(ASecondWindCharacter)
 
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_29_ENHANCED_CONSTRUCTORS \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_28_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	ASecondWindCharacter(ASecondWindCharacter&&); \
@@ -41,13 +41,13 @@ public: \
 	NO_API virtual ~ASecondWindCharacter();
 
 
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_26_PROLOG
-#define FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_29_GENERATED_BODY \
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_25_PROLOG
+#define FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_28_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_29_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_29_INCLASS_NO_PURE_DECLS \
-	FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_29_ENHANCED_CONSTRUCTORS \
+	FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_28_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_28_INCLASS_NO_PURE_DECLS \
+	FID_Unreal_Projects_SecondWind_Source_SecondWind_SecondWindCharacter_h_28_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

@@ -4,6 +4,7 @@
 #include "HackComponent.h"
 #include "HealthComponent.h"
 #include "WeakSideComponent.h"
+#include "AnimationComponentSimplified.h"
 #include "../Systems/GamestyleSystem.h"
 #include "../Systems/MemorySystem.h"
 #include "GameFramework/Character.h"
@@ -28,7 +29,43 @@ void UCombatComponent::BeginPlay()
 	{
 		DodgeComponent = Owner->FindComponentByClass<UDodgeComponent>();
 		HackComponent = Owner->FindComponentByClass<UHackComponent>();
-		// BlockingComponent is already set via SetBlockingComponent
+
+		// Find ALL animation components and pick the one with montages assigned
+		TArray<UAnimationComponentSimplified*> AnimComponents;
+		Owner->GetComponents<UAnimationComponentSimplified>(AnimComponents);
+
+		UE_LOG(LogTemp, Warning, TEXT("CombatComponent: Found %d AnimationComponentSimplified components"), AnimComponents.Num());
+
+		// Find the component with montages assigned (the configured one)
+		for (UAnimationComponentSimplified* AnimComp : AnimComponents)
+		{
+			// Prefer the one that has montages configured
+			if (AnimComp && AnimComp->IsProperlyConfigured())
+			{
+				AnimationSystem = AnimComp;
+				UE_LOG(LogTemp, Warning, TEXT("CombatComponent: Found configured animation component with montages"));
+				break;
+			}
+		}
+
+		// If none are configured, try to find the one named "AnimationSystem"
+		if (!AnimationSystem)
+		{
+			for (UAnimationComponentSimplified* AnimComp : AnimComponents)
+			{
+				if (AnimComp && AnimComp->GetFName().ToString().Contains("AnimationSystem"))
+				{
+					AnimationSystem = AnimComp;
+					UE_LOG(LogTemp, Warning, TEXT("CombatComponent: Using AnimationSystem component by name"));
+					break;
+				}
+			}
+		}
+
+		if (!AnimationSystem)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("CombatComponent: AnimationSystem not found on owner!"));
+		}
 	}
 }
 
@@ -75,9 +112,54 @@ void UCombatComponent::PerformAttack()
 		return;
 	}
 
+	// Check if we should reset combo (waited too long between attacks)
+	float CurrentTime = GetWorld()->GetTimeSeconds();
+	float TimeSinceLastAttack = CurrentTime - LastAttackTime;
+
+	if (TimeSinceLastAttack > ComboWindowDuration)
+	{
+		if (CurrentAttackIndex != 0)  // Only log if we're actually resetting a combo
+		{
+			UE_LOG(LogTemp, Warning, TEXT("CombatComponent: Combo window expired (%.1fs > %.1fs), reset to first attack"),
+				TimeSinceLastAttack, ComboWindowDuration);
+		}
+		CurrentAttackIndex = 0;
+	}
+	else if (TimeSinceLastAttack > 0.1f)  // Only log if this isn't the very first attack
+	{
+		UE_LOG(LogTemp, Warning, TEXT("CombatComponent: Continuing combo (%.1fs since last attack)"), TimeSinceLastAttack);
+	}
+
 	bIsAttacking = true;
 	bIsInAttackAnimation = true;  // Mark that we're in the actual attack animation
 	AttackTimer = AttackCooldown;
+	LastAttackTime = CurrentTime;  // Update last attack time
+
+	// Play attack animation
+	if (AnimationSystem)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("CombatComponent: Triggering attack animation index %d"), CurrentAttackIndex);
+		int32 AttackToPlay = CurrentAttackIndex;
+		AnimationSystem->PlayAttack(AttackToPlay);
+
+		// Get the actual number of attack sections
+		int32 AttackCount = AnimationSystem->GetAttackSectionCount();
+		if (AttackCount > 0)
+		{
+			// Increment attack index for next attack (cycles through available attacks)
+			CurrentAttackIndex++;
+			if (CurrentAttackIndex >= AttackCount)
+			{
+				CurrentAttackIndex = 0;
+			}
+			UE_LOG(LogTemp, Warning, TEXT("CombatComponent: Next attack will be index %d of %d total attacks (Window: %.1fs)"),
+				CurrentAttackIndex, AttackCount, ComboWindowDuration);
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("CombatComponent: Cannot play attack animation - AnimationSystem is NULL!"));
+	}
 
 	ExecuteAttack();
 }
@@ -141,6 +223,12 @@ void UCombatComponent::ExecuteAttack()
 		{
 			HackComponent->AddCounter();
 			UE_LOG(LogTemp, Warning, TEXT("*** COUNTER-ATTACK SUCCESSFUL! Hack counter increased ***"));
+
+			// Play counter animation if available
+			if (AnimationSystem)
+			{
+				AnimationSystem->PlayCounter();
+			}
 		}
 	}
 	else
@@ -169,6 +257,10 @@ void UCombatComponent::ResetAttack()
 	bIsAttacking = false;
 	bIsInAttackAnimation = false;  // Ensure animation flag is also reset
 	AttackTimer = 0.0f;
+
+	// Don't reset combo here - only reset when combo window expires
+	// This allows the player to continue combos between attacks
+	UE_LOG(LogTemp, Verbose, TEXT("CombatComponent: Attack cooldown ended"));
 }
 
 AActor* UCombatComponent::GetTargetInRange() const
@@ -219,7 +311,7 @@ void UCombatComponent::ApplyDamageToTarget(AActor* Target)
 	}
 
 	// Only apply damage if attack window is active (or if no animation component)
-	if (AnimationComponent && !bAttackWindowActive)
+	if (AnimationSystem && !bAttackWindowActive)
 	{
 		return;
 	}

@@ -1,7 +1,7 @@
 #include "BlockingComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/Character.h"
-#include "AnimationComponent.h"
+#include "AnimationComponentSimplified.h"
 #include "PhysicsHitReactionComponent.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
@@ -20,7 +20,23 @@ void UBlockingComponent::BeginPlay()
 
 	if (AActor* Owner = GetOwner())
 	{
-		AnimationComponent = Owner->FindComponentByClass<UAnimationComponent>();
+		// Find the properly configured animation component
+		TArray<UAnimationComponentSimplified*> AnimComponents;
+		Owner->GetComponents<UAnimationComponentSimplified>(AnimComponents);
+
+		for (UAnimationComponentSimplified* AnimComp : AnimComponents)
+		{
+			if (AnimComp && AnimComp->IsProperlyConfigured())
+			{
+				AnimationSystem = AnimComp;
+				break;
+			}
+		}
+
+		if (!AnimationSystem && AnimComponents.Num() > 0)
+		{
+			AnimationSystem = AnimComponents[0];
+		}
 	}
 }
 
@@ -90,9 +106,9 @@ void UBlockingComponent::StartBlocking()
 		CurrentBlockDirection = EBlockDirection::Center;
 
 		// Play center block animation by default
-		if (AnimationComponent)
+		if (AnimationSystem)
 		{
-			AnimationComponent->PlayAnimation(EAnimationType::BlockCenter, EAnimationPriority::Medium);
+			AnimationSystem->PlayAnimation(EAnimationType::BlockCenter, EAnimationPriority::Medium);
 		}
 
 		UE_LOG(LogTemp, Log, TEXT("Started blocking"));
@@ -109,9 +125,9 @@ void UBlockingComponent::StopBlocking()
 		CurrentMouseX = 0.0f;
 
 		// Stop block animation
-		if (AnimationComponent)
+		if (AnimationSystem)
 		{
-			AnimationComponent->StopAllAnimations();
+			AnimationSystem->StopAllAnimations();
 		}
 
 		bInCounterWindow = false;

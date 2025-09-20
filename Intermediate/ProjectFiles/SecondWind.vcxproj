@@ -258,10 +258,9 @@
     <None Include="..\..\CLAUDE.md"/>
     <None Include="..\..\GDD.txt"/>
     <None Include="..\..\ImplementationPlan.txt"/>
-    <None Include="..\..\Phase10_AnimationMapping.md"/>
-    <None Include="..\..\Phase10_AnimationSystemGuide.md"/>
-    <None Include="..\..\Phase10_AnimationSystemSummary.md"/>
+    <None Include="..\..\Phase10_MasterMontageGuide.md"/>
     <None Include="..\..\SecondWind.sln.DotSettings.user"/>
+    <None Include="..\..\SkeletonCompatibilityGuide.md"/>
     <None Include="..\..\Config\DefaultEditor.ini"/>
     <None Include="..\..\Config\DefaultEditorPerProjectUserSettings.ini"/>
     <None Include="..\..\Config\DefaultEngine.ini"/>
@@ -346,10 +345,10 @@
     <ClCompile Include="..\..\Source\SecondWind\AnimNotifies\PhysicsImpulseNotify.h">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
-    <ClCompile Include="..\..\Source\SecondWind\Components\AnimationComponent.cpp">
+    <ClCompile Include="..\..\Source\SecondWind\Components\AnimationComponentSimplified.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
-    <ClCompile Include="..\..\Source\SecondWind\Components\AnimationComponent.h">
+    <ClCompile Include="..\..\Source\SecondWind\Components\AnimationComponentSimplified.h">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="..\..\Source\SecondWind\Components\BlockingComponent.cpp">

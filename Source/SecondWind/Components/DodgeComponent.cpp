@@ -2,7 +2,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "CombatComponent.h"
-#include "AnimationComponent.h"
+#include "AnimationComponentSimplified.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
 #include "SecondWind/Systems/GamestyleSystem.h"
@@ -34,7 +34,24 @@ void UDodgeComponent::BeginPlay()
     if (OwnerCharacter)
     {
         CombatComponent = OwnerCharacter->FindComponentByClass<UCombatComponent>();
-        AnimationComponent = OwnerCharacter->FindComponentByClass<UAnimationComponent>();
+
+        // Find the properly configured animation component
+        TArray<UAnimationComponentSimplified*> AnimComponents;
+        OwnerCharacter->GetComponents<UAnimationComponentSimplified>(AnimComponents);
+
+        for (UAnimationComponentSimplified* AnimComp : AnimComponents)
+        {
+            if (AnimComp && AnimComp->IsProperlyConfigured())
+            {
+                AnimationSystem = AnimComp;
+                break;
+            }
+        }
+
+        if (!AnimationSystem && AnimComponents.Num() > 0)
+        {
+            AnimationSystem = AnimComponents[0];
+        }
     }
 }
 
@@ -193,7 +210,7 @@ void UDodgeComponent::PerformDodge(EDodgeDirection Direction)
     }
 
     // Play dodge animation based on direction
-    if (AnimationComponent)
+    if (AnimationSystem)
     {
         EAnimationType DodgeAnim = EAnimationType::DodgeBack;
         switch (Direction)
@@ -211,7 +228,7 @@ void UDodgeComponent::PerformDodge(EDodgeDirection Direction)
                 DodgeAnim = EAnimationType::DodgeForward;
                 break;
         }
-        AnimationComponent->PlayAnimation(DodgeAnim, EAnimationPriority::High);
+        AnimationSystem->PlayAnimation(DodgeAnim, EAnimationPriority::High);
     }
 
     // Apply dodge impulse (animation will handle actual movement)
@@ -243,9 +260,9 @@ void UDodgeComponent::PerformDash()
         return;
 
     // Play forward dodge animation (acts as dash)
-    if (AnimationComponent)
+    if (AnimationSystem)
     {
-        AnimationComponent->PlayAnimation(EAnimationType::DodgeForward, EAnimationPriority::High);
+        AnimationSystem->PlayAnimation(EAnimationType::DodgeForward, EAnimationPriority::High);
     }
 
     // Log mobility bonus if active

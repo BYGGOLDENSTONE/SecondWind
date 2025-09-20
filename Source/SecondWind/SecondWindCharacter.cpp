@@ -17,7 +17,6 @@
 #include "Components/DodgeComponent.h"
 #include "Components/CameraLockOnComponent.h"
 #include "Components/FragmentComponent.h"
-#include "Components/AnimationComponent.h"
 #include "Components/PhysicsHitReactionComponent.h"
 #include "GameModes/SecondWindArenaGameMode.h"
 #include "Systems/MemorySystem.h"
@@ -92,9 +91,6 @@ ASecondWindCharacter::ASecondWindCharacter()
 
 	// Create fragment component
 	FragmentComponent = CreateDefaultSubobject<UFragmentComponent>(TEXT("FragmentComponent"));
-
-	// Create animation component
-	AnimationComponent = CreateDefaultSubobject<UAnimationComponent>(TEXT("AnimationComponent"));
 
 	// Create physics hit reaction component
 	PhysicsHitReactionComponent = CreateDefaultSubobject<UPhysicsHitReactionComponent>(TEXT("PhysicsHitReactionComponent"));

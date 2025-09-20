@@ -105,6 +105,16 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Physics|Performance")
 	int32 MaxSimultaneousBones = 10;
 
+	// Skeleton bone names (configurable for different skeletons)
+	UPROPERTY(EditDefaultsOnly, Category = "Physics|Skeleton")
+	FName PelvisBoneName = TEXT("pelvis");
+
+	UPROPERTY(EditDefaultsOnly, Category = "Physics|Skeleton")
+	FName DefaultHitBoneName = TEXT("spine_02");
+
+	UPROPERTY(EditDefaultsOnly, Category = "Physics|Skeleton")
+	FName HeadBoneName = TEXT("head");
+
 private:
 	void InitializePhysicsProfiles();
 	void ApplyImpulseToBone(const FName& BoneName, const FVector& Impulse, float StrengthMultiplier = 1.0f);

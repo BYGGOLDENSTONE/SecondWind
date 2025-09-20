@@ -271,6 +271,24 @@ struct Z_Construct_UClass_UPhysicsHitReactionComponent_Statics
 		{ "Category", "Physics|Performance" },
 		{ "ModuleRelativePath", "Components/PhysicsHitReactionComponent.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_PelvisBoneName_MetaData[] = {
+		{ "Category", "Physics|Skeleton" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// Skeleton bone names (configurable for different skeletons)\n" },
+#endif
+		{ "ModuleRelativePath", "Components/PhysicsHitReactionComponent.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Skeleton bone names (configurable for different skeletons)" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_DefaultHitBoneName_MetaData[] = {
+		{ "Category", "Physics|Skeleton" },
+		{ "ModuleRelativePath", "Components/PhysicsHitReactionComponent.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HeadBoneName_MetaData[] = {
+		{ "Category", "Physics|Skeleton" },
+		{ "ModuleRelativePath", "Components/PhysicsHitReactionComponent.h" },
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_LightHitImpulse;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_MediumHitImpulse;
@@ -287,6 +305,9 @@ struct Z_Construct_UClass_UPhysicsHitReactionComponent_Statics
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_FullPhysicsDistance;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_SimplifiedPhysicsDistance;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_MaxSimultaneousBones;
+	static const UECodeGen_Private::FNamePropertyParams NewProp_PelvisBoneName;
+	static const UECodeGen_Private::FNamePropertyParams NewProp_DefaultHitBoneName;
+	static const UECodeGen_Private::FNamePropertyParams NewProp_HeadBoneName;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -309,6 +330,9 @@ const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_UPhysicsHitReac
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UPhysicsHitReactionComponent_Statics::NewProp_FullPhysicsDistance = { "FullPhysicsDistance", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UPhysicsHitReactionComponent, FullPhysicsDistance), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_FullPhysicsDistance_MetaData), NewProp_FullPhysicsDistance_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UPhysicsHitReactionComponent_Statics::NewProp_SimplifiedPhysicsDistance = { "SimplifiedPhysicsDistance", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UPhysicsHitReactionComponent, SimplifiedPhysicsDistance), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SimplifiedPhysicsDistance_MetaData), NewProp_SimplifiedPhysicsDistance_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_UPhysicsHitReactionComponent_Statics::NewProp_MaxSimultaneousBones = { "MaxSimultaneousBones", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UPhysicsHitReactionComponent, MaxSimultaneousBones), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MaxSimultaneousBones_MetaData), NewProp_MaxSimultaneousBones_MetaData) };
+const UECodeGen_Private::FNamePropertyParams Z_Construct_UClass_UPhysicsHitReactionComponent_Statics::NewProp_PelvisBoneName = { "PelvisBoneName", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Name, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UPhysicsHitReactionComponent, PelvisBoneName), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PelvisBoneName_MetaData), NewProp_PelvisBoneName_MetaData) };
+const UECodeGen_Private::FNamePropertyParams Z_Construct_UClass_UPhysicsHitReactionComponent_Statics::NewProp_DefaultHitBoneName = { "DefaultHitBoneName", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Name, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UPhysicsHitReactionComponent, DefaultHitBoneName), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DefaultHitBoneName_MetaData), NewProp_DefaultHitBoneName_MetaData) };
+const UECodeGen_Private::FNamePropertyParams Z_Construct_UClass_UPhysicsHitReactionComponent_Statics::NewProp_HeadBoneName = { "HeadBoneName", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Name, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UPhysicsHitReactionComponent, HeadBoneName), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HeadBoneName_MetaData), NewProp_HeadBoneName_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UPhysicsHitReactionComponent_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UPhysicsHitReactionComponent_Statics::NewProp_LightHitImpulse,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UPhysicsHitReactionComponent_Statics::NewProp_MediumHitImpulse,
@@ -325,6 +349,9 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UPhysicsH
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UPhysicsHitReactionComponent_Statics::NewProp_FullPhysicsDistance,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UPhysicsHitReactionComponent_Statics::NewProp_SimplifiedPhysicsDistance,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UPhysicsHitReactionComponent_Statics::NewProp_MaxSimultaneousBones,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UPhysicsHitReactionComponent_Statics::NewProp_PelvisBoneName,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UPhysicsHitReactionComponent_Statics::NewProp_DefaultHitBoneName,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UPhysicsHitReactionComponent_Statics::NewProp_HeadBoneName,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UPhysicsHitReactionComponent_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_UPhysicsHitReactionComponent_Statics::DependentSingletons[])() = {
@@ -373,10 +400,10 @@ struct Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Co
 		{ FPhysicsProfile::StaticStruct, Z_Construct_UScriptStruct_FPhysicsProfile_Statics::NewStructOps, TEXT("PhysicsProfile"), &Z_Registration_Info_UScriptStruct_PhysicsProfile, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FPhysicsProfile), 3501688197U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UPhysicsHitReactionComponent, UPhysicsHitReactionComponent::StaticClass, TEXT("UPhysicsHitReactionComponent"), &Z_Registration_Info_UClass_UPhysicsHitReactionComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UPhysicsHitReactionComponent), 4238755609U) },
+		{ Z_Construct_UClass_UPhysicsHitReactionComponent, UPhysicsHitReactionComponent::StaticClass, TEXT("UPhysicsHitReactionComponent"), &Z_Registration_Info_UClass_UPhysicsHitReactionComponent, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UPhysicsHitReactionComponent), 716022041U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_PhysicsHitReactionComponent_h_1464211152(TEXT("/Script/SecondWind"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_PhysicsHitReactionComponent_h_1732188861(TEXT("/Script/SecondWind"),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_PhysicsHitReactionComponent_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_PhysicsHitReactionComponent_h_Statics::ClassInfo),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_PhysicsHitReactionComponent_h_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_PhysicsHitReactionComponent_h_Statics::ScriptStructInfo),
 	Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_PhysicsHitReactionComponent_h_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Unreal_Projects_SecondWind_Source_SecondWind_Components_PhysicsHitReactionComponent_h_Statics::EnumInfo));

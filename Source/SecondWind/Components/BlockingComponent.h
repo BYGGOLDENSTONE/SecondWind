@@ -79,7 +79,7 @@ private:
 	EBlockDirection CalculateBlockDirection(float NormalizedMouseX) const;
 
 	// Component references
-	class UAnimationComponent* AnimationComponent;
+	class UAnimationComponentSimplified* AnimationSystem;
 
 public:
 	// New methods for animation integration

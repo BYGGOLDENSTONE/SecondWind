@@ -96,5 +96,5 @@ private:
     // References
     class ACharacter* OwnerCharacter;
     class UCombatComponent* CombatComponent;
-    class UAnimationComponent* AnimationComponent;
+    class UAnimationComponentSimplified* AnimationSystem;
 };

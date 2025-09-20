@@ -7,7 +7,7 @@
 class UBlockingComponent;
 class UDodgeComponent;
 class UHackComponent;
-class UAnimationComponent;
+class UAnimationComponentSimplified;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class SECONDWIND_API UCombatComponent : public UActorComponent
@@ -70,11 +70,18 @@ private:
 	UBlockingComponent* BlockingComponent = nullptr;
 	UDodgeComponent* DodgeComponent = nullptr;
 	UHackComponent* HackComponent = nullptr;
-	UAnimationComponent* AnimationComponent = nullptr;
+	UAnimationComponentSimplified* AnimationSystem = nullptr;
 
 	// Animation-driven attack state
 	bool bAttackWindowActive = false;
 	float CurrentDamageMultiplier = 1.0f;
+
+	// Attack combo tracking
+	int32 CurrentAttackIndex = 0;
+	float LastAttackTime = -999.0f;  // Time of last attack for combo window
+
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	float ComboWindowDuration = 2.0f;  // Time window to continue combo before reset
 
 	int32 LastAttackIndex = 0; // For attack variation
 };
